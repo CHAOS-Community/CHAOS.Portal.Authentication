@@ -1,0 +1,6 @@
+bin
+*.suo
+!/bin
+obj
+_ReSharper.Authentication
+*.user

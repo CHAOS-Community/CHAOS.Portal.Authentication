@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "app", "app", "{A0718908-0CAC-427D-B04D-A728EF479A2E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{3E6B28CC-7169-4E9C-92EA-D43567308B8B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CHAOS.Portal.Authentication.EmailPassword", "src\app\CHAOS.Portal.Authentication.EmailPassword\CHAOS.Portal.Authentication.EmailPassword.csproj", "{FC9C973F-AE42-4AB3-BBEC-44688339D8AA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CHAOS.Portal.Authentication.EmailPassword.Test", "src\test\CHAOS.Portal.Authentication.EmailPassword.Test\CHAOS.Portal.Authentication.EmailPassword.Test.csproj", "{36F4F672-82F2-4713-9AD5-2ADCA2D723AF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FC9C973F-AE42-4AB3-BBEC-44688339D8AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC9C973F-AE42-4AB3-BBEC-44688339D8AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC9C973F-AE42-4AB3-BBEC-44688339D8AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC9C973F-AE42-4AB3-BBEC-44688339D8AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36F4F672-82F2-4713-9AD5-2ADCA2D723AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36F4F672-82F2-4713-9AD5-2ADCA2D723AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36F4F672-82F2-4713-9AD5-2ADCA2D723AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36F4F672-82F2-4713-9AD5-2ADCA2D723AF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FC9C973F-AE42-4AB3-BBEC-44688339D8AA} = {A0718908-0CAC-427D-B04D-A728EF479A2E}
+		{36F4F672-82F2-4713-9AD5-2ADCA2D723AF} = {3E6B28CC-7169-4E9C-92EA-D43567308B8B}
+	EndGlobalSection
+EndGlobal
