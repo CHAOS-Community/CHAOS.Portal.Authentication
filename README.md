@@ -2,7 +2,7 @@
 This is an authentication assembly for CHAOS Portal
 
 ##Requirements
-.NET 4.0 / Silverlight 5  
+.NET 4.0
 
 ##Code
 The source code is located in the *src/app* folder.  
