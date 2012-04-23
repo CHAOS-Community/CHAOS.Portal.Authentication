@@ -1,4 +1,4 @@
-﻿using CHAOS.Portal.Authentication.EmailPassword.Exception;
+﻿using CHAOS.Portal.Authentication.Exception;
 using NUnit.Framework;
 
 namespace CHAOS.Portal.Authentication.EmailPassword.Test

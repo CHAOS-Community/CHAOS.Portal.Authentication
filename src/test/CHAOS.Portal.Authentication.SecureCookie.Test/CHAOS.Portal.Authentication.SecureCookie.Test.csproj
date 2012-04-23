@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{36F4F672-82F2-4713-9AD5-2ADCA2D723AF}</ProjectGuid>
+    <ProjectGuid>{41971A35-32B0-4D59-8CF6-DB76FE53FC30}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CHAOS.Portal.Authentication.EmailPassword.Test</RootNamespace>
-    <AssemblyName>CHAOS.Portal.Authentication.EmailPassword.Test</AssemblyName>
+    <RootNamespace>CHAOS.Portal.Authentication.SecureCookie.Test</RootNamespace>
+    <AssemblyName>CHAOS.Portal.Authentication.SecureCookie.Test</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -46,18 +46,14 @@
     <Reference Include="System.Data.Entity" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EmailPasswordModuleTest.cs" />
-    <Compile Include="EmailPasswordBaseTest.cs" />
+    <Compile Include="SecureCookieModuleTest.cs" />
+    <Compile Include="SecureCookieBaseTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\app\CHAOS.Portal.Authentication.EmailPassword\CHAOS.Portal.Authentication.EmailPassword.csproj">
-      <Project>{FC9C973F-AE42-4AB3-BBEC-44688339D8AA}</Project>
-      <Name>CHAOS.Portal.Authentication.EmailPassword</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\app\CHAOS.Portal.Authentication.Exception\CHAOS.Portal.Authentication.Exception.csproj">
-      <Project>{6FA5C9BD-5F15-480F-8B05-376A8FF16B0A}</Project>
-      <Name>CHAOS.Portal.Authentication.Exception</Name>
+    <ProjectReference Include="..\..\app\CHAOS.Portal.Authentication.SecureCookie\CHAOS.Portal.Authentication.SecureCookie.csproj">
+      <Project>{0E73C6A3-15EA-41E9-972C-CCE706A41F59}</Project>
+      <Name>CHAOS.Portal.Authentication.SecureCookie</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

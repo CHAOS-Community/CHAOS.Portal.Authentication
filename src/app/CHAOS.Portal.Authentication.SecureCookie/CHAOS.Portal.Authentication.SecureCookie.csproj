@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{36F4F672-82F2-4713-9AD5-2ADCA2D723AF}</ProjectGuid>
+    <ProjectGuid>{0E73C6A3-15EA-41E9-972C-CCE706A41F59}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CHAOS.Portal.Authentication.EmailPassword.Test</RootNamespace>
-    <AssemblyName>CHAOS.Portal.Authentication.EmailPassword.Test</AssemblyName>
+    <RootNamespace>CHAOS.Portal.Authentication.SecureCookie</RootNamespace>
+    <AssemblyName>CHAOS.Portal.Authentication.SecureCookie</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -34,9 +34,6 @@
     <Reference Include="CHAOS">
       <HintPath>..\..\..\lib\CHAOS.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath>..\..\..\tools\nunit\nunit.framework.dll</HintPath>
-    </Reference>
     <Reference Include="Portal">
       <HintPath>..\..\..\lib\Portal.dll</HintPath>
     </Reference>
@@ -44,26 +41,36 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EmailPasswordModuleTest.cs" />
-    <Compile Include="EmailPasswordBaseTest.cs" />
+    <Compile Include="Data\SecureCookie.cs" />
+    <Compile Include="Data\SecureCookie.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SecureCookie.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Exception\LoginException.cs" />
+    <Compile Include="Module\SecureCookieModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\app\CHAOS.Portal.Authentication.EmailPassword\CHAOS.Portal.Authentication.EmailPassword.csproj">
-      <Project>{FC9C973F-AE42-4AB3-BBEC-44688339D8AA}</Project>
-      <Name>CHAOS.Portal.Authentication.EmailPassword</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\app\CHAOS.Portal.Authentication.Exception\CHAOS.Portal.Authentication.Exception.csproj">
+    <EntityDeploy Include="Data\SecureCookie.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>SecureCookie.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CHAOS.Portal.Authentication.Exception\CHAOS.Portal.Authentication.Exception.csproj">
       <Project>{6FA5C9BD-5F15-480F-8B05-376A8FF16B0A}</Project>
       <Name>CHAOS.Portal.Authentication.Exception</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

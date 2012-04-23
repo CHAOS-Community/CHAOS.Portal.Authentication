@@ -9,7 +9,7 @@ using System.Xml.Linq;
 using System.Xml.Xsl;
 using CHAOS.Extensions;
 using CHAOS.Portal.Authentication.EmailPassword.Data;
-using CHAOS.Portal.Authentication.EmailPassword.Exception;
+using CHAOS.Portal.Authentication.Exception;
 using CHAOS.Portal.Core;
 using CHAOS.Portal.Core.Module;
 using CHAOS.Portal.Data.EF;

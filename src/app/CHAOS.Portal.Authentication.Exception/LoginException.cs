@@ -1,6 +1,6 @@
 using System.Runtime.Serialization;
 
-namespace CHAOS.Portal.Authentication.EmailPassword.Exception
+namespace CHAOS.Portal.Authentication.Exception
 {
     public class LoginException : System.Exception
     {

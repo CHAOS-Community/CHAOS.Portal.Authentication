@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SecureCookieModel.Store" Alias="Self" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.5" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="SecureCookieModelStoreContainer">
+          <EntitySet Name="SecureCookie" EntityType="SecureCookieModel.Store.SecureCookie" store:Type="Tables" Schema="SecureCookie" />
+        </EntityContainer>
+        <EntityType Name="SecureCookie">
+          <Key>
+            <PropertyRef Name="UserGUID" />
+            <PropertyRef Name="SecureCookieGUID" />
+            <PropertyRef Name="PasswordGUID" />
+          </Key>
+          <Property Name="UserGUID" Type="guid" Nullable="false" />
+          <Property Name="SecureCookieGUID" Type="guid" Nullable="false" />
+          <Property Name="PasswordGUID" Type="guid" Nullable="false" />
+          <Property Name="SessionGUID" Type="guid" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime" Nullable="false" />
+          <Property Name="DateUsed" Type="datetime" />
+        </EntityType>
+        <Function Name="PreTest" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="SecureCookie" />
+        <Function Name="SecureCookie_Create" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="SecureCookie">
+          <Parameter Name="UserGUID" Type="binary" Mode="In" />
+          <Parameter Name="SecureCookieGUID" Type="binary" Mode="In" />
+          <Parameter Name="PasswordGUID" Type="binary" Mode="In" />
+          <Parameter Name="SessionGUID" Type="binary" Mode="In" />
+        </Function>
+        <Function Name="SecureCookie_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="SecureCookie">
+          <Parameter Name="WhereUserGUID" Type="binary" Mode="In" />
+          <Parameter Name="WhereSecureCookieGUID" Type="binary" Mode="In" />
+        </Function>
+        <Function Name="SecureCookie_Get" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="SecureCookie">
+          <Parameter Name="UserGUID" Type="binary" Mode="In" />
+          <Parameter Name="SecureCookieGUID" Type="binary" Mode="In" />
+          <Parameter Name="PasswordGUID" Type="binary" Mode="In" />
+        </Function>
+        <Function Name="SecureCookie_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="SecureCookie">
+          <Parameter Name="WhereUserGUID" Type="binary" Mode="In" />
+          <Parameter Name="WhereSecureCookieGUID" Type="binary" Mode="In" />
+          <Parameter Name="WherePasswordGUID" Type="binary" Mode="In" />
+        </Function>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SecureCookieModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="SecureCookieEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="SecureCookie" EntityType="SecureCookieModel.SecureCookie" />
+          <FunctionImport Name="SecureCookie_Create">
+            <Parameter Name="UserGUID" Mode="In" Type="Binary" />
+            <Parameter Name="SecureCookieGUID" Mode="In" Type="Binary" />
+            <Parameter Name="PasswordGUID" Mode="In" Type="Binary" />
+            <Parameter Name="SessionGUID" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="SecureCookie_Delete" ReturnType="Collection(Int32)">
+            <Parameter Name="WhereUserGUID" Mode="In" Type="Binary" />
+            <Parameter Name="WhereSecureCookieGUID" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="SecureCookie_Get" EntitySet="SecureCookie" ReturnType="Collection(SecureCookieModel.SecureCookie)">
+            <Parameter Name="UserGUID" Mode="In" Type="Binary" />
+            <Parameter Name="SecureCookieGUID" Mode="In" Type="Binary" />
+            <Parameter Name="PasswordGUID" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="SecureCookie_Update" ReturnType="Collection(Int32)">
+            <Parameter Name="WhereUserGUID" Mode="In" Type="Binary" />
+            <Parameter Name="WhereSecureCookieGUID" Mode="In" Type="Binary" />
+            <Parameter Name="WherePasswordGUID" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="PreTest" />
+        </EntityContainer>
+        <EntityType Name="SecureCookie">
+          <Key>
+            <PropertyRef Name="UserGUID" />
+            <PropertyRef Name="SecureCookieGUID" />
+            <PropertyRef Name="PasswordGUID" />
+          </Key>
+          <Property Name="UserGUID" Type="Guid" Nullable="false" />
+          <Property Name="SecureCookieGUID" Type="Guid" Nullable="false" />
+          <Property Name="PasswordGUID" Type="Guid" Nullable="false" />
+          <Property Name="SessionGUID" Type="Guid" Nullable="false" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" />
+          <Property Name="DateUsed" Type="DateTime" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SecureCookieModelStoreContainer" CdmEntityContainer="SecureCookieEntities">
+          <EntitySetMapping Name="SecureCookie">
+            <EntityTypeMapping TypeName="SecureCookieModel.SecureCookie">
+              <MappingFragment StoreEntitySet="SecureCookie">
+                <ScalarProperty Name="UserGUID" ColumnName="UserGUID" />
+                <ScalarProperty Name="SecureCookieGUID" ColumnName="SecureCookieGUID" />
+                <ScalarProperty Name="PasswordGUID" ColumnName="PasswordGUID" />
+                <ScalarProperty Name="SessionGUID" ColumnName="SessionGUID" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="DateUsed" ColumnName="DateUsed" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SecureCookie_Create" FunctionName="SecureCookieModel.Store.SecureCookie_Create" />
+          <FunctionImportMapping FunctionImportName="SecureCookie_Delete" FunctionName="SecureCookieModel.Store.SecureCookie_Delete" />
+          <FunctionImportMapping FunctionImportName="SecureCookie_Get" FunctionName="SecureCookieModel.Store.SecureCookie_Get" />
+          <FunctionImportMapping FunctionImportName="SecureCookie_Update" FunctionName="SecureCookieModel.Store.SecureCookie_Update" />
+          <FunctionImportMapping FunctionImportName="PreTest" FunctionName="SecureCookieModel.Store.PreTest" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="SecureCookie">
+        <EntityTypeShape EntityType="SecureCookieModel.SecureCookie" Width="1.5" PointX="0.75" PointY="0.75" Height="2.172587890625" IsExpanded="true" />
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>
