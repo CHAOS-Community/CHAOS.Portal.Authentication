@@ -41,27 +41,13 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\SecureCookie.cs" />
-    <Compile Include="Data\SecureCookie.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SecureCookie.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Exception\LoginException.cs" />
     <Compile Include="Module\SecureCookieModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EntityDeploy Include="Data\SecureCookie.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>SecureCookie.Designer.cs</LastGenOutput>
-    </EntityDeploy>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />
@@ -70,6 +56,10 @@
     <ProjectReference Include="..\CHAOS.Portal.Authentication.Exception\CHAOS.Portal.Authentication.Exception.csproj">
       <Project>{6FA5C9BD-5F15-480F-8B05-376A8FF16B0A}</Project>
       <Name>CHAOS.Portal.Authentication.Exception</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CHAOS.Portal.Authentication.SecureCookie.Data\CHAOS.Portal.Authentication.SecureCookie.Data.csproj">
+      <Project>{7A0467B8-C14F-434C-8DBC-D500162F2BD5}</Project>
+      <Name>CHAOS.Portal.Authentication.SecureCookie.Data</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

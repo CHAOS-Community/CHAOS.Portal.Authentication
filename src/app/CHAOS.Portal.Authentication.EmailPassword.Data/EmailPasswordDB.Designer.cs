@@ -14,7 +14,6 @@ using System.Data.Objects;
 using System.Data.Objects.DataClasses;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Xml.Serialization;
 
 [assembly: EdmSchemaAttribute()]
 namespace CHAOS.Portal.Authentication.EmailPassword.Data
@@ -68,18 +67,18 @@ namespace CHAOS.Portal.Authentication.EmailPassword.Data
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<EmailPassword> EmailPassword
+        public ObjectSet<EmailPasswordDB> EmailPassword
         {
             get
             {
                 if ((_EmailPassword == null))
                 {
-                    _EmailPassword = base.CreateObjectSet<EmailPassword>("EmailPassword");
+                    _EmailPassword = base.CreateObjectSet<EmailPasswordDB>("EmailPassword");
                 }
                 return _EmailPassword;
             }
         }
-        private ObjectSet<EmailPassword> _EmailPassword;
+        private ObjectSet<EmailPasswordDB> _EmailPassword;
 
         #endregion
 
@@ -88,7 +87,7 @@ namespace CHAOS.Portal.Authentication.EmailPassword.Data
         /// <summary>
         /// Deprecated Method for adding a new object to the EmailPassword EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
-        public void AddToEmailPassword(EmailPassword emailPassword)
+        public void AddToEmailPassword(EmailPasswordDB emailPassword)
         {
             base.AddObject("EmailPassword", emailPassword);
         }
@@ -102,7 +101,7 @@ namespace CHAOS.Portal.Authentication.EmailPassword.Data
         /// </summary>
         /// <param name="userGUID">No Metadata Documentation available.</param>
         /// <param name="password">No Metadata Documentation available.</param>
-        public ObjectResult<EmailPassword> EmailPassword_Get(global::System.Byte[] userGUID, global::System.String password)
+        public ObjectResult<EmailPasswordDB> EmailPassword_Get(global::System.Byte[] userGUID, global::System.String password)
         {
             ObjectParameter userGUIDParameter;
             if (userGUID != null)
@@ -124,7 +123,7 @@ namespace CHAOS.Portal.Authentication.EmailPassword.Data
                 passwordParameter = new ObjectParameter("Password", typeof(global::System.String));
             }
     
-            return base.ExecuteFunction<EmailPassword>("EmailPassword_Get", userGUIDParameter, passwordParameter);
+            return base.ExecuteFunction<EmailPasswordDB>("EmailPassword_Get", userGUIDParameter, passwordParameter);
         }
         /// <summary>
         /// No Metadata Documentation available.
@@ -132,7 +131,7 @@ namespace CHAOS.Portal.Authentication.EmailPassword.Data
         /// <param name="mergeOption"></param>
         /// <param name="userGUID">No Metadata Documentation available.</param>
         /// <param name="password">No Metadata Documentation available.</param>
-        public ObjectResult<EmailPassword> EmailPassword_Get(global::System.Byte[] userGUID, global::System.String password, MergeOption mergeOption)
+        public ObjectResult<EmailPasswordDB> EmailPassword_Get(global::System.Byte[] userGUID, global::System.String password, MergeOption mergeOption)
         {
             ObjectParameter userGUIDParameter;
             if (userGUID != null)
@@ -154,7 +153,7 @@ namespace CHAOS.Portal.Authentication.EmailPassword.Data
                 passwordParameter = new ObjectParameter("Password", typeof(global::System.String));
             }
     
-            return base.ExecuteFunction<EmailPassword>("EmailPassword_Get", mergeOption, userGUIDParameter, passwordParameter);
+            return base.ExecuteFunction<EmailPasswordDB>("EmailPassword_Get", mergeOption, userGUIDParameter, passwordParameter);
         }
     
         /// <summary>
@@ -209,7 +208,7 @@ namespace CHAOS.Portal.Authentication.EmailPassword.Data
     [EdmEntityTypeAttribute(NamespaceName="EmailPasswordModel", Name="EmailPassword")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
-    public partial class EmailPassword : EntityObject
+    public partial class EmailPasswordDB : EntityObject
     {
         #region Factory Method
     
@@ -219,9 +218,9 @@ namespace CHAOS.Portal.Authentication.EmailPassword.Data
         /// <param name="userGUID">Initial value of the UserGUID property.</param>
         /// <param name="password">Initial value of the Password property.</param>
         /// <param name="dateCreated">Initial value of the DateCreated property.</param>
-        public static EmailPassword CreateEmailPassword(global::System.Guid userGUID, global::System.String password, global::System.DateTime dateCreated)
+        public static EmailPasswordDB CreateEmailPassword(global::System.Guid userGUID, global::System.String password, global::System.DateTime dateCreated)
         {
-            EmailPassword emailPassword = new EmailPassword();
+            EmailPasswordDB emailPassword = new EmailPasswordDB();
             emailPassword.UserGUID = userGUID;
             emailPassword.Password = password;
             emailPassword.DateCreated = dateCreated;

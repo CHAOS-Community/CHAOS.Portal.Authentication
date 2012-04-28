@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using CHAOS.Portal.Authentication.SecureCookie.Data;
 using CHAOS.Portal.Authentication.SecureCookie.Module;
 using CHAOS.Portal.Test;
 using NUnit.Framework;
@@ -18,9 +19,9 @@ namespace CHAOS.Portal.Authentication.SecureCookie.Test
             base.SetUp();
 
             SecureCookieModule = new SecureCookieModule(  );
-			SecureCookieModule.Initialize( "<Settings ConnectionString=\"metadata=res://*/Data.SecureCookie.csdl|res://*/Data.SecureCookie.ssdl|res://*/Data.SecureCookie.msl;provider=MySql.Data.MySqlClient;provider connection string=&quot;server=10.211.55.9;User Id=Portal;password=GECKONpbvu7000;Persist Security Info=True;database=SecureCookie&quot;\"/>" );
+			SecureCookieModule.Initialize( "<Settings ConnectionString=\"metadata=res://*/SecureCookieDB.csdl|res://*/SecureCookieDB.ssdl|res://*/SecureCookieDB.msl;provider=MySql.Data.MySqlClient;provider connection string=&quot;server=10.211.55.9;User Id=Portal;password=GECKONpbvu7000;Persist Security Info=True;database=SecureCookie&quot;\"/>" );
 
-            using (var db = new Data.SecureCookieEntities("metadata=res://*/Data.SecureCookie.csdl|res://*/Data.SecureCookie.ssdl|res://*/Data.SecureCookie.msl;provider=MySql.Data.MySqlClient;provider connection string=\"server=10.211.55.9;User Id=Portal;password=GECKONpbvu7000;Persist Security Info=True;database=SecureCookie\""))
+            using (var db = new SecureCookieEntities("metadata=res://*/SecureCookieDB.csdl|res://*/SecureCookieDB.ssdl|res://*/SecureCookieDB.msl;provider=MySql.Data.MySqlClient;provider connection string=\"server=10.211.55.9;User Id=Portal;password=GECKONpbvu7000;Persist Security Info=True;database=SecureCookie\""))
             {
 				db.PreTest();
 

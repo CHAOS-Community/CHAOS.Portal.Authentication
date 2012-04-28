@@ -51,6 +51,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\app\CHAOS.Portal.Authentication.SecureCookie.Data\CHAOS.Portal.Authentication.SecureCookie.Data.csproj">
+      <Project>{7A0467B8-C14F-434C-8DBC-D500162F2BD5}</Project>
+      <Name>CHAOS.Portal.Authentication.SecureCookie.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\app\CHAOS.Portal.Authentication.SecureCookie\CHAOS.Portal.Authentication.SecureCookie.csproj">
       <Project>{0E73C6A3-15EA-41E9-972C-CCE706A41F59}</Project>
       <Name>CHAOS.Portal.Authentication.SecureCookie</Name>

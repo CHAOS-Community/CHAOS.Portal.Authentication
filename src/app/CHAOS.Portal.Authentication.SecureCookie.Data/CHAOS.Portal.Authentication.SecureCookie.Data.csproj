@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{36F4F672-82F2-4713-9AD5-2ADCA2D723AF}</ProjectGuid>
+    <ProjectGuid>{7A0467B8-C14F-434C-8DBC-D500162F2BD5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CHAOS.Portal.Authentication.EmailPassword.Test</RootNamespace>
-    <AssemblyName>CHAOS.Portal.Authentication.EmailPassword.Test</AssemblyName>
+    <RootNamespace>CHAOS.Portal.Authentication.SecureCookie.Data</RootNamespace>
+    <AssemblyName>CHAOS.Portal.Authentication.SecureCookie.Data</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -34,42 +34,38 @@
     <Reference Include="CHAOS">
       <HintPath>..\..\..\lib\CHAOS.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath>..\..\..\tools\nunit\nunit.framework.dll</HintPath>
-    </Reference>
     <Reference Include="Portal">
       <HintPath>..\..\..\lib\Portal.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EmailPasswordModuleTest.cs" />
-    <Compile Include="EmailPasswordBaseTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SecureCookie.cs" />
+    <Compile Include="SecureCookieDB.Designer.cs">
+      <DependentUpon>SecureCookieDB.edmx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\app\CHAOS.Portal.Authentication.EmailPassword.Data\CHAOS.Portal.Authentication.EmailPassword.Data.csproj">
-      <Project>{0CBA9DEE-E813-4F78-89E3-EC5F4B661A93}</Project>
-      <Name>CHAOS.Portal.Authentication.EmailPassword.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\app\CHAOS.Portal.Authentication.EmailPassword\CHAOS.Portal.Authentication.EmailPassword.csproj">
-      <Project>{FC9C973F-AE42-4AB3-BBEC-44688339D8AA}</Project>
-      <Name>CHAOS.Portal.Authentication.EmailPassword</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\app\CHAOS.Portal.Authentication.Exception\CHAOS.Portal.Authentication.Exception.csproj">
-      <Project>{6FA5C9BD-5F15-480F-8B05-376A8FF16B0A}</Project>
-      <Name>CHAOS.Portal.Authentication.Exception</Name>
-    </ProjectReference>
+    <EntityDeploy Include="SecureCookieDB.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>SecureCookieDB.Designer.cs</LastGenOutput>
+    </EntityDeploy>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="App.Config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>COPY $(TargetName).dll $(SolutionDir)bin\SecureCookie\$(TargetName).dll
+COPY $(TargetName).pdb $(SolutionDir)bin\SecureCookie\$(TargetName).pdb</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
