@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="SecureCookieModel.Store" Alias="Self" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.5" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+    <Schema Namespace="SecureCookieModel.Store" Alias="Self" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.5" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityContainer Name="SecureCookieModelStoreContainer">
           <EntitySet Name="SecureCookie" EntityType="SecureCookieModel.Store.SecureCookie" store:Type="Tables" Schema="SecureCookie" />
         </EntityContainer>
@@ -42,8 +42,7 @@
           <Parameter Name="WhereSecureCookieGUID" Type="binary" Mode="In" />
           <Parameter Name="WherePasswordGUID" Type="binary" Mode="In" />
         </Function>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SecureCookieModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
@@ -55,7 +54,7 @@
             <Parameter Name="PasswordGUID" Mode="In" Type="Binary" />
             <Parameter Name="SessionGUID" Mode="In" Type="Binary" />
           </FunctionImport>
-          <FunctionImport Name="SecureCookie_Delete" ReturnType="Collection(Int32)">
+          <FunctionImport Name="SecureCookie_Delete">
             <Parameter Name="WhereUserGUID" Mode="In" Type="Binary" />
             <Parameter Name="WhereSecureCookieGUID" Mode="In" Type="Binary" />
           </FunctionImport>
@@ -64,7 +63,7 @@
             <Parameter Name="SecureCookieGUID" Mode="In" Type="Binary" />
             <Parameter Name="PasswordGUID" Mode="In" Type="Binary" />
           </FunctionImport>
-          <FunctionImport Name="SecureCookie_Update" ReturnType="Collection(Int32)">
+          <FunctionImport Name="SecureCookie_Update">
             <Parameter Name="WhereUserGUID" Mode="In" Type="Binary" />
             <Parameter Name="WhereSecureCookieGUID" Mode="In" Type="Binary" />
             <Parameter Name="WherePasswordGUID" Mode="In" Type="Binary" />

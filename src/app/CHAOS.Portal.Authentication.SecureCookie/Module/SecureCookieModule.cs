@@ -75,14 +75,12 @@ namespace CHAOS.Portal.Authentication.SecureCookie.Module
         {
             using( var db = NewSecureCookieDataContext )
             {
-                int result = 0;
-                
                 foreach( var secureCookieGUID in GUIDs.Select( s => new UUID( s )) )
                 {
-                    result += db.SecureCookie_Delete( callContext.User.GUID.ToByteArray(), secureCookieGUID.ToByteArray() ).First().Value;
+                    db.SecureCookie_Delete( callContext.User.GUID.ToByteArray(), secureCookieGUID.ToByteArray() );
                 }
                 
-                return new ScalarResult( result );
+                return new ScalarResult( 1 );
             }
         }
 
@@ -112,7 +110,7 @@ namespace CHAOS.Portal.Authentication.SecureCookie.Module
             	var secureCookieGUID = cookie.SecureCookieGUID.ToByteArray();
             	var newPasswordGUID  = new UUID().ToByteArray();
 
-                db.SecureCookie_Update( null, cookie.SecureCookieGUID.ToByteArray(), null ).First();
+                db.SecureCookie_Update( null, cookie.SecureCookieGUID.ToByteArray(), null );
                 db.SecureCookie_Create( userGUID, secureCookieGUID, newPasswordGUID, callContext.User.SessionGUID.ToByteArray() );
 
                 cookie = db.SecureCookie_Get( userGUID, secureCookieGUID, newPasswordGUID ).First();

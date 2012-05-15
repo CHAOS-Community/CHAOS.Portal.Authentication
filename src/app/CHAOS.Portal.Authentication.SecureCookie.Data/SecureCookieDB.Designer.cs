@@ -14,6 +14,7 @@ using System.Data.Objects;
 using System.Data.Objects.DataClasses;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 [assembly: EdmSchemaAttribute()]
 namespace CHAOS.Portal.Authentication.SecureCookie.Data
@@ -153,7 +154,7 @@ namespace CHAOS.Portal.Authentication.SecureCookie.Data
         /// </summary>
         /// <param name="whereUserGUID">No Metadata Documentation available.</param>
         /// <param name="whereSecureCookieGUID">No Metadata Documentation available.</param>
-        public ObjectResult<Nullable<global::System.Int32>> SecureCookie_Delete(global::System.Byte[] whereUserGUID, global::System.Byte[] whereSecureCookieGUID)
+        public int SecureCookie_Delete(global::System.Byte[] whereUserGUID, global::System.Byte[] whereSecureCookieGUID)
         {
             ObjectParameter whereUserGUIDParameter;
             if (whereUserGUID != null)
@@ -175,7 +176,7 @@ namespace CHAOS.Portal.Authentication.SecureCookie.Data
                 whereSecureCookieGUIDParameter = new ObjectParameter("WhereSecureCookieGUID", typeof(global::System.Byte[]));
             }
     
-            return base.ExecuteFunction<Nullable<global::System.Int32>>("SecureCookie_Delete", whereUserGUIDParameter, whereSecureCookieGUIDParameter);
+            return base.ExecuteFunction("SecureCookie_Delete", whereUserGUIDParameter, whereSecureCookieGUIDParameter);
         }
     
         /// <summary>
@@ -266,7 +267,7 @@ namespace CHAOS.Portal.Authentication.SecureCookie.Data
         /// <param name="whereUserGUID">No Metadata Documentation available.</param>
         /// <param name="whereSecureCookieGUID">No Metadata Documentation available.</param>
         /// <param name="wherePasswordGUID">No Metadata Documentation available.</param>
-        public ObjectResult<Nullable<global::System.Int32>> SecureCookie_Update(global::System.Byte[] whereUserGUID, global::System.Byte[] whereSecureCookieGUID, global::System.Byte[] wherePasswordGUID)
+        public int SecureCookie_Update(global::System.Byte[] whereUserGUID, global::System.Byte[] whereSecureCookieGUID, global::System.Byte[] wherePasswordGUID)
         {
             ObjectParameter whereUserGUIDParameter;
             if (whereUserGUID != null)
@@ -298,7 +299,7 @@ namespace CHAOS.Portal.Authentication.SecureCookie.Data
                 wherePasswordGUIDParameter = new ObjectParameter("WherePasswordGUID", typeof(global::System.Byte[]));
             }
     
-            return base.ExecuteFunction<Nullable<global::System.Int32>>("SecureCookie_Update", whereUserGUIDParameter, whereSecureCookieGUIDParameter, wherePasswordGUIDParameter);
+            return base.ExecuteFunction("SecureCookie_Update", whereUserGUIDParameter, whereSecureCookieGUIDParameter, wherePasswordGUIDParameter);
         }
     
         /// <summary>
