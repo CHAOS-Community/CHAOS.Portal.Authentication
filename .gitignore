@@ -4,3 +4,5 @@ bin
 obj
 _ReSharper.Authentication
 *.user
+build/SecureCookieModule-ilmerge.log
+build/EmailPasswordModule-ilmerge.log
