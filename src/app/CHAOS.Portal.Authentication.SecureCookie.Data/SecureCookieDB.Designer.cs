@@ -14,7 +14,6 @@ using System.Data.Objects;
 using System.Data.Objects.DataClasses;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Xml.Serialization;
 
 [assembly: EdmSchemaAttribute()]
 namespace CHAOS.Portal.Authentication.SecureCookie.Data
