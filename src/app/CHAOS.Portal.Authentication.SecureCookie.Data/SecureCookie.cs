@@ -1,6 +1,6 @@
 ﻿using System;
-using CHAOS.Portal.DTO;
 using CHAOS.Serialization;
+using Chaos.Portal.Data.Dto;
 
 namespace CHAOS.Portal.Authentication.SecureCookie.Data
 {

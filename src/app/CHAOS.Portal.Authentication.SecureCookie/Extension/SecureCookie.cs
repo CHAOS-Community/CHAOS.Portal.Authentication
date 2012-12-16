@@ -4,16 +4,16 @@ using System.Xml.Linq;
 using CHAOS.Portal.Authentication.Exception;
 using CHAOS.Portal.Authentication.SecureCookie.Data;
 using CHAOS.Portal.Authentication.SecureCookie.Exception;
-using CHAOS.Portal.Core;
-using CHAOS.Portal.Core.Module;
-using CHAOS.Portal.DTO.Standard;
 using CHAOS.Portal.Data.EF;
 using CHAOS.Portal.Exception;
+using Chaos.Portal;
+using Chaos.Portal.Data.Dto.Standard;
+using Chaos.Portal.Extension;
 
-namespace CHAOS.Portal.Authentication.SecureCookie.Module
+namespace CHAOS.Portal.Authentication.SecureCookie.Extension
 {
-    [Module("SecureCookie")]
-    public class SecureCookieModule : AModule
+    [PortalExtension(configurationName : "SecureCookie")]
+    public class SecureCookie : AExtension
     {
         #region Properties
 
@@ -24,19 +24,20 @@ namespace CHAOS.Portal.Authentication.SecureCookie.Module
         }
 
         #endregion
-        #region Construction
+        #region Initialization
 
-        public override void Initialize( string configuration )
+        public override IExtension WithConfiguration( string configuration )
         {
             var config = XDocument.Parse( configuration ).Root;
 
-            ConnectionString = config.Attribute("ConnectionString").Value;
+            ConnectionString = config.Attribute( "ConnectionString" ).Value;
+
+            return this;
         }
 
         #endregion
         #region CREATE
 
-        [Datatype("SecureCookie", "Create")]
 		public Data.SecureCookie Create( ICallContext callContext )
         {
             if( callContext.IsAnonymousUser )
@@ -58,7 +59,6 @@ namespace CHAOS.Portal.Authentication.SecureCookie.Module
         #endregion
         #region GET
 
-        [Datatype("SecureCookie","Get")]
         public IEnumerable<Data.SecureCookie> Get( ICallContext callContext )
         {
             using( var db = NewSecureCookieDataContext )
@@ -70,7 +70,6 @@ namespace CHAOS.Portal.Authentication.SecureCookie.Module
         #endregion
         #region Delete
 
-        [Datatype("SecureCookie","Delete")]
         public ScalarResult Delete( ICallContext callContext, IList<string> GUIDs )
         {
             using( var db = NewSecureCookieDataContext )
@@ -87,7 +86,6 @@ namespace CHAOS.Portal.Authentication.SecureCookie.Module
         #endregion
         #region Login
 
-        [Datatype("SecureCookie","Login")]
 		public Data.SecureCookie Login( ICallContext callContext, UUID guid, UUID passwordGUID )
         {
 			Data.SecureCookie cookie;
@@ -121,7 +119,7 @@ namespace CHAOS.Portal.Authentication.SecureCookie.Module
                 db.Session_Update( cookie.UserGUID.ToByteArray(), callContext.Session.GUID.ToByteArray(), null );
             }
 
-            callContext.Cache.Remove( string.Format( "[UserInfo:sid={0}]", callContext.Session.GUID ) );
+          //  callContext.Cache.Remove( string.Format( "[UserInfo:sid={0}]", callContext.Session.GUID ) );
 
             return cookie;
         }

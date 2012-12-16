@@ -13,37 +13,23 @@
       <arg value="/property:Configuration=release" />
       <arg value="/t:Rebuild" />
     </msbuild>
-
-	<ilmerge outputfile="CHAOS.Portal.EmailPasswordModule.dll"
-             targetkind="dll"
-             logfile="EmailPasswordModule-ilmerge.log"
-			 targetplatform="v4"
-			 targetplatformdirectory="C:\Windows\Microsoft.NET\Framework\v4.0.30319">
-      <inputassemblies>
-		<include name="..\src\app\CHAOS.Portal.Authentication.Exception\bin\Release\CHAOS.Portal.Authentication.Exception.dll" />
-        <include name="..\src\app\CHAOS.Portal.Authentication.EmailPassword.Data\bin\Release\CHAOS.Portal.Authentication.EmailPassword.Data.dll" />
-		<include name="..\src\app\CHAOS.Portal.Authentication.EmailPassword\bin\Release\CHAOS.Portal.Authentication.EmailPassword.dll" />
-      </inputassemblies>
-
-      <librarypath>
-        <include name="..\lib\*.dll" />
-      </librarypath>
-      
-    </ilmerge>
 	
-    <ilmerge outputfile="CHAOS.Portal.SecureCookieModule.dll"
+    <ilmerge outputfile="CHAOS.Portal.Authentication.dll"
              targetkind="dll"
              logfile="SecureCookieModule-ilmerge.log"
-			 targetplatform="v4"
-			 targetplatformdirectory="C:\Windows\Microsoft.NET\Framework\v4.0.30319">
+			       targetplatform="v4"
+			       targetplatformdirectory="C:\Windows\Microsoft.NET\Framework\v4.0.30319">
       <inputassemblies>
-		<include name="..\src\app\CHAOS.Portal.Authentication.Exception\bin\Release\CHAOS.Portal.Authentication.Exception.dll" />
-		<include name="..\src\app\CHAOS.Portal.Authentication.SecureCookie.Data\bin\Release\CHAOS.Portal.Authentication.SecureCookie.Data.dll" />
+        <include name="..\src\app\CHAOS.Portal.Authentication.EmailPassword\bin\Release\CHAOS.Portal.Authentication.EmailPassword.dll" />
+        <include name="..\src\app\CHAOS.Portal.Authentication.EmailPassword.Data\bin\Release\CHAOS.Portal.Authentication.EmailPassword.Data.dll" />
+	    	<include name="..\src\app\CHAOS.Portal.Authentication.Exception\bin\Release\CHAOS.Portal.Authentication.Exception.dll" />
+	    	<include name="..\src\app\CHAOS.Portal.Authentication.SecureCookie.Data\bin\Release\CHAOS.Portal.Authentication.SecureCookie.Data.dll" />
         <include name="..\src\app\CHAOS.Portal.Authentication.SecureCookie\bin\Release\CHAOS.Portal.Authentication.SecureCookie.dll" />
       </inputassemblies>
 
       <librarypath>
         <include name="..\lib\*.dll" />
+        <include name="..\tools\Moq.4.0.10827\NET40\Moq.dll" />
       </librarypath>
       
     </ilmerge>

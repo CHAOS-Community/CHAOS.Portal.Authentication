@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "app", "app", "{A0718908-0CAC-427D-B04D-A728EF479A2E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{3E6B28CC-7169-4E9C-92EA-D43567308B8B}"
@@ -18,6 +18,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CHAOS.Portal.Authentication.EmailPassword.Data", "src\app\CHAOS.Portal.Authentication.EmailPassword.Data\CHAOS.Portal.Authentication.EmailPassword.Data.csproj", "{0CBA9DEE-E813-4F78-89E3-EC5F4B661A93}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CHAOS.Portal.Authentication.SecureCookie.Data", "src\app\CHAOS.Portal.Authentication.SecureCookie.Data\CHAOS.Portal.Authentication.SecureCookie.Data.csproj", "{7A0467B8-C14F-434C-8DBC-D500162F2BD5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{2323D037-A41B-4C10-B33B-251635966E16}"
+	ProjectSection(SolutionItems) = preProject
+		build\CHAOS.Portal.Authentication.build = build\CHAOS.Portal.Authentication.build
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

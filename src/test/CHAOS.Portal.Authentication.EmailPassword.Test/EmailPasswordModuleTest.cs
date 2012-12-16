@@ -6,19 +6,19 @@ namespace CHAOS.Portal.Authentication.EmailPassword.Test
     [TestFixture]
     public class EmailPasswordModuleTest : EmailPasswordBaseTest
     {
-        [Test]
-        public void Should_Login()
-        {
-            var user = EmailPasswordModule.Login( AnonCallContext, UserAdministrator.Email, "pbvu7000" );
+        //[Test]
+        //public void Should_Login()
+        //{
+        //    var user = EmailPasswordModule.Login(AnonCallContext, UserAdministrator.Email, "pbvu7000");
 
-            Assert.IsNotNull( user );
-        }
+        //    Assert.IsNotNull(user);
+        //}
 
-        [Test,ExpectedException(typeof(LoginException))]
-        public void Should_Fail_Login()
-        {
-            EmailPasswordModule.Login( AnonCallContext, UserAdministrator.Email, "wrong");
-        }
+        //[Test,ExpectedException(typeof(LoginException))]
+        //public void Should_Fail_Login()
+        //{
+        //    EmailPasswordModule.Login( AnonCallContext, UserAdministrator.Email, "wrong");
+        //}
 
         //[Test]
         //public void Should_Send_Password_Change_RequestMail()
