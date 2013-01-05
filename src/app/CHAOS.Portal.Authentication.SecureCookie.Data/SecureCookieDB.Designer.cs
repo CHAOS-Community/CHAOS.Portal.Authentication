@@ -348,7 +348,7 @@ namespace CHAOS.Portal.Authentication.SecureCookie.Data
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -367,7 +367,7 @@ namespace CHAOS.Portal.Authentication.SecureCookie.Data
                 {
                     OnUserGUIDChanging(value);
                     ReportPropertyChanging("UserGUID");
-                    _UserGUID = StructuralObject.SetValidValue(value);
+                    _UserGUID = StructuralObject.SetValidValue(value, "UserGUID");
                     ReportPropertyChanged("UserGUID");
                     OnUserGUIDChanged();
                 }
@@ -394,7 +394,7 @@ namespace CHAOS.Portal.Authentication.SecureCookie.Data
                 {
                     OnSecureCookieGUIDChanging(value);
                     ReportPropertyChanging("SecureCookieGUID");
-                    _SecureCookieGUID = StructuralObject.SetValidValue(value);
+                    _SecureCookieGUID = StructuralObject.SetValidValue(value, "SecureCookieGUID");
                     ReportPropertyChanged("SecureCookieGUID");
                     OnSecureCookieGUIDChanged();
                 }
@@ -421,7 +421,7 @@ namespace CHAOS.Portal.Authentication.SecureCookie.Data
                 {
                     OnPasswordGUIDChanging(value);
                     ReportPropertyChanging("PasswordGUID");
-                    _PasswordGUID = StructuralObject.SetValidValue(value);
+                    _PasswordGUID = StructuralObject.SetValidValue(value, "PasswordGUID");
                     ReportPropertyChanged("PasswordGUID");
                     OnPasswordGUIDChanged();
                 }
@@ -446,7 +446,7 @@ namespace CHAOS.Portal.Authentication.SecureCookie.Data
             {
                 OnSessionGUIDChanging(value);
                 ReportPropertyChanging("SessionGUID");
-                _SessionGUID = StructuralObject.SetValidValue(value);
+                _SessionGUID = StructuralObject.SetValidValue(value, "SessionGUID");
                 ReportPropertyChanged("SessionGUID");
                 OnSessionGUIDChanged();
             }
@@ -470,7 +470,7 @@ namespace CHAOS.Portal.Authentication.SecureCookie.Data
             {
                 OnDateCreatedChanging(value);
                 ReportPropertyChanging("DateCreated");
-                _DateCreated = StructuralObject.SetValidValue(value);
+                _DateCreated = StructuralObject.SetValidValue(value, "DateCreated");
                 ReportPropertyChanged("DateCreated");
                 OnDateCreatedChanged();
             }
@@ -494,7 +494,7 @@ namespace CHAOS.Portal.Authentication.SecureCookie.Data
             {
                 OnDateUsedChanging(value);
                 ReportPropertyChanging("DateUsed");
-                _DateUsed = StructuralObject.SetValidValue(value);
+                _DateUsed = StructuralObject.SetValidValue(value, "DateUsed");
                 ReportPropertyChanged("DateUsed");
                 OnDateUsedChanged();
             }
@@ -505,10 +505,8 @@ namespace CHAOS.Portal.Authentication.SecureCookie.Data
 
         #endregion
 
-    
     }
 
     #endregion
 
-    
 }

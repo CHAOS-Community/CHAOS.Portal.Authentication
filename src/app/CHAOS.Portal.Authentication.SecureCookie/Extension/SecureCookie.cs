@@ -4,10 +4,10 @@ using System.Xml.Linq;
 using CHAOS.Portal.Authentication.Exception;
 using CHAOS.Portal.Authentication.SecureCookie.Data;
 using CHAOS.Portal.Authentication.SecureCookie.Exception;
-using CHAOS.Portal.Data.EF;
 using CHAOS.Portal.Exception;
 using Chaos.Portal;
 using Chaos.Portal.Data.Dto.Standard;
+using Chaos.Portal.Data.EF;
 using Chaos.Portal.Extension;
 
 namespace CHAOS.Portal.Authentication.SecureCookie.Extension
@@ -18,6 +18,7 @@ namespace CHAOS.Portal.Authentication.SecureCookie.Extension
         #region Properties
 
         private string ConnectionString { get; set; }
+
 		private SecureCookieEntities NewSecureCookieDataContext
         {
 			get { return new SecureCookieEntities( ConnectionString ); }

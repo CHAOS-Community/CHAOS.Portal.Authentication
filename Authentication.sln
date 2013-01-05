@@ -7,13 +7,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{3E6B28CC-7
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CHAOS.Portal.Authentication.EmailPassword", "src\app\CHAOS.Portal.Authentication.EmailPassword\CHAOS.Portal.Authentication.EmailPassword.csproj", "{FC9C973F-AE42-4AB3-BBEC-44688339D8AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CHAOS.Portal.Authentication.EmailPassword.Test", "src\test\CHAOS.Portal.Authentication.EmailPassword.Test\CHAOS.Portal.Authentication.EmailPassword.Test.csproj", "{36F4F672-82F2-4713-9AD5-2ADCA2D723AF}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CHAOS.Portal.Authentication.SecureCookie", "src\app\CHAOS.Portal.Authentication.SecureCookie\CHAOS.Portal.Authentication.SecureCookie.csproj", "{0E73C6A3-15EA-41E9-972C-CCE706A41F59}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CHAOS.Portal.Authentication.Exception", "src\app\CHAOS.Portal.Authentication.Exception\CHAOS.Portal.Authentication.Exception.csproj", "{6FA5C9BD-5F15-480F-8B05-376A8FF16B0A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CHAOS.Portal.Authentication.SecureCookie.Test", "src\test\CHAOS.Portal.Authentication.SecureCookie.Test\CHAOS.Portal.Authentication.SecureCookie.Test.csproj", "{41971A35-32B0-4D59-8CF6-DB76FE53FC30}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CHAOS.Portal.Authentication.EmailPassword.Data", "src\app\CHAOS.Portal.Authentication.EmailPassword.Data\CHAOS.Portal.Authentication.EmailPassword.Data.csproj", "{0CBA9DEE-E813-4F78-89E3-EC5F4B661A93}"
 EndProject
@@ -34,10 +30,6 @@ Global
 		{FC9C973F-AE42-4AB3-BBEC-44688339D8AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC9C973F-AE42-4AB3-BBEC-44688339D8AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC9C973F-AE42-4AB3-BBEC-44688339D8AA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{36F4F672-82F2-4713-9AD5-2ADCA2D723AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{36F4F672-82F2-4713-9AD5-2ADCA2D723AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{36F4F672-82F2-4713-9AD5-2ADCA2D723AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{36F4F672-82F2-4713-9AD5-2ADCA2D723AF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0E73C6A3-15EA-41E9-972C-CCE706A41F59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0E73C6A3-15EA-41E9-972C-CCE706A41F59}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E73C6A3-15EA-41E9-972C-CCE706A41F59}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -46,10 +38,6 @@ Global
 		{6FA5C9BD-5F15-480F-8B05-376A8FF16B0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6FA5C9BD-5F15-480F-8B05-376A8FF16B0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6FA5C9BD-5F15-480F-8B05-376A8FF16B0A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{41971A35-32B0-4D59-8CF6-DB76FE53FC30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{41971A35-32B0-4D59-8CF6-DB76FE53FC30}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{41971A35-32B0-4D59-8CF6-DB76FE53FC30}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{41971A35-32B0-4D59-8CF6-DB76FE53FC30}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0CBA9DEE-E813-4F78-89E3-EC5F4B661A93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0CBA9DEE-E813-4F78-89E3-EC5F4B661A93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0CBA9DEE-E813-4F78-89E3-EC5F4B661A93}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -68,7 +56,5 @@ Global
 		{6FA5C9BD-5F15-480F-8B05-376A8FF16B0A} = {A0718908-0CAC-427D-B04D-A728EF479A2E}
 		{0CBA9DEE-E813-4F78-89E3-EC5F4B661A93} = {A0718908-0CAC-427D-B04D-A728EF479A2E}
 		{7A0467B8-C14F-434C-8DBC-D500162F2BD5} = {A0718908-0CAC-427D-B04D-A728EF479A2E}
-		{36F4F672-82F2-4713-9AD5-2ADCA2D723AF} = {3E6B28CC-7169-4E9C-92EA-D43567308B8B}
-		{41971A35-32B0-4D59-8CF6-DB76FE53FC30} = {3E6B28CC-7169-4E9C-92EA-D43567308B8B}
 	EndGlobalSection
 EndGlobal

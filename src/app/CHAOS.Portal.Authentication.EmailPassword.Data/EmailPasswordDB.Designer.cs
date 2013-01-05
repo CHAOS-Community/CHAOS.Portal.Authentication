@@ -230,7 +230,7 @@ namespace CHAOS.Portal.Authentication.EmailPassword.Data
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -249,7 +249,7 @@ namespace CHAOS.Portal.Authentication.EmailPassword.Data
                 {
                     OnUserGUIDChanging(value);
                     ReportPropertyChanging("UserGUID");
-                    _UserGUID = StructuralObject.SetValidValue(value);
+                    _UserGUID = StructuralObject.SetValidValue(value, "UserGUID");
                     ReportPropertyChanged("UserGUID");
                     OnUserGUIDChanged();
                 }
@@ -274,7 +274,7 @@ namespace CHAOS.Portal.Authentication.EmailPassword.Data
             {
                 OnPasswordChanging(value);
                 ReportPropertyChanging("Password");
-                _Password = StructuralObject.SetValidValue(value, false);
+                _Password = StructuralObject.SetValidValue(value, false, "Password");
                 ReportPropertyChanged("Password");
                 OnPasswordChanged();
             }
@@ -298,7 +298,7 @@ namespace CHAOS.Portal.Authentication.EmailPassword.Data
             {
                 OnDateCreatedChanging(value);
                 ReportPropertyChanging("DateCreated");
-                _DateCreated = StructuralObject.SetValidValue(value);
+                _DateCreated = StructuralObject.SetValidValue(value, "DateCreated");
                 ReportPropertyChanged("DateCreated");
                 OnDateCreatedChanged();
             }
@@ -322,7 +322,7 @@ namespace CHAOS.Portal.Authentication.EmailPassword.Data
             {
                 OnDateModifiedChanging(value);
                 ReportPropertyChanging("DateModified");
-                _DateModified = StructuralObject.SetValidValue(value);
+                _DateModified = StructuralObject.SetValidValue(value, "DateModified");
                 ReportPropertyChanged("DateModified");
                 OnDateModifiedChanged();
             }
@@ -333,10 +333,8 @@ namespace CHAOS.Portal.Authentication.EmailPassword.Data
 
         #endregion
 
-    
     }
 
     #endregion
 
-    
 }
