@@ -12,7 +12,7 @@ BEGIN
 		SC.DateUsed = COALESCE( SC.DateUsed, NOW() )
 	WHERE	
 			( WhereUserGUID         IS NULL OR SC.UserGUID         = WhereUserGUID )
-		AND	( WhereSecureCookieGUID IS NULL OR SC.SecureCookieGUID = WhereSecureCookieGUID ) AND
+		AND	( WhereSecureCookieGUID IS NULL OR SC.SecureCookieGUID = WhereSecureCookieGUID )
 		AND	( WherePasswordGUID     IS NULL OR SC.PasswordGUID     = WherePasswordGUID );
             
     SELECT ROW_COUNT();

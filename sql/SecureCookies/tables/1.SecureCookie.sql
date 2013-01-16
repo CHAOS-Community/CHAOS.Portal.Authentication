@@ -8,4 +8,4 @@
 	DateUsed datetime DEFAULT NULL,
   PRIMARY KEY (UserGUID, PasswordGUID, SecureCookieGUID)
 ) 
-ENGINE=MyISAM DEFAULT CHARSET=utf8
+ENGINE=MyISAM

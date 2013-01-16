@@ -4,10 +4,10 @@ using System.Xml.Linq;
 using CHAOS.Portal.Authentication.Exception;
 using CHAOS.Portal.Authentication.SecureCookie.Data;
 using CHAOS.Portal.Authentication.SecureCookie.Exception;
-using CHAOS.Portal.Exception;
 using Chaos.Portal;
 using Chaos.Portal.Data.Dto.Standard;
 using Chaos.Portal.Data.EF;
+using Chaos.Portal.Exceptions;
 using Chaos.Portal.Extension;
 
 namespace CHAOS.Portal.Authentication.SecureCookie.Extension

@@ -20,6 +20,37 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{2323D037
 		build\CHAOS.Portal.Authentication.build = build\CHAOS.Portal.Authentication.build
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sql", "sql", "{1EB532BE-B397-45B2-A52F-A917F90DCCF1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EmailPassword", "EmailPassword", "{98362CF7-A89B-41B6-9CFF-E2B92C4B7A4D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tables", "tables", "{E2DAAA16-543E-42F5-816C-4877F19327F7}"
+	ProjectSection(SolutionItems) = preProject
+		sql\EmailPassword\tables\1.EmailPassword.sql = sql\EmailPassword\tables\1.EmailPassword.sql
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "storedprocedures", "storedprocedures", "{4E14CD35-3987-4EB3-8427-9B539B9D7978}"
+	ProjectSection(SolutionItems) = preProject
+		sql\EmailPassword\storedprocedures\EmailPassword_Create.sql = sql\EmailPassword\storedprocedures\EmailPassword_Create.sql
+		sql\EmailPassword\storedprocedures\EmailPassword_Get.sql = sql\EmailPassword\storedprocedures\EmailPassword_Get.sql
+		sql\EmailPassword\storedprocedures\EmailPassword_Update.sql = sql\EmailPassword\storedprocedures\EmailPassword_Update.sql
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SecureCookie", "SecureCookie", "{6173B224-221B-41D3-A711-AACD13970332}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "storedprocedures", "storedprocedures", "{DC559380-F675-4FD8-8010-F6DE32F49F5B}"
+	ProjectSection(SolutionItems) = preProject
+		sql\SecureCookies\storedprocedures\SecureCookie_Create.sql = sql\SecureCookies\storedprocedures\SecureCookie_Create.sql
+		sql\SecureCookies\storedprocedures\SecureCookie_Delete.sql = sql\SecureCookies\storedprocedures\SecureCookie_Delete.sql
+		sql\SecureCookies\storedprocedures\SecureCookie_Get.sql = sql\SecureCookies\storedprocedures\SecureCookie_Get.sql
+		sql\SecureCookies\storedprocedures\SecureCookie_Update.sql = sql\SecureCookies\storedprocedures\SecureCookie_Update.sql
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tables", "tables", "{6B6A48EE-96D6-4192-AF89-1167A23606B1}"
+	ProjectSection(SolutionItems) = preProject
+		sql\SecureCookies\tables\1.SecureCookie.sql = sql\SecureCookies\tables\1.SecureCookie.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,5 +87,11 @@ Global
 		{6FA5C9BD-5F15-480F-8B05-376A8FF16B0A} = {A0718908-0CAC-427D-B04D-A728EF479A2E}
 		{0CBA9DEE-E813-4F78-89E3-EC5F4B661A93} = {A0718908-0CAC-427D-B04D-A728EF479A2E}
 		{7A0467B8-C14F-434C-8DBC-D500162F2BD5} = {A0718908-0CAC-427D-B04D-A728EF479A2E}
+		{98362CF7-A89B-41B6-9CFF-E2B92C4B7A4D} = {1EB532BE-B397-45B2-A52F-A917F90DCCF1}
+		{6173B224-221B-41D3-A711-AACD13970332} = {1EB532BE-B397-45B2-A52F-A917F90DCCF1}
+		{E2DAAA16-543E-42F5-816C-4877F19327F7} = {98362CF7-A89B-41B6-9CFF-E2B92C4B7A4D}
+		{4E14CD35-3987-4EB3-8427-9B539B9D7978} = {98362CF7-A89B-41B6-9CFF-E2B92C4B7A4D}
+		{DC559380-F675-4FD8-8010-F6DE32F49F5B} = {6173B224-221B-41D3-A711-AACD13970332}
+		{6B6A48EE-96D6-4192-AF89-1167A23606B1} = {6173B224-221B-41D3-A711-AACD13970332}
 	EndGlobalSection
 EndGlobal

@@ -12,12 +12,11 @@ using System.Xml.Xsl;
 using CHAOS.Extensions;
 using CHAOS.Portal.Authentication.EmailPassword.Data;
 using CHAOS.Portal.Authentication.Exception;
-using CHAOS.Portal.Data.EF;
-using CHAOS.Portal.Exception;
 using Chaos.Portal;
 using Chaos.Portal.Data.Dto;
 using Chaos.Portal.Data.Dto.Standard;
 using Chaos.Portal.Data.EF;
+using Chaos.Portal.Exceptions;
 using Chaos.Portal.Extension;
 
 namespace CHAOS.Portal.Authentication.EmailPassword.Extension
