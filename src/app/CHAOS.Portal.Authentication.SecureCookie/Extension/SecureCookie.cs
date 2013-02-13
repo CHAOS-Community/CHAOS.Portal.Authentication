@@ -46,10 +46,10 @@ namespace CHAOS.Portal.Authentication.SecureCookie.Extension
 
             using( var db = NewSecureCookieDataContext )
             {
-				byte[] secureCookieGUID = new UUID().ToByteArray();
-				byte[] userGUID         = callContext.User.GUID.ToByteArray();
-				byte[] passwordGUID     = new UUID().ToByteArray();
-				byte[] sessionGUID      = callContext.Session.GUID.ToByteArray();
+				var secureCookieGUID = new UUID().ToByteArray();
+				var userGUID         = callContext.User.Guid.ToByteArray();
+				var passwordGUID     = new UUID().ToByteArray();
+				var sessionGUID      = callContext.Session.Guid.ToByteArray();
 
                 db.SecureCookie_Create( userGUID, secureCookieGUID, passwordGUID, sessionGUID );
 
@@ -64,7 +64,7 @@ namespace CHAOS.Portal.Authentication.SecureCookie.Extension
         {
             using( var db = NewSecureCookieDataContext )
             {
-                return db.SecureCookie_Get( callContext.User.GUID.ToByteArray(), null, null ).ToList();
+                return db.SecureCookie_Get( callContext.User.Guid.ToByteArray(), null, null ).ToList();
             }
         }
 
@@ -77,7 +77,7 @@ namespace CHAOS.Portal.Authentication.SecureCookie.Extension
             {
                 foreach( var secureCookieGUID in GUIDs.Select( s => new UUID( s )) )
                 {
-                    db.SecureCookie_Delete( callContext.User.GUID.ToByteArray(), secureCookieGUID.ToByteArray() );
+                    db.SecureCookie_Delete( callContext.User.Guid.ToByteArray(), secureCookieGUID.ToByteArray() );
                 }
                 
                 return new ScalarResult( 1 );
@@ -110,14 +110,14 @@ namespace CHAOS.Portal.Authentication.SecureCookie.Extension
             	var newPasswordGUID  = new UUID().ToByteArray();
 
                 db.SecureCookie_Update( null, cookie.SecureCookieGUID.ToByteArray(), null );
-                db.SecureCookie_Create( userGUID, secureCookieGUID, newPasswordGUID, callContext.User.SessionGUID.ToByteArray() );
+                db.SecureCookie_Create( userGUID, secureCookieGUID, newPasswordGUID, callContext.User.SessionGuid.Value.ToByteArray() );
 
                 cookie = db.SecureCookie_Get( userGUID, secureCookieGUID, newPasswordGUID ).First();
             }
 
             using( var db = new PortalEntities() )
             {
-                db.Session_Update( cookie.UserGUID.ToByteArray(), callContext.Session.GUID.ToByteArray(), null );
+                db.Session_Update( cookie.UserGUID.ToByteArray(), callContext.Session.Guid.ToByteArray(), null );
             }
 
           //  callContext.Cache.Remove( string.Format( "[UserInfo:sid={0}]", callContext.Session.GUID ) );

@@ -81,7 +81,7 @@ namespace CHAOS.Portal.Authentication.EmailPassword.Extension
                 if( user == null || emailPasswordDB.EmailPassword_Get( user.GUID.ToByteArray(), GeneratePasswordHash( password ) ).FirstOrDefault() == null )
                     throw new LoginException( "Login failed, either email or password is incorrect" );
 
-                int updateResult = portalDB.Session_Update( user.GUID.ToUUID().ToByteArray(), callContext.Session.GUID.ToByteArray(), null ).First().Value;
+                int updateResult = portalDB.Session_Update( user.GUID.ToUUID().ToByteArray(), callContext.Session.Guid.ToByteArray(), null ).First().Value;
                 
                 if( updateResult == 0 )
                     throw new UnhandledException( "Session was not updated in database" );
@@ -91,7 +91,7 @@ namespace CHAOS.Portal.Authentication.EmailPassword.Extension
 
             using( var portalDB = new PortalEntities() )
             {
-                return  portalDB.UserInfo_Get( null, callContext.Session.GUID.ToByteArray(), null ).ToDto().First();
+                return  portalDB.UserInfo_Get( null, callContext.Session.Guid.ToByteArray(), null ).ToDto().First();
             }
         }
 
@@ -103,7 +103,7 @@ namespace CHAOS.Portal.Authentication.EmailPassword.Extension
             var user = PortalRepository.GetUserInfo(email);
 
             var guid = new Guid();
-            var xml  = string.Format("<ChangePassword UserGUID=\"{0}\" PasswordHash=\"{1}\" />", user.GUID, GeneratePasswordHash(password));
+            var xml  = string.Format("<ChangePassword UserGUID=\"{0}\" PasswordHash=\"{1}\" />", user.Guid, GeneratePasswordHash(password));
             PortalRepository.CreateTicket(guid, (uint) Chaos.Portal.Data.TicketType.ChangePassword, xml, null);
 
             // TODO: Make Send mail part of the portal SDK
