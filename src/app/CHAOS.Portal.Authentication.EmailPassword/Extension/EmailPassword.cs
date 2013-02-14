@@ -81,7 +81,7 @@ namespace CHAOS.Portal.Authentication.EmailPassword.Extension
                 if( user == null || emailPasswordDB.EmailPassword_Get( user.GUID.ToByteArray(), GeneratePasswordHash( password ) ).FirstOrDefault() == null )
                     throw new LoginException( "Login failed, either email or password is incorrect" );
 
-                int updateResult = portalDB.Session_Update( user.GUID.ToUUID().ToByteArray(), callContext.Session.Guid.ToByteArray(), null ).First().Value;
+                int updateResult = portalDB.Session_Update( user.GUID.ToByteArray(), callContext.Session.Guid.ToByteArray(), null ).First().Value;
                 
                 if( updateResult == 0 )
                     throw new UnhandledException( "Session was not updated in database" );
