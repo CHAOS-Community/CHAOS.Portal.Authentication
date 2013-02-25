@@ -37,8 +37,8 @@
     <Reference Include="CHAOS">
       <HintPath>..\..\..\lib\CHAOS.dll</HintPath>
     </Reference>
-    <Reference Include="Portal">
-      <HintPath>..\..\..\lib\Portal.dll</HintPath>
+    <Reference Include="Chaos.Portal">
+      <HintPath>..\..\..\lib\Chaos.Portal.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

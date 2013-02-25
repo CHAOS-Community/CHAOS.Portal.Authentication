@@ -13,10 +13,7 @@ using System.Xml.Xsl;
 using CHAOS.Portal.Authentication.EmailPassword.Data;
 using CHAOS.Portal.Authentication.Exception;
 using Chaos.Portal;
-using Chaos.Portal.Data.Dto;
 using Chaos.Portal.Data.Dto.Standard;
-using Chaos.Portal.Data.EF;
-using Chaos.Portal.Exceptions;
 using Chaos.Portal.Extension;
 
 namespace CHAOS.Portal.Authentication.EmailPassword.Extension
@@ -71,58 +68,53 @@ namespace CHAOS.Portal.Authentication.EmailPassword.Extension
         #endregion
         #region Login (Email/password)
 
-        public IUserInfo Login( ICallContext callContext, string email, string password )
+        public UserInfo Login( ICallContext callContext, string email, string password )
         {
+            var user = PortalRepository.UserInfoGet(email);
+
+            if (user == null) throw new LoginException("Login failed, either email or password is incorrect");
+
             using( var emailPasswordDB = NewEmailPasswordDataContext )
-            using( var portalDB = new PortalEntities() )
             {
-                var user = portalDB.UserInfo_Get( null, null, email ).FirstOrDefault();
-
-                if( user == null || emailPasswordDB.EmailPassword_Get( user.GUID.ToByteArray(), GeneratePasswordHash( password ) ).FirstOrDefault() == null )
+                if( emailPasswordDB.EmailPassword_Get( user.Guid.ToByteArray(), GeneratePasswordHash( password ) ).FirstOrDefault() == null )
                     throw new LoginException( "Login failed, either email or password is incorrect" );
-
-                int updateResult = portalDB.Session_Update( user.GUID.ToByteArray(), callContext.Session.Guid.ToByteArray(), null ).First().Value;
-                
-                if( updateResult == 0 )
-                    throw new UnhandledException( "Session was not updated in database" );
-
-             //   callContext.Cache.Remove( string.Format( "[UserInfo:sid={0}]", callContext.Session.GUID ) );
             }
 
-            using( var portalDB = new PortalEntities() )
-            {
-                return  portalDB.UserInfo_Get( null, callContext.Session.Guid.ToByteArray(), null ).ToDto().First();
-            }
+            var result = PortalRepository.SessionUpdate(callContext.Session.Guid, user.Guid);
+
+            if(result == null) throw new LoginException("Session could not be updated");
+
+            return PortalRepository.UserInfoGet(null, callContext.Session.Guid, null).First();
         }
 
         #endregion
         #region Change Password
 
-        public ScalarResult ChangePasswordRequest(ICallContext callContext, string email, string password, string url)
-        {
-            var user = PortalRepository.GetUserInfo(email);
-
-            var guid = new Guid();
-            var xml  = string.Format("<ChangePassword UserGUID=\"{0}\" PasswordHash=\"{1}\" />", user.Guid, GeneratePasswordHash(password));
-            PortalRepository.CreateTicket(guid, (uint) Chaos.Portal.Data.TicketType.ChangePassword, xml, null);
-
-            // TODO: Make Send mail part of the portal SDK
-            var message = new MailMessage();
-
-            message.To.Add(new MailAddress(user.Email));
-            message.From       = FromEmailAddress;
-            message.Subject    = ChangePasswordRequestSubject;
-            message.Body       = GenerateChangePasswordRequestEmail(guid, url).ToString(SaveOptions.DisableFormatting);
-            message.IsBodyHtml = true;
-                
-            var smtp  = new SmtpClient("smtp.gmail.com", 587);
-            smtp.EnableSsl   = true;
-            smtp.Credentials = new NetworkCredential(FromEmailAddress.Address, SmtpPassword);
-
-            smtp.Send(message);
-
-            return new ScalarResult(1);
-        }
+//        public ScalarResult ChangePasswordRequest(ICallContext callContext, string email, string password, string url)
+//        {
+//            var user = PortalRepository.GetUserInfo(email);
+//
+//            var guid = new Guid();
+//            var xml  = string.Format("<ChangePassword UserGUID=\"{0}\" PasswordHash=\"{1}\" />", user.Guid, GeneratePasswordHash(password));
+//            PortalRepository.CreateTicket(guid, (uint) Chaos.Portal.Data.TicketType.ChangePassword, xml, null);
+//
+//            // TODO: Make Send mail part of the portal SDK
+//            var message = new MailMessage();
+//
+//            message.To.Add(new MailAddress(user.Email));
+//            message.From       = FromEmailAddress;
+//            message.Subject    = ChangePasswordRequestSubject;
+//            message.Body       = GenerateChangePasswordRequestEmail(guid, url).ToString(SaveOptions.DisableFormatting);
+//            message.IsBodyHtml = true;
+//                
+//            var smtp  = new SmtpClient("smtp.gmail.com", 587);
+//            smtp.EnableSsl   = true;
+//            smtp.Credentials = new NetworkCredential(FromEmailAddress.Address, SmtpPassword);
+//
+//            smtp.Send(message);
+//
+//            return new ScalarResult(1);
+//        }
 
         //[Datatype("EmailPassword","ChangePassword")]
         //public Session ChangePassword( ICallContext callContext, string ticketGUID )

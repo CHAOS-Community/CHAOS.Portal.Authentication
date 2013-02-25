@@ -14,7 +14,7 @@
       <arg value="/t:Rebuild" />
     </msbuild>
 	
-    <ilmerge outputfile="CHAOS.Portal.Authentication.dll"
+    <ilmerge outputfile="Chaos.Portal.Authentication.dll"
              targetkind="dll"
              logfile="SecureCookieModule-ilmerge.log"
 			       targetplatform="v4"

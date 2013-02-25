@@ -6,7 +6,6 @@ using CHAOS.Portal.Authentication.SecureCookie.Data;
 using CHAOS.Portal.Authentication.SecureCookie.Exception;
 using Chaos.Portal;
 using Chaos.Portal.Data.Dto.Standard;
-using Chaos.Portal.Data.EF;
 using Chaos.Portal.Exceptions;
 using Chaos.Portal.Extension;
 
@@ -115,10 +114,7 @@ namespace CHAOS.Portal.Authentication.SecureCookie.Extension
                 cookie = db.SecureCookie_Get( userGUID, secureCookieGUID, newPasswordGUID ).First();
             }
 
-            using( var db = new PortalEntities() )
-            {
-                db.Session_Update( cookie.UserGUID.ToByteArray(), callContext.Session.Guid.ToByteArray(), null );
-            }
+            PortalRepository.SessionUpdate(cookie.UserGUID, callContext.Session.Guid);
 
           //  callContext.Cache.Remove( string.Format( "[UserInfo:sid={0}]", callContext.Session.GUID ) );
 
