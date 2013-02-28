@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text;
@@ -13,7 +12,7 @@ using System.Xml.Xsl;
 using CHAOS.Portal.Authentication.EmailPassword.Data;
 using CHAOS.Portal.Authentication.Exception;
 using Chaos.Portal;
-using Chaos.Portal.Data.Dto.Standard;
+using Chaos.Portal.Data.Dto;
 using Chaos.Portal.Extension;
 
 namespace CHAOS.Portal.Authentication.EmailPassword.Extension
