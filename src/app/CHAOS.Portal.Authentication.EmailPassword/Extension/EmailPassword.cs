@@ -22,19 +22,10 @@ namespace CHAOS.Portal.Authentication.EmailPassword.Extension
     {
         #region Properties
 
-        public string               ConnectionString { get; set; }
         public MailAddress          FromEmailAddress { get; set; }
         public string               ChangePasswordRequestSubject { get; set; }
         public string               SmtpPassword { get; set; }
         public XslCompiledTransform ChangePasswordRequestEmailXslt { get; set; }
-
-        public EmailPasswordEntities NewEmailPasswordDataContext
-        {
-            get
-            {
-				return new EmailPasswordEntities( ConnectionString );
-            }
-        }
 
         private IEmailPasswordRepository EmailPasswordRepository { get; set; }
 
@@ -52,9 +43,9 @@ namespace CHAOS.Portal.Authentication.EmailPassword.Extension
                 throw new NullReferenceException("Configuration for EmailPasswordModule cannot be null");
 
             var config = XDocument.Parse( configuration ).Root;
+            var connectionstring           = config.Attribute("ConnectionString").Value;
 
-            ConnectionString               = config.Attribute("ConnectionString").Value;
-            EmailPasswordRepository        = emailPasswordRepository.WithConnectionString(ConnectionString);
+            EmailPasswordRepository        = emailPasswordRepository.WithConnectionString(connectionstring);
             FromEmailAddress               = new MailAddress( config.Attribute( "FromEmailAddress" ).Value );
             SmtpPassword                   = config.Attribute( "SMTPPassword" ).Value;
             ChangePasswordRequestSubject   = config.Attribute("ChangePasswordRequestSubject").Value;
@@ -71,13 +62,11 @@ namespace CHAOS.Portal.Authentication.EmailPassword.Extension
         {
             var user = PortalRepository.UserInfoGet(email);
 
-            if (user == null) throw new LoginException("Login failed, either email or password is incorrect");
+            if(user == null) throw new LoginException("Login failed, either email or password is incorrect");
 
-            using( var emailPasswordDB = NewEmailPasswordDataContext )
-            {
-                if( emailPasswordDB.EmailPassword_Get( user.Guid.ToByteArray(), GeneratePasswordHash( password ) ).FirstOrDefault() == null )
-                    throw new LoginException( "Login failed, either email or password is incorrect" );
-            }
+            var res = EmailPasswordRepository.EmailPasswordGet(user.Guid, GeneratePasswordHash(password));
+
+            if(res == null) throw new LoginException( "Login failed, either email or password is incorrect" );
 
             var result = PortalRepository.SessionUpdate(callContext.Session.Guid, user.Guid);
 
