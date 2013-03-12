@@ -1,8 +1,8 @@
 CREATE PROCEDURE SecureCookie_Get
 (
-    UserGUID			BINARY(16),
-    SecureCookieGUID	BINARY(16),
-    PasswordGUID		BINARY(16)
+    UserGuid			BINARY(16),
+    SecureCookieGuid	BINARY(16),
+    PasswordGuid		BINARY(16)
 )
 BEGIN
 
@@ -11,8 +11,8 @@ BEGIN
 	FROM	
 		SecureCookie AS SC
 	WHERE	
-			( UserGUID         IS NULL OR SC.UserGUID         = UserGUID ) 
-		AND ( SecureCookieGUID IS NULL OR SC.SecureCookieGUID = SecureCookieGUID ) 
-		AND ( PasswordGUID     IS NULL OR SC.PasswordGUID     = PasswordGUID );
+			( UserGuid         IS NULL OR SC.UserGUID         = UserGuid ) 
+		AND ( SecureCookieGuid IS NULL OR SC.SecureCookieGUID = SecureCookieGuid ) 
+		AND ( PasswordGuid     IS NULL OR SC.PasswordGUID     = PasswordGuid );
 
 END

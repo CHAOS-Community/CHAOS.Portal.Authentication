@@ -20,11 +20,7 @@
 			       targetplatform="v4"
 			       targetplatformdirectory="C:\Windows\Microsoft.NET\Framework\v4.0.30319">
       <inputassemblies>
-        <include name="..\src\app\CHAOS.Portal.Authentication.EmailPassword\bin\Release\CHAOS.Portal.Authentication.EmailPassword.dll" />
-        <include name="..\src\app\CHAOS.Portal.Authentication.EmailPassword.Data\bin\Release\CHAOS.Portal.Authentication.EmailPassword.Data.dll" />
-	    	<include name="..\src\app\CHAOS.Portal.Authentication.Exception\bin\Release\CHAOS.Portal.Authentication.Exception.dll" />
-	    	<include name="..\src\app\CHAOS.Portal.Authentication.SecureCookie.Data\bin\Release\CHAOS.Portal.Authentication.SecureCookie.Data.dll" />
-        <include name="..\src\app\CHAOS.Portal.Authentication.SecureCookie\bin\Release\CHAOS.Portal.Authentication.SecureCookie.dll" />
+        <include name="..\src\app\CHAOS.Portal.Authentication\bin\Release\CHAOS.Portal.Authentication.dll" />
       </inputassemblies>
 
       <librarypath>
