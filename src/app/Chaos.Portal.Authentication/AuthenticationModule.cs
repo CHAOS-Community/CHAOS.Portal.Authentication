@@ -1,8 +1,7 @@
-﻿namespace CHAOS.Portal.Authentication.EmailPassword
+﻿namespace Chaos.Portal.Authentication
 {
-    using CHAOS.Portal.Authentication.EmailPassword.Extension;
-
     using Chaos.Portal;
+    using Chaos.Portal.Authentication.Extension;
     using Chaos.Portal.Module;
     using Chaos.Portal.Extension;
 

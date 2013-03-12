@@ -11,5 +11,7 @@
         uint SecureCookieCreate(Guid userGuid, Guid guid, Guid passwordGuid, Guid sessionGuid);
         uint SecureCookieDelete(Guid whereUserGuid, Guid guid);
         uint SecureCookieUse(Guid? userGuid, Guid? guid, Guid? passwordGuid);
+
+        EmailPassword EmailPasswordGet(Guid guid, string password);
     }
 }

@@ -43,6 +43,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extension\EmailPasswordTests.cs" />
     <Compile Include="Extension\SecureCookieTests.cs" />
     <Compile Include="Extension\TestBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

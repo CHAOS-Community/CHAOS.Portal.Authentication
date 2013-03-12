@@ -1,7 +1,6 @@
 ﻿namespace Chaos.Portal.Authentication.Tests.Extension
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
 
     using Chaos.Portal.Authentication.Data.Dto;
@@ -19,7 +18,7 @@
         public void Get_GivenExistingSession_ReturnSecureCookie()
         {
             var extension = Make_SecureCookie();
-            var expected  = new Data.Dto.SecureCookie();
+            var expected  = new SecureCookie();
             var userGuid  = new Guid("10000000-0000-0000-0000-000000000001");
             CallContext.SetupGet(p => p.User).Returns(new UserInfo{Guid = userGuid});
             AuthenticationRepository.Setup(m => m.SecureCookieGet(userGuid, null, null)).Returns(new[] { expected });
