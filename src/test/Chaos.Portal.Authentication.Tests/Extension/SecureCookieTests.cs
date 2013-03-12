@@ -38,6 +38,21 @@
             Assert.That(result, Is.EqualTo(expected));
         }
 
+        [Test]
+        public void Delete_GivenExistingSession_ReturnOne()
+        {
+            var extension  = Make_SecureCookie();
+            var expected   = 1u;
+            var userGuid   = new Guid("10000000-0000-0000-0000-000000000001");
+            var cookieGuid = new Guid("12000000-0000-0000-0000-000000000021");
+            CallContext.SetupGet(p => p.User).Returns(new UserInfo{Guid = userGuid});
+            AuthenticationRepository.Setup(m => m.SecureCookieDelete(userGuid, cookieGuid)).Returns(1u);
+
+            var result = extension.Delete(CallContext.Object, cookieGuid);
+
+            Assert.That(result.Value, Is.EqualTo(expected));
+        }
+
         private SecureCookie Make_SecureCookie()
         {
             return new SecureCookie(AuthenticationRepository.Object);
