@@ -6,6 +6,7 @@
 
     using Chaos.Portal.Authentication.Data;
     using Chaos.Portal.Authentication.Exception;
+    using Chaos.Portal.Data;
     using Chaos.Portal.Data.Dto;
     using Chaos.Portal.Extension;
 
@@ -21,15 +22,17 @@
         #endregion
         #region Initialization
 
-        public SecureCookie(IAuthenticationRepository repository)
+        public SecureCookie(IAuthenticationRepository repository, IPortalRepository portalRepository)
         {
             AuthenticationRepository = repository;
+            PortalRepository = portalRepository;
         }
 
         #endregion
         #region Properties
 
         public IAuthenticationRepository AuthenticationRepository { get; set; }
+        public IPortalRepository PortalRepository { get; set; }
 
         #endregion
         #region Business Logic
@@ -61,5 +64,23 @@
         }
 
         #endregion
+
+        public Data.Dto.SecureCookie Login(ICallContext callContext, Guid secureCookieGuid, Guid passwordGuid)
+        {
+            var cookie = AuthenticationRepository.SecureCookieGet(null, secureCookieGuid, passwordGuid).FirstOrDefault();
+
+            if(cookie == null) throw new LoginException("Cookie not found");
+
+            AuthenticationRepository.SecureCookieUse(cookie.UserGuid, cookie.Guid, null);
+
+            if(cookie.DateUsed != null) throw new SecureCookieAlreadyConsumedException("All the users cookies has been deleted");
+
+            cookie.PasswordGuid = Guid.NewGuid();
+
+            AuthenticationRepository.SecureCookieCreate(cookie.UserGuid, cookie.Guid, cookie.PasswordGuid, callContext.Session.Guid);
+            PortalRepository.SessionUpdate(callContext.Session.Guid, cookie.UserGuid);
+
+            return cookie;
+        }
     }
 }

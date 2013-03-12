@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CHAOS">
+      <HintPath>..\..\..\lib\CHAOS.dll</HintPath>
+    </Reference>
     <Reference Include="Chaos.Portal">
       <HintPath>..\..\..\lib\Chaos.Portal.dll</HintPath>
     </Reference>
@@ -40,6 +43,7 @@
     <Compile Include="Data\Dto\SecureCookie.cs" />
     <Compile Include="Data\IAuthenticationRepository.cs" />
     <Compile Include="Exception\LoginException.cs" />
+    <Compile Include="Exception\SecureCookieAlreadyConsumedException.cs" />
     <Compile Include="Extension\SecureCookie.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

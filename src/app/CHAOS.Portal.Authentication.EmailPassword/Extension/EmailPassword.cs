@@ -84,8 +84,8 @@ namespace CHAOS.Portal.Authentication.EmailPassword.Extension
 //        {
 //            var user = PortalRepository.GetUserInfo(email);
 //
-//            var guid = new Guid();
-//            var xml  = string.Format("<ChangePassword UserGUID=\"{0}\" PasswordHash=\"{1}\" />", user.Guid, GeneratePasswordHash(password));
+//            var guid = new guid();
+//            var xml  = string.Format("<ChangePassword UserGUID=\"{0}\" PasswordHash=\"{1}\" />", user.guid, GeneratePasswordHash(password));
 //            PortalRepository.CreateTicket(guid, (uint) Chaos.Portal.Data.TicketType.ChangePassword, xml, null);
 //
 //            // TODO: Make Send mail part of the portal SDK

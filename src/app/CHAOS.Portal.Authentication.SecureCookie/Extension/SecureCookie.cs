@@ -7,8 +7,7 @@
     using Chaos.Portal;
 
     using CHAOS.Portal.Authentication.SecureCookie.Data;
-    using CHAOS.Portal.Authentication.SecureCookie.Exception;
-    
+
     using Chaos.Portal.Exceptions;
     using Chaos.Portal.Extension;
     using Chaos.Portal.Data.Dto;
@@ -35,54 +34,6 @@
             ConnectionString = config.Attribute( "ConnectionString" ).Value;
 
             return this;
-        }
-
-        #endregion
-        #region CREATE
-
-		public Data.SecureCookie Create( ICallContext callContext )
-        {
-            if( callContext.IsAnonymousUser )
-                throw new InsufficientPermissionsException( "Anonumous users cannot create a SecureCookie" );
-
-            using( var db = NewSecureCookieDataContext )
-            {
-				var secureCookieGUID = new UUID().ToByteArray();
-				var userGUID         = callContext.User.Guid.ToByteArray();
-				var passwordGUID     = new UUID().ToByteArray();
-				var sessionGUID      = callContext.Session.Guid.ToByteArray();
-
-                db.SecureCookie_Create( userGUID, secureCookieGUID, passwordGUID, sessionGUID );
-
-                return db.SecureCookie_Get( userGUID, secureCookieGUID, passwordGUID ).First();
-            }
-        }
-
-        #endregion
-        #region GET
-
-        public IEnumerable<Data.SecureCookie> Get( ICallContext callContext )
-        {
-            using( var db = NewSecureCookieDataContext )
-            {
-                return db.SecureCookie_Get( callContext.User.Guid.ToByteArray(), null, null ).ToList();
-            }
-        }
-
-        #endregion
-        #region Delete
-
-        public ScalarResult Delete( ICallContext callContext, IList<string> GUIDs )
-        {
-            using( var db = NewSecureCookieDataContext )
-            {
-                foreach( var secureCookieGUID in GUIDs.Select( s => new UUID( s )) )
-                {
-                    db.SecureCookie_Delete( callContext.User.Guid.ToByteArray(), secureCookieGUID.ToByteArray() );
-                }
-                
-                return new ScalarResult( 1 );
-            }
         }
 
         #endregion

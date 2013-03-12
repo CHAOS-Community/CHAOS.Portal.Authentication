@@ -51,7 +51,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Exception\LoginException.cs" />
     <Compile Include="Extension\SecureCookie.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

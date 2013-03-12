@@ -39,7 +39,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "storedprocedures", "storedp
 		sql\SecureCookies\storedprocedures\SecureCookie_Create.sql = sql\SecureCookies\storedprocedures\SecureCookie_Create.sql
 		sql\SecureCookies\storedprocedures\SecureCookie_Delete.sql = sql\SecureCookies\storedprocedures\SecureCookie_Delete.sql
 		sql\SecureCookies\storedprocedures\SecureCookie_Get.sql = sql\SecureCookies\storedprocedures\SecureCookie_Get.sql
-		sql\SecureCookies\storedprocedures\SecureCookie_Update.sql = sql\SecureCookies\storedprocedures\SecureCookie_Update.sql
+		sql\SecureCookies\storedprocedures\SecureCookie_Use.sql = sql\SecureCookies\storedprocedures\SecureCookie_Use.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tables", "tables", "{6B6A48EE-96D6-4192-AF89-1167A23606B1}"

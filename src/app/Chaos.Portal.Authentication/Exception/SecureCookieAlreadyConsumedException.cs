@@ -1,7 +1,7 @@
-using System.Runtime.Serialization;
-
-namespace CHAOS.Portal.Authentication.SecureCookie.Exception
+namespace Chaos.Portal.Authentication.Exception
 {
+    using System.Runtime.Serialization;
+
     public class SecureCookieAlreadyConsumedException : System.Exception
     {
         public SecureCookieAlreadyConsumedException()
