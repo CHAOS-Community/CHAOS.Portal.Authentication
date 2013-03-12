@@ -5,7 +5,7 @@
     using System.Xml.Linq;
 
     using Chaos.Portal;
-    using CHAOS.Portal.Authentication.Exception;
+
     using CHAOS.Portal.Authentication.SecureCookie.Data;
     using CHAOS.Portal.Authentication.SecureCookie.Exception;
     
@@ -88,40 +88,40 @@
         #endregion
         #region Login
 
-		public Data.SecureCookie Login( ICallContext callContext, UUID guid, UUID passwordGUID )
-        {
-			Data.SecureCookie cookie;
-
-            using( var db = NewSecureCookieDataContext )
-            {
-               cookie = db.SecureCookie_Get( null, guid.ToByteArray(), passwordGUID.ToByteArray() ).FirstOrDefault();
-        
-                if( cookie == null )
-                    throw new LoginException( "Cookie doesn't exist" );
-
-                // Cookies must only be used once
-                if( cookie.DateUsed != null )
-                {
-                    db.SecureCookie_Update( cookie.UserGUID.ToByteArray(), null, null );
-                    throw new SecureCookieAlreadyConsumedException( "The SecureCookie has already been consumed, all the users cookies has been deleted" );
-                }
-
-				var userGUID         = cookie.UserGUID.ToByteArray();
-            	var secureCookieGUID = cookie.SecureCookieGUID.ToByteArray();
-            	var newPasswordGUID  = new UUID().ToByteArray();
-
-                db.SecureCookie_Update( null, cookie.SecureCookieGUID.ToByteArray(), null );
-                db.SecureCookie_Create( userGUID, secureCookieGUID, newPasswordGUID, callContext.User.SessionGuid.Value.ToByteArray() );
-
-                cookie = db.SecureCookie_Get( userGUID, secureCookieGUID, newPasswordGUID ).First();
-            }
-
-            PortalRepository.SessionUpdate(cookie.UserGUID, callContext.Session.Guid);
-
-          //  callContext.Cache.Remove( string.Format( "[UserInfo:sid={0}]", callContext.Session.GUID ) );
-
-            return cookie;
-        }
+//		public Data.SecureCookie Login( ICallContext callContext, UUID guid, UUID passwordGUID )
+//        {
+//			Data.SecureCookie cookie;
+//
+//            using( var db = NewSecureCookieDataContext )
+//            {
+//               cookie = db.SecureCookie_Get( null, guid.ToByteArray(), passwordGUID.ToByteArray() ).FirstOrDefault();
+//        
+//                if( cookie == null )
+//                    throw new LoginException( "Cookie doesn't exist" );
+//
+//                // Cookies must only be used once
+//                if( cookie.DateUsed != null )
+//                {
+//                    db.SecureCookie_Update( cookie.UserGUID.ToByteArray(), null, null );
+//                    throw new SecureCookieAlreadyConsumedException( "The SecureCookie has already been consumed, all the users cookies has been deleted" );
+//                }
+//
+//				var userGUID         = cookie.UserGUID.ToByteArray();
+//            	var secureCookieGUID = cookie.SecureCookieGUID.ToByteArray();
+//            	var newPasswordGUID  = new UUID().ToByteArray();
+//
+//                db.SecureCookie_Update( null, cookie.SecureCookieGUID.ToByteArray(), null );
+//                db.SecureCookie_Create( userGUID, secureCookieGUID, newPasswordGUID, callContext.User.SessionGuid.Value.ToByteArray() );
+//
+//                cookie = db.SecureCookie_Get( userGUID, secureCookieGUID, newPasswordGUID ).First();
+//            }
+//
+//            PortalRepository.SessionUpdate(cookie.UserGUID, callContext.Session.Guid);
+//
+//          //  callContext.Cache.Remove( string.Format( "[UserInfo:sid={0}]", callContext.Session.GUID ) );
+//
+//            return cookie;
+//        }
 
         #endregion
     }

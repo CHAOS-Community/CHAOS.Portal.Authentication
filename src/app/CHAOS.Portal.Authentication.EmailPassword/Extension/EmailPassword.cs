@@ -10,13 +10,15 @@ using System.Xml.Linq;
 using System.Xml.Xsl;
 
 using CHAOS.Portal.Authentication.EmailPassword.Data;
-using CHAOS.Portal.Authentication.Exception;
+
 using Chaos.Portal;
 using Chaos.Portal.Data.Dto;
 using Chaos.Portal.Extension;
 
 namespace CHAOS.Portal.Authentication.EmailPassword.Extension
 {
+    using Chaos.Portal.Authentication.Exception;
+
     [PortalExtension(configurationName : "EmailPassword")]
     public class EmailPassword : AExtension
     {

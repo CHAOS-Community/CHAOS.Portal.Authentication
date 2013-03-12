@@ -8,7 +8,7 @@
     public interface IAuthenticationRepository
     {
         IEnumerable<SecureCookie> SecureCookieGet(Guid userGuid, Guid? secureCookieGuid, Guid? passwordGuid);
-
+        uint SecureCookieCreate(Guid userGuid, Guid secureCookieGuid, Guid passwordGuid, Guid sessionGuid);
         uint SecureCookieDelete(Guid whereUserGuid, Guid whereSecureCookie);
     }
 }

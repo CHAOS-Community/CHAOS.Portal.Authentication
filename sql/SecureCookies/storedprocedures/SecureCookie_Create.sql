@@ -1,9 +1,9 @@
 CREATE PROCEDURE SecureCookie_Create
 (
-    UserGUID            BINARY(16),
-    SecureCookieGUID    BINARY(16),
-    PasswordGUID        BINARY(16),
-    SessionGUID         BINARY(16)
+    UserGuid            BINARY(16),
+    SecureCookieGuid    BINARY(16),
+    PasswordGuid        BINARY(16),
+    SessionGuid         BINARY(16)
 )
 BEGIN
 
@@ -17,7 +17,7 @@ BEGIN
 		SecureCookie
 		( SecureCookieGUID, PasswordGUID, UserGUID, SessionGUID, DateCreated, DateUsed)
     VALUES             
-		( SecureCookieGUID, PasswordGUID, UserGUID, SessionGUID, NOW()      , NULL );
+		( SecureCookieGuid, PasswordGuid, UserGuid, SessionGuid, NOW()      , NULL );
 
 	SELECT	ROW_COUNT();
 

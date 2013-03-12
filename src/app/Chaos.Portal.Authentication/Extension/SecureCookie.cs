@@ -2,8 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using Chaos.Portal.Authentication.Data;
+    using Chaos.Portal.Authentication.Exception;
     using Chaos.Portal.Data.Dto;
     using Chaos.Portal.Extension;
 
@@ -42,6 +44,20 @@
             var result = AuthenticationRepository.SecureCookieDelete(callContext.User.Guid, secureCookieGuid);
 
             return new ScalarResult((int)result);
+        }
+
+        public Data.Dto.SecureCookie Create(ICallContext callContext)
+        {
+            if (callContext.IsAnonymousUser) throw new LoginException("Anonymous users cannot create a SecureCookie");
+
+            var userGuid         = callContext.User.Guid;
+            var sessionGuid      = callContext.Session.Guid;
+            var secureCookieGuid = Guid.NewGuid();
+            var passwordGuid     = Guid.NewGuid();
+
+            AuthenticationRepository.SecureCookieCreate(userGuid, secureCookieGuid, passwordGuid, sessionGuid);
+
+            return AuthenticationRepository.SecureCookieGet(userGuid, secureCookieGuid, passwordGuid).First();
         }
 
         #endregion

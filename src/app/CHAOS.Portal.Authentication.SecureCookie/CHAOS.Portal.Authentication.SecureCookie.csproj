@@ -59,10 +59,6 @@
     <None Include="App.Config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CHAOS.Portal.Authentication.Exception\CHAOS.Portal.Authentication.Exception.csproj">
-      <Project>{6FA5C9BD-5F15-480F-8B05-376A8FF16B0A}</Project>
-      <Name>CHAOS.Portal.Authentication.Exception</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CHAOS.Portal.Authentication.SecureCookie.Data\CHAOS.Portal.Authentication.SecureCookie.Data.csproj">
       <Project>{7A0467B8-C14F-434C-8DBC-D500162F2BD5}</Project>
       <Name>CHAOS.Portal.Authentication.SecureCookie.Data</Name>
