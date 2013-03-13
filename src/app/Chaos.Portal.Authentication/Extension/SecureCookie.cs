@@ -39,12 +39,12 @@
 
         public IEnumerable<Data.Dto.SecureCookie> Get(ICallContext callContext)
         {
-            return AuthenticationRepository.SecureCookieGet(callContext.User.Guid, null, null);
+            return AuthenticationRepository.SecureCookieGet(null, callContext.User.Guid, null);
         }
 
         public ScalarResult Delete(ICallContext callContext, Guid secureCookieGuid)
         {
-            var result = AuthenticationRepository.SecureCookieDelete(callContext.User.Guid, secureCookieGuid);
+            var result = AuthenticationRepository.SecureCookieDelete(secureCookieGuid, callContext.User.Guid);
 
             return new ScalarResult((int)result);
         }
@@ -58,26 +58,26 @@
             var secureCookieGuid = Guid.NewGuid();
             var passwordGuid     = Guid.NewGuid();
 
-            AuthenticationRepository.SecureCookieCreate(userGuid, secureCookieGuid, passwordGuid, sessionGuid);
+            AuthenticationRepository.SecureCookieCreate(secureCookieGuid, userGuid, passwordGuid, sessionGuid);
 
-            return AuthenticationRepository.SecureCookieGet(userGuid, secureCookieGuid, passwordGuid).First();
+            return AuthenticationRepository.SecureCookieGet(secureCookieGuid, userGuid, passwordGuid).First();
         }
 
         #endregion
 
         public Data.Dto.SecureCookie Login(ICallContext callContext, Guid secureCookieGuid, Guid passwordGuid)
         {
-            var cookie = AuthenticationRepository.SecureCookieGet(null, secureCookieGuid, passwordGuid).FirstOrDefault();
+            var cookie = AuthenticationRepository.SecureCookieGet(secureCookieGuid, null, passwordGuid).FirstOrDefault();
 
             if(cookie == null) throw new LoginException("Cookie not found");
 
-            AuthenticationRepository.SecureCookieUse(cookie.UserGuid, cookie.Guid, null);
+            AuthenticationRepository.SecureCookieUse(cookie.Guid, cookie.UserGuid, null);
 
             if(cookie.DateUsed != null) throw new SecureCookieAlreadyConsumedException("All the users cookies has been deleted");
 
             cookie.PasswordGuid = Guid.NewGuid();
 
-            AuthenticationRepository.SecureCookieCreate(cookie.UserGuid, cookie.Guid, cookie.PasswordGuid, callContext.Session.Guid);
+            AuthenticationRepository.SecureCookieCreate(cookie.Guid, cookie.UserGuid, cookie.PasswordGuid, callContext.Session.Guid);
             PortalRepository.SessionUpdate(callContext.Session.Guid, cookie.UserGuid);
 
             return cookie;

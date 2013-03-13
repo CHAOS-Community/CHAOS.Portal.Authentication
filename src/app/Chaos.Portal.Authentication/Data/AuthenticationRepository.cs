@@ -35,7 +35,7 @@
         #endregion
         #region Business Logic
 
-        public IEnumerable<SecureCookie> SecureCookieGet(Guid? userGuid, Guid? guid, Guid? passwordGuid)
+        public IEnumerable<SecureCookie> SecureCookieGet(Guid? guid, Guid? userGuid, Guid? passwordGuid)
         {
             var results = Gateway.ExecuteQuery<SecureCookie>("SecureCookie_Get", new[]
                 {
@@ -47,7 +47,7 @@
             return results;
         }
 
-        public uint SecureCookieCreate(Guid userGuid, Guid guid, Guid passwordGuid, Guid sessionGuid)
+        public uint SecureCookieCreate(Guid guid, Guid userGuid, Guid passwordGuid, Guid sessionGuid)
         {
             var result = Gateway.ExecuteNonQuery("SecureCookie_Create", new[]
                 {
@@ -60,7 +60,7 @@
             return (uint)result;
         }
 
-        public uint SecureCookieDelete(Guid whereUserGuid, Guid whereGuid)
+        public uint SecureCookieDelete(Guid whereGuid, Guid whereUserGuid)
         {
             var result = Gateway.ExecuteNonQuery("SecureCookie_Delete", new[]
                 {
@@ -71,7 +71,7 @@
             return (uint)result;
         }
 
-        public uint SecureCookieUse(Guid? userGuid, Guid? guid, Guid? passwordGuid)
+        public uint SecureCookieUse(Guid? guid, Guid? userGuid, Guid? passwordGuid)
         {
             var result = Gateway.ExecuteNonQuery("SecureCookie_Use", new[]
                 {

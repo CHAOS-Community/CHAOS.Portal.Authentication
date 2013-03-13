@@ -1,4 +1,4 @@
-namespace Chaos.Portal.Authentication.Tests.Extension
+namespace Chaos.Portal.Authentication.Tests
 {
     using Chaos.Portal.Authentication.Data;
     using Chaos.Portal.Authentication.Extension;

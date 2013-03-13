@@ -1,6 +1,10 @@
 ﻿namespace Chaos.Portal.Authentication
 {
+    using System.Linq;
+    using System.Xml.Linq;
+
     using Chaos.Portal;
+    using Chaos.Portal.Authentication.Data;
     using Chaos.Portal.Authentication.Extension;
     using Chaos.Portal.Module;
     using Chaos.Portal.Extension;
@@ -9,7 +13,7 @@
     {
         #region Fields
 
-        private const string CONFIGURATION_NAME = "EmailPassword";
+        private const string CONFIGURATION_NAME = "Authentication";
 
         #endregion
         #region Properties
@@ -21,18 +25,13 @@
 
         public void Load(IPortalApplication portalApplication)
         {
-            var configuration = portalApplication.PortalRepository.ModuleGet(CONFIGURATION_NAME);
+            var configuration    = portalApplication.PortalRepository.ModuleGet(CONFIGURATION_NAME);
+            var connectionString = XDocument.Parse(configuration.Configuration).Descendants("ConnectionString").First().Value;
 
-            Extensions = new IExtension[1];
-            Extensions[0] = new EmailPassword();
+            var authenticationRepository = new AuthenticationRepository(connectionString);
 
-            foreach (var extension in Extensions)
-            {
-                extension.WithPortalApplication(portalApplication);
-                extension.WithConfiguration(configuration.Configuration);
-            }
-
-            portalApplication.AddExtension("EmailPassword", Extensions[0]);
+            portalApplication.AddExtension("EmailPassword", new EmailPassword(authenticationRepository));
+            portalApplication.AddExtension("SecureCookie", new SecureCookie(authenticationRepository, portalApplication.PortalRepository));
         }
 
         #endregion

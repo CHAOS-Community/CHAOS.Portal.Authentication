@@ -7,10 +7,10 @@
 
     public interface IAuthenticationRepository
     {
-        IEnumerable<SecureCookie> SecureCookieGet(Guid? userGuid, Guid? guid, Guid? passwordGuid);
-        uint SecureCookieCreate(Guid userGuid, Guid guid, Guid passwordGuid, Guid sessionGuid);
-        uint SecureCookieDelete(Guid whereUserGuid, Guid whereGuid);
-        uint SecureCookieUse(Guid? userGuid, Guid? guid, Guid? passwordGuid);
+        IEnumerable<SecureCookie> SecureCookieGet(Guid? guid, Guid? userGuid, Guid? passwordGuid);
+        uint SecureCookieCreate(Guid guid, Guid userGuid, Guid passwordGuid, Guid sessionGuid);
+        uint SecureCookieDelete(Guid whereGuid, Guid whereUserGuid);
+        uint SecureCookieUse(Guid? guid, Guid? userGuid, Guid? passwordGuid);
 
         EmailPassword EmailPasswordGet(Guid guid, string password);
     }

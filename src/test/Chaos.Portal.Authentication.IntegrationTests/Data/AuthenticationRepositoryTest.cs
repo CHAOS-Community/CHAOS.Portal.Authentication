@@ -30,7 +30,7 @@
             var cookie = Make_SecureCookieThatDoesntExist();
             var sessionGuid = new Guid("00000012-0000-0000-0005-000000000021");
 
-            var actual = AuthenticationRepository.SecureCookieCreate(cookie.UserGuid, cookie.Guid, cookie.PasswordGuid, sessionGuid);
+            var actual = AuthenticationRepository.SecureCookieCreate(cookie.Guid, cookie.UserGuid, cookie.PasswordGuid, sessionGuid);
 
             Assert.That(actual, Is.EqualTo(expected));
         }
@@ -40,7 +40,7 @@
         {
             var expected = Make_SecureCookieThatExist();
 
-            var actual = AuthenticationRepository.SecureCookieGet(expected.UserGuid, expected.Guid, expected.PasswordGuid).First();
+            var actual = AuthenticationRepository.SecureCookieGet(expected.Guid, expected.UserGuid, expected.PasswordGuid).First();
 
             Assert.That(actual.Guid, Is.EqualTo(expected.Guid));
             Assert.That(actual.PasswordGuid, Is.EqualTo(expected.PasswordGuid));
@@ -55,7 +55,7 @@
             var cookie = Make_SecureCookieThatExist();
             var expected = 1u;
 
-            var actual = AuthenticationRepository.SecureCookieDelete(cookie.UserGuid, cookie.Guid);
+            var actual = AuthenticationRepository.SecureCookieDelete(cookie.Guid, cookie.UserGuid);
 
             Assert.That(actual, Is.EqualTo(expected));
         }
@@ -66,7 +66,7 @@
             var cookie = Make_SecureCookieThatExist();
             var expected = 1u;
 
-            var actual = AuthenticationRepository.SecureCookieUse(cookie.UserGuid, cookie.Guid, cookie.PasswordGuid);
+            var actual = AuthenticationRepository.SecureCookieUse(cookie.Guid, cookie.UserGuid, cookie.PasswordGuid);
 
             Assert.That(actual, Is.EqualTo(expected));
         }

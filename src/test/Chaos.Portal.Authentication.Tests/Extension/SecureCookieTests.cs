@@ -21,7 +21,7 @@
             var expected  = new SecureCookie();
             var userGuid  = new Guid("10000000-0000-0000-0000-000000000001");
             CallContext.SetupGet(p => p.User).Returns(new UserInfo{Guid = userGuid});
-            AuthenticationRepository.Setup(m => m.SecureCookieGet(userGuid, null, null)).Returns(new[] { expected });
+            AuthenticationRepository.Setup(m => m.SecureCookieGet(null, userGuid, null)).Returns(new[] { expected });
 
             var result = extension.Get(CallContext.Object).First();
 
@@ -36,7 +36,7 @@
             var userGuid   = new Guid("10000000-0000-0000-0000-000000000001");
             var cookieGuid = new Guid("12000000-0000-0000-0000-000000000021");
             CallContext.SetupGet(p => p.User).Returns(new UserInfo{Guid = userGuid});
-            AuthenticationRepository.Setup(m => m.SecureCookieDelete(userGuid, cookieGuid)).Returns(1u);
+            AuthenticationRepository.Setup(m => m.SecureCookieDelete(cookieGuid, userGuid)).Returns(1u);
 
             var result = extension.Delete(CallContext.Object, cookieGuid);
 
@@ -52,12 +52,12 @@
             var sessionGuid = new Guid("12000000-0000-0000-0000-000000000021");
             CallContext.SetupGet(p => p.User).Returns(new UserInfo { Guid = userGuid });
             CallContext.SetupGet(p => p.Session).Returns(new Session{ Guid = sessionGuid });
-            AuthenticationRepository.Setup(m => m.SecureCookieGet(userGuid, It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new[] { expected });
+            AuthenticationRepository.Setup(m => m.SecureCookieGet(It.IsAny<Guid>(), userGuid, It.IsAny<Guid>())).Returns(new[] { expected });
 
             var result = extension.Create(CallContext.Object);
 
             Assert.That(result, Is.EqualTo(expected));
-            AuthenticationRepository.Verify(m => m.SecureCookieCreate(userGuid, It.IsAny<Guid>(), It.IsAny<Guid>(), sessionGuid));
+            AuthenticationRepository.Verify(m => m.SecureCookieCreate(It.IsAny<Guid>(), userGuid, It.IsAny<Guid>(), sessionGuid));
         }
 
         [Test, ExpectedException(typeof(LoginException))]
@@ -80,8 +80,8 @@
             var expected         = new SecureCookie { Guid = secureCookieGuid, UserGuid = userGuid };
             CallContext.SetupGet(p => p.User).Returns(new UserInfo { Guid = userGuid });
             CallContext.SetupGet(p => p.Session).Returns(new Session{ Guid = sessionGuid });
-            AuthenticationRepository.Setup(m => m.SecureCookieGet(userGuid, secureCookieGuid, It.Is<Guid>(item => item != passwordGuid))).Returns(new[] { expected });
-            AuthenticationRepository.Setup(m => m.SecureCookieGet(null, secureCookieGuid, passwordGuid)).Returns(new[] { expected });
+            AuthenticationRepository.Setup(m => m.SecureCookieGet(secureCookieGuid, userGuid, It.Is<Guid>(item => item != passwordGuid))).Returns(new[] { expected });
+            AuthenticationRepository.Setup(m => m.SecureCookieGet(secureCookieGuid, null, passwordGuid)).Returns(new[] { expected });
 
             var result = extension.Login(CallContext.Object, secureCookieGuid, passwordGuid);
 
@@ -89,7 +89,7 @@
             Assert.That(result.UserGuid, Is.EqualTo(userGuid));
             Assert.That(result.PasswordGuid, Is.Not.EqualTo(passwordGuid));
             PortalRepository.Verify(m => m.SessionUpdate(sessionGuid, userGuid));
-            AuthenticationRepository.Verify(m => m.SecureCookieCreate(userGuid, secureCookieGuid, It.IsAny<Guid>(), sessionGuid));
+            AuthenticationRepository.Verify(m => m.SecureCookieCreate(secureCookieGuid, userGuid, It.IsAny<Guid>(), sessionGuid));
         }
     }
 }

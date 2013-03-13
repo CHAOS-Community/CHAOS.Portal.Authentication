@@ -1,7 +1,6 @@
 ﻿namespace Chaos.Portal.Authentication.Extension
 {
     using System;
-    using System.IO;
     using System.Linq;
     using System.Net.Mail;
     using System.Security.Cryptography;
@@ -31,11 +30,6 @@
         #endregion
         #region Initialization
 
-        public EmailPassword()
-        {
-            
-        }
-
         public EmailPassword(IAuthenticationRepository authenticationRepository)
         {
             AuthenticationRepository = authenticationRepository;
@@ -43,16 +37,16 @@
 
         public override IExtension WithConfiguration( string configuration )
 		{
-            if (configuration == null)
-                throw new NullReferenceException("Configuration for EmailPasswordModule cannot be null");
-
-            var config = XDocument.Parse( configuration ).Root;
-
-            FromEmailAddress               = new MailAddress( config.Attribute( "FromEmailAddress" ).Value );
-            SmtpPassword                   = config.Attribute( "SMTPPassword" ).Value;
-            ChangePasswordRequestSubject   = config.Attribute("ChangePasswordRequestSubject").Value;
-            ChangePasswordRequestEmailXslt = new XslCompiledTransform();
-            ChangePasswordRequestEmailXslt.Load( XmlReader.Create( new StringReader( config.Element("ChangePasswordRequestEmail").Value ) ) );
+//            if (configuration == null)
+//                throw new NullReferenceException("Configuration for EmailPasswordModule cannot be null");
+//
+//            var config = XDocument.Parse( configuration ).Root;
+//
+//            FromEmailAddress               = new MailAddress( config.Attribute( "FromEmailAddress" ).Value );
+//            SmtpPassword                   = config.Attribute( "SMTPPassword" ).Value;
+//            ChangePasswordRequestSubject   = config.Attribute("ChangePasswordRequestSubject").Value;
+//            ChangePasswordRequestEmailXslt = new XslCompiledTransform();
+//            ChangePasswordRequestEmailXslt.Load( XmlReader.Create( new StringReader( config.Element("ChangePasswordRequestEmail").Value ) ) );
 
             return this;
 		}
