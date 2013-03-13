@@ -9,7 +9,7 @@
     {
         IEnumerable<SecureCookie> SecureCookieGet(Guid? userGuid, Guid? guid, Guid? passwordGuid);
         uint SecureCookieCreate(Guid userGuid, Guid guid, Guid passwordGuid, Guid sessionGuid);
-        uint SecureCookieDelete(Guid whereUserGuid, Guid guid);
+        uint SecureCookieDelete(Guid whereUserGuid, Guid whereGuid);
         uint SecureCookieUse(Guid? userGuid, Guid? guid, Guid? passwordGuid);
 
         EmailPassword EmailPasswordGet(Guid guid, string password);

@@ -60,14 +60,27 @@
             return (uint)result;
         }
 
-        public uint SecureCookieDelete(Guid whereUserGuid, Guid guid)
+        public uint SecureCookieDelete(Guid whereUserGuid, Guid whereGuid)
         {
-            throw new NotImplementedException();
+            var result = Gateway.ExecuteNonQuery("SecureCookie_Delete", new[]
+                {
+                    new MySqlParameter("WhereUserGuid", whereUserGuid.ToByteArray()), 
+                    new MySqlParameter("WhereSecureCookieGuid", whereGuid.ToByteArray()) 
+                });
+
+            return (uint)result;
         }
 
         public uint SecureCookieUse(Guid? userGuid, Guid? guid, Guid? passwordGuid)
         {
-            throw new NotImplementedException();
+            var result = Gateway.ExecuteNonQuery("SecureCookie_Use", new[]
+                {
+                    new MySqlParameter("WhereUserGuid", userGuid.HasValue ? userGuid.Value.ToByteArray() : null), 
+                    new MySqlParameter("WhereSecureCookieGuid", guid.HasValue ? guid.Value.ToByteArray() : null), 
+                    new MySqlParameter("WherePasswordGuid", passwordGuid.HasValue ? passwordGuid.Value.ToByteArray() : null)
+                });
+
+            return (uint)result;
         }
 
         public EmailPassword EmailPasswordGet( Guid guid, string password )

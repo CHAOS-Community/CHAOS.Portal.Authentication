@@ -38,7 +38,7 @@
         [Test]
         public void SecureCookieGet_GivenCookieExist_ReturnCookie()
         {
-            var expected = Make_SecureCookieThatDoesExist();
+            var expected = Make_SecureCookieThatExist();
 
             var actual = AuthenticationRepository.SecureCookieGet(expected.UserGuid, expected.Guid, expected.PasswordGuid).First();
 
@@ -47,6 +47,28 @@
             Assert.That(actual.UserGuid, Is.EqualTo(expected.UserGuid));
             Assert.That(actual.DateCreated, Is.EqualTo(expected.DateCreated));
             Assert.That(actual.DateUsed, Is.EqualTo(expected.DateUsed));
+        }
+
+        [Test]
+        public void SecureCookieDelete_GivenCookieExist_ReturnOne()
+        {
+            var cookie = Make_SecureCookieThatExist();
+            var expected = 1u;
+
+            var actual = AuthenticationRepository.SecureCookieDelete(cookie.UserGuid, cookie.Guid);
+
+            Assert.That(actual, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void SecureCookieUse_GivenCookieExist_ReturnOne()
+        {
+            var cookie = Make_SecureCookieThatExist();
+            var expected = 1u;
+
+            var actual = AuthenticationRepository.SecureCookieUse(cookie.UserGuid, cookie.Guid, cookie.PasswordGuid);
+
+            Assert.That(actual, Is.EqualTo(expected));
         }
 
         private EmailPassword Make_EmailPasswordThatExist()
@@ -71,7 +93,7 @@
                 };
         }
         
-        private SecureCookie Make_SecureCookieThatDoesExist()
+        private SecureCookie Make_SecureCookieThatExist()
         {
             return new SecureCookie
                 {

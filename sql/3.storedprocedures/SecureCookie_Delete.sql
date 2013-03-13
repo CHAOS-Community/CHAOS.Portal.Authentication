@@ -1,7 +1,7 @@
 CREATE PROCEDURE SecureCookie_Delete
 (
-    WhereUserGUID            BINARY(16),
-    WhereSecureCookieGUID    BINARY(16)
+    WhereUserGuid            BINARY(16),
+    WhereSecureCookieGuid    BINARY(16)
 )
 BEGIN
 
@@ -9,8 +9,8 @@ BEGIN
 	FROM
 		SecureCookie
 	WHERE	
-		    UserGUID	     = WhereUserGUID 
-		AND SecureCookieGUID = WhereSecureCookieGUID;
+		    UserGUID	     = WhereUserGuid
+		AND SecureCookieGUID = WhereSecureCookieGuid;
                   
     SELECT ROW_COUNT();
 
