@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <connectionStrings>
+    <add name="authentication"
+         connectionString="server=;user id=;password=;persist security info=True;database=;Pooling=True;Min Pool Size=1; Max Pool Size=200;" />
+  </connectionStrings>
+</configuration>

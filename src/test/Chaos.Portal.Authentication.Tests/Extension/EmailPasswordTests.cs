@@ -33,7 +33,6 @@
             CallContext.SetupGet(p => p.Session).Returns(session);
             AuthenticationRepository.Setup(m => m.EmailPasswordGet(expected.Guid, It.IsAny<string>())).Returns(new EmailPassword());
 
-
             var result = extension.Login(CallContext.Object, expected.Email, password);
 
             Assert.That(result, Is.EqualTo(expected));
