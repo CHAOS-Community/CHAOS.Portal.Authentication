@@ -15,7 +15,10 @@
             {
                 yield return new EmailPassword
                     {
-                        
+                        UserGuid     = reader.GetGuid("UserGUID"),
+                        Password     = reader.GetString("Password"),
+                        DateCreated  = reader.GetDateTime("DateCreated"),
+                        DateModified = reader.GetDateTime("DateModified")
                     };
             }
         }

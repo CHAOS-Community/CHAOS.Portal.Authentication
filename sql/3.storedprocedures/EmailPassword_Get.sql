@@ -1,6 +1,6 @@
 CREATE PROCEDURE EmailPassword_Get
 (
-    UserGUID	BINARY(16),
+    UserGuid	BINARY(16),
     Password	VARCHAR(1024)
 )
 BEGIN
@@ -10,7 +10,7 @@ BEGIN
 	FROM	
 		EmailPassword AS EP
 	WHERE	
-			( UserGUID IS NULL OR EP.UserGUID = UserGUID )
+			( UserGuid IS NULL OR EP.UserGUID = UserGuid )
         AND ( Password IS NULL OR EP.Password = Password );
 
 END

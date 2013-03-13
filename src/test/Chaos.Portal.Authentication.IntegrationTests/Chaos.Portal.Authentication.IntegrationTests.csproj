@@ -54,6 +54,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\app\Chaos.Portal.Authentication\Chaos.Portal.Authentication.csproj">
+      <Project>{AB8EF052-65A5-429E-AFCC-D5BC7A0F06DB}</Project>
+      <Name>Chaos.Portal.Authentication</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

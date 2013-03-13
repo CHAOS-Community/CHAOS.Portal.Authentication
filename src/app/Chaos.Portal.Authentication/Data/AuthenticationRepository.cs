@@ -1,4 +1,4 @@
-﻿namespace CHAOS.Portal.Authentication.EmailPassword.Data
+﻿namespace Chaos.Portal.Authentication.Data
 {
     using System;
     using System.Collections.Generic;
@@ -7,7 +7,6 @@
     using CHAOS.Data;
     using CHAOS.Data.MySql;
 
-    using Chaos.Portal.Authentication.Data;
     using Chaos.Portal.Authentication.Data.Dto;
     using Chaos.Portal.Authentication.Data.Mapping;
 
@@ -20,6 +19,11 @@
         static AuthenticationRepository()
         {
             ReaderExtensions.Mappings.Add(typeof(EmailPassword), new EmailPasswordMapping());
+        }
+
+        public AuthenticationRepository(string connectionString)
+        {
+            Gateway = new Gateway(connectionString);
         }
 
         #endregion
@@ -54,7 +58,7 @@
         {
             var results = Gateway.ExecuteQuery<EmailPassword>("EmailPassword_Get", new[]
                 {
-                    new MySqlParameter("UserGUID", guid.ToByteArray()), 
+                    new MySqlParameter("UserGuid", guid.ToByteArray()), 
                     new MySqlParameter("Password", password) 
                 });
 

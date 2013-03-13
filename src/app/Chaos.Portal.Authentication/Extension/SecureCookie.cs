@@ -25,7 +25,7 @@
         public SecureCookie(IAuthenticationRepository repository, IPortalRepository portalRepository)
         {
             AuthenticationRepository = repository;
-            PortalRepository = portalRepository;
+            PortalRepository         = portalRepository;
         }
 
         #endregion
