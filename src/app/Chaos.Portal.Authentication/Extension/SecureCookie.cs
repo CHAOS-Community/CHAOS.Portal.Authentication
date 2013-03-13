@@ -39,9 +39,9 @@
             return AuthenticationRepository.SecureCookieGet(null, callContext.User.Guid, null);
         }
 
-        public ScalarResult Delete(ICallContext callContext, Guid secureCookieGuid)
+        public ScalarResult Delete(ICallContext callContext, Guid guid)
         {
-            var result = AuthenticationRepository.SecureCookieDelete(secureCookieGuid, callContext.User.Guid);
+            var result = AuthenticationRepository.SecureCookieDelete(guid, callContext.User.Guid);
 
             return new ScalarResult((int)result);
         }
@@ -62,9 +62,9 @@
 
         #endregion
 
-        public Data.Dto.SecureCookie Login(ICallContext callContext, Guid secureCookieGuid, Guid passwordGuid)
+        public Data.Dto.SecureCookie Login(ICallContext callContext, Guid guid, Guid passwordGuid)
         {
-            var cookie = AuthenticationRepository.SecureCookieGet(secureCookieGuid, null, passwordGuid).FirstOrDefault();
+            var cookie = AuthenticationRepository.SecureCookieGet(guid, null, passwordGuid).FirstOrDefault();
 
             if(cookie == null) throw new LoginException("Cookie not found");
 
