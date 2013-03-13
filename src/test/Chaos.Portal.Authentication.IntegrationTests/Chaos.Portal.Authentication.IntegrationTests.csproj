@@ -33,6 +33,10 @@
     <Reference Include="Chaos.Deployment.UI.Console">
       <HintPath>..\..\..\tools\chaos.deployment\Chaos.Deployment.UI.Console.exe</HintPath>
     </Reference>
+    <Reference Include="Chaos.Portal, Version=6.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Chaos.Portal.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\..\..\tools\NUnit-2.6.0.12051\bin\nunit.framework.dll</HintPath>
     </Reference>

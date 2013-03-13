@@ -12,7 +12,7 @@ namespace Chaos.Portal.Authentication.Tests
     {
         protected SecureCookie Make_SecureCookie()
         {
-            return new SecureCookie(AuthenticationRepository.Object, PortalRepository.Object);
+            return (SecureCookie)new SecureCookie(AuthenticationRepository.Object).WithPortalApplication(PortalApplication.Object);
         }
 
         protected Mock<IAuthenticationRepository> AuthenticationRepository { get; set; }

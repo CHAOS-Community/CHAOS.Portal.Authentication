@@ -30,8 +30,8 @@
 
             var authenticationRepository = new AuthenticationRepository(connectionString);
 
-            portalApplication.AddExtension("EmailPassword", new EmailPassword(authenticationRepository));
-            portalApplication.AddExtension("SecureCookie", new SecureCookie(authenticationRepository, portalApplication.PortalRepository));
+            portalApplication.AddExtension("EmailPassword", new EmailPassword(authenticationRepository).WithPortalApplication(portalApplication));
+            portalApplication.AddExtension("SecureCookie", new SecureCookie(authenticationRepository).WithPortalApplication(portalApplication));
         }
 
         #endregion

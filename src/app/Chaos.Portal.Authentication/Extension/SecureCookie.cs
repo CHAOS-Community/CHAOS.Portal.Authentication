@@ -6,7 +6,6 @@
 
     using Chaos.Portal.Authentication.Data;
     using Chaos.Portal.Authentication.Exception;
-    using Chaos.Portal.Data;
     using Chaos.Portal.Data.Dto;
     using Chaos.Portal.Extension;
 
@@ -22,17 +21,15 @@
         #endregion
         #region Initialization
 
-        public SecureCookie(IAuthenticationRepository repository, IPortalRepository portalRepository)
+        public SecureCookie(IAuthenticationRepository repository)
         {
             AuthenticationRepository = repository;
-            PortalRepository         = portalRepository;
         }
 
         #endregion
         #region Properties
 
         public IAuthenticationRepository AuthenticationRepository { get; set; }
-        public IPortalRepository PortalRepository { get; set; }
 
         #endregion
         #region Business Logic

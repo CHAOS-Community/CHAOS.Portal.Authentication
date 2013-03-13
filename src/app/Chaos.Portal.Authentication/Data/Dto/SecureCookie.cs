@@ -4,7 +4,9 @@
 
     using CHAOS.Serialization;
 
-    public class SecureCookie
+    using Chaos.Portal.Data.Dto;
+
+    public class SecureCookie : AResult
     {
         [Serialize]
         public Guid Guid { get; set; }
