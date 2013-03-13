@@ -19,6 +19,7 @@
         static AuthenticationRepository()
         {
             ReaderExtensions.Mappings.Add(typeof(EmailPassword), new EmailPasswordMapping());
+            ReaderExtensions.Mappings.Add(typeof(SecureCookie), new SecureCookieMapping());
         }
 
         public AuthenticationRepository(string connectionString)
@@ -36,12 +37,27 @@
 
         public IEnumerable<SecureCookie> SecureCookieGet(Guid? userGuid, Guid? guid, Guid? passwordGuid)
         {
-            throw new NotImplementedException();
+            var results = Gateway.ExecuteQuery<SecureCookie>("SecureCookie_Get", new[]
+                {
+                    new MySqlParameter("UserGuid", userGuid.HasValue ? userGuid.Value.ToByteArray() : null), 
+                    new MySqlParameter("SecureCookieGuid", guid.HasValue ? guid.Value.ToByteArray() : null), 
+                    new MySqlParameter("PasswordGuid", passwordGuid.HasValue ? passwordGuid.Value.ToByteArray() : null), 
+                });
+
+            return results;
         }
 
         public uint SecureCookieCreate(Guid userGuid, Guid guid, Guid passwordGuid, Guid sessionGuid)
         {
-            throw new NotImplementedException();
+            var result = Gateway.ExecuteNonQuery("SecureCookie_Create", new[]
+                {
+                    new MySqlParameter("SecureCookieGuid", guid.ToByteArray()), 
+                    new MySqlParameter("PasswordGuid", passwordGuid.ToByteArray()), 
+                    new MySqlParameter("UserGuid", userGuid.ToByteArray()), 
+                    new MySqlParameter("SessionGuid", sessionGuid.ToByteArray()) 
+                });
+
+            return (uint)result;
         }
 
         public uint SecureCookieDelete(Guid whereUserGuid, Guid guid)

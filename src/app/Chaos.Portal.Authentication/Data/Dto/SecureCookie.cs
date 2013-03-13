@@ -15,5 +15,7 @@
         public Guid PasswordGuid { get; set; }
         
         public DateTime? DateUsed { get; set; }
+
+        public DateTime DateCreated { get; set; }
     }
 }
