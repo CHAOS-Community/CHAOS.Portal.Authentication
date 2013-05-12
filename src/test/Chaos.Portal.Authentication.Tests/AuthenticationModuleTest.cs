@@ -1,7 +1,9 @@
 ﻿namespace Chaos.Portal.Authentication.Tests
 {
+    using System.Linq;
+
     using Chaos.Portal.Authentication.Extension;
-    using Chaos.Portal.Data.Dto;
+    using Chaos.Portal.Core;
 
     using Moq;
 
@@ -11,32 +13,40 @@
     public class AuthenticationModuleTest : TestBase
     {
         [Test]
-        public void Load_EmailPasswordExtension_AddToPortalApplication()
+        public void GetExtensionNames_V5_ReturnListOfExtensionNames()
         {
             var module = new AuthenticationModule();
-            var config = Make_ModuleConfig();
-            PortalRepository.Setup(m => m.ModuleGet("Authentication")).Returns(config);
 
-            module.Load(PortalApplication.Object);
+            var results = module.GetExtensionNames(Protocol.V5).ToList();
 
-            PortalApplication.Verify(m => m.AddExtension("EmailPassword", It.IsAny<EmailPassword>()));
+            Assert.That(results[0], Is.EqualTo("EmailPassword"));
+            Assert.That(results[1], Is.EqualTo("SecureCookie"));
         }
 
         [Test]
-        public void Load_SecureCookieExtension_AddToPortalApplication()
+        public void GetExtensionNames_V6_ReturnListOfExtensionNames()
         {
             var module = new AuthenticationModule();
-            var config = Make_ModuleConfig();
-            PortalRepository.Setup(m => m.ModuleGet("Authentication")).Returns(config);
 
-            module.Load(PortalApplication.Object);
+            var results = module.GetExtensionNames(Protocol.V6).ToList();
 
-            PortalApplication.Verify(m => m.AddExtension("SecureCookie", It.IsAny<SecureCookie>()));
+            Assert.That(results[0], Is.EqualTo("EmailPassword"));
+            Assert.That(results[1], Is.EqualTo("SecureCookie"));
         }
 
-        private static Module Make_ModuleConfig()
+        [Test]
+        public void GetExtension_GivenEmailPasswordInV5_Return()
         {
-            return new Module
+            var module = new AuthenticationModule();
+
+            var result = module.GetExtension(Protocol.V5, "EmailPassword");
+
+            Assert.That(result, Is.InstanceOf<EmailPassword>());
+        }
+
+        private static Core.Data.Model.Module Make_ModuleConfig()
+        {
+            return new Core.Data.Model.Module
                 {
                     Configuration = "<Settings><ConnectionString>connectionstring</ConnectionString></Settings>"
                 };

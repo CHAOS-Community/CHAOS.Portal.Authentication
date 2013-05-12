@@ -2,7 +2,9 @@ namespace Chaos.Portal.Authentication.Tests
 {
     using Chaos.Portal.Authentication.Data;
     using Chaos.Portal.Authentication.Extension;
-    using Chaos.Portal.Data;
+    using Chaos.Portal.Core;
+    using Chaos.Portal.Core.Data;
+    using Chaos.Portal.Core.Request;
 
     using Moq;
 
@@ -10,15 +12,10 @@ namespace Chaos.Portal.Authentication.Tests
 
     public class TestBase
     {
-        protected SecureCookie Make_SecureCookie()
-        {
-            return (SecureCookie)new SecureCookie(AuthenticationRepository.Object).WithPortalApplication(PortalApplication.Object);
-        }
-
         protected Mock<IAuthenticationRepository> AuthenticationRepository { get; set; }
         protected Mock<IPortalApplication>        PortalApplication { get; set; }
         protected Mock<IPortalRepository>         PortalRepository { get; set; }
-        protected Mock<ICallContext>              CallContext { get; set; }
+        protected Mock<IPortalRequest>            PortalRequest { get; set; }
 
         [SetUp]
         public void SetUp()
@@ -26,14 +23,19 @@ namespace Chaos.Portal.Authentication.Tests
             AuthenticationRepository = new Mock<IAuthenticationRepository>();
             PortalApplication        = new Mock<IPortalApplication>();
             PortalRepository         = new Mock<IPortalRepository>();
-            CallContext              = new Mock<ICallContext>();
+            PortalRequest            = new Mock<IPortalRequest>();
 
             PortalApplication.SetupGet(p => p.PortalRepository).Returns(PortalRepository.Object);
         }
 
         protected EmailPassword Make_EmailPassword()
         {
-            return (EmailPassword)new EmailPassword(AuthenticationRepository.Object).WithPortalApplication(PortalApplication.Object);
+            return (EmailPassword)new EmailPassword(PortalApplication.Object, AuthenticationRepository.Object).WithPortalRequest(PortalRequest.Object);
+        }
+
+        protected SecureCookie Make_SecureCookie()
+        {
+            return (SecureCookie)new SecureCookie(PortalApplication.Object, AuthenticationRepository.Object).WithPortalRequest(PortalRequest.Object);
         }
     }
 }

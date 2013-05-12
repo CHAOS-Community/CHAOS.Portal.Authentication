@@ -6,22 +6,15 @@
 
     using Chaos.Portal.Authentication.Data;
     using Chaos.Portal.Authentication.Exception;
-    using Chaos.Portal.Data.Dto;
-    using Chaos.Portal.Extension;
+    using Chaos.Portal.Core;
+    using Chaos.Portal.Core.Data.Model;
+    using Chaos.Portal.Core.Extension;
 
     public class SecureCookie : AExtension
     {
-        #region Overrides of AExtension
-
-        public override IExtension WithConfiguration(string configuration)
-        {
-            return this;
-        }
-
-        #endregion
         #region Initialization
 
-        public SecureCookie(IAuthenticationRepository repository)
+        public SecureCookie(IPortalApplication portalApplication, IAuthenticationRepository repository): base(portalApplication)
         {
             AuthenticationRepository = repository;
         }
@@ -34,24 +27,24 @@
         #endregion
         #region Business Logic
 
-        public IEnumerable<Data.Dto.SecureCookie> Get(ICallContext callContext)
+        public IEnumerable<Data.Dto.SecureCookie> Get()
         {
-            return AuthenticationRepository.SecureCookieGet(null, callContext.User.Guid, null);
+            return AuthenticationRepository.SecureCookieGet(null, Request.User.Guid, null);
         }
 
-        public ScalarResult Delete(ICallContext callContext, Guid guid)
+        public ScalarResult Delete(Guid guid)
         {
-            var result = AuthenticationRepository.SecureCookieDelete(guid, callContext.User.Guid);
+            var result = AuthenticationRepository.SecureCookieDelete(guid, Request.User.Guid);
 
             return new ScalarResult((int)result);
         }
 
-        public Data.Dto.SecureCookie Create(ICallContext callContext)
+        public Data.Dto.SecureCookie Create()
         {
-            if (callContext.IsAnonymousUser) throw new LoginException("Anonymous users cannot create a SecureCookie");
+            if (Request.IsAnonymousUser) throw new LoginException("Anonymous users cannot create a SecureCookie");
 
-            var userGuid         = callContext.User.Guid;
-            var sessionGuid      = callContext.Session.Guid;
+            var userGuid         = Request.User.Guid;
+            var sessionGuid      = Request.Session.Guid;
             var secureCookieGuid = Guid.NewGuid();
             var passwordGuid     = Guid.NewGuid();
 
@@ -62,7 +55,7 @@
 
         #endregion
 
-        public Data.Dto.SecureCookie Login(ICallContext callContext, Guid guid, Guid passwordGuid)
+        public Data.Dto.SecureCookie Login(Guid guid, Guid passwordGuid)
         {
             var cookie = AuthenticationRepository.SecureCookieGet(guid, null, passwordGuid).FirstOrDefault();
 
@@ -74,8 +67,8 @@
 
             cookie.PasswordGuid = Guid.NewGuid();
 
-            AuthenticationRepository.SecureCookieCreate(cookie.Guid, cookie.UserGuid, cookie.PasswordGuid, callContext.Session.Guid);
-            PortalRepository.SessionUpdate(callContext.Session.Guid, cookie.UserGuid);
+            AuthenticationRepository.SecureCookieCreate(cookie.Guid, cookie.UserGuid, cookie.PasswordGuid, Request.Session.Guid);
+            PortalRepository.SessionUpdate(Request.Session.Guid, cookie.UserGuid);
 
             return cookie;
         }

@@ -10,10 +10,10 @@
     using System.Xml.Linq;
     using System.Xml.Xsl;
 
-    using Chaos.Portal;
     using Chaos.Portal.Authentication.Data;
-    using Chaos.Portal.Data.Dto;
-    using Chaos.Portal.Extension;
+    using Chaos.Portal.Core;
+    using Chaos.Portal.Core.Data.Model;
+    using Chaos.Portal.Core.Extension;
     using Chaos.Portal.Authentication.Exception;
 
     public class EmailPassword : AExtension
@@ -30,31 +30,16 @@
         #endregion
         #region Initialization
 
-        public EmailPassword(IAuthenticationRepository authenticationRepository)
+        public EmailPassword(IPortalApplication portalApplication, IAuthenticationRepository authenticationRepository): base(portalApplication)
         {
             AuthenticationRepository = authenticationRepository;
         }
 
-        public override IExtension WithConfiguration( string configuration )
-		{
-//            if (configuration == null)
-//                throw new NullReferenceException("Configuration for EmailPasswordModule cannot be null");
-//
-//            var config = XDocument.Parse( configuration ).Root;
-//
-//            FromEmailAddress               = new MailAddress( config.Attribute( "FromEmailAddress" ).Value );
-//            SmtpPassword                   = config.Attribute( "SMTPPassword" ).Value;
-//            ChangePasswordRequestSubject   = config.Attribute("ChangePasswordRequestSubject").Value;
-//            ChangePasswordRequestEmailXslt = new XslCompiledTransform();
-//            ChangePasswordRequestEmailXslt.Load( XmlReader.Create( new StringReader( config.Element("ChangePasswordRequestEmail").Value ) ) );
-
-            return this;
-		}
         
         #endregion
         #region Login (Email/password)
 
-        public UserInfo Login( ICallContext callContext, string email, string password )
+        public UserInfo Login(string email, string password )
         {
             var user = PortalRepository.UserInfoGet(email);
 
@@ -64,11 +49,11 @@
 
             if(res == null) throw new LoginException( "Login failed, either email or password is incorrect" );
 
-            var result = PortalRepository.SessionUpdate(callContext.Session.Guid, user.Guid);
+            var result = PortalRepository.SessionUpdate(Request.Session.Guid, user.Guid);
 
             if(result == null) throw new LoginException("Session could not be updated");
 
-            return PortalRepository.UserInfoGet(null, callContext.Session.Guid, null).First();
+            return PortalRepository.UserInfoGet(null, Request.Session.Guid, null).First();
         }
 
         #endregion
