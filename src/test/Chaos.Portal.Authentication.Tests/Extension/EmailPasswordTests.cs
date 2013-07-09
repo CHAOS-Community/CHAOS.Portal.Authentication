@@ -29,7 +29,7 @@
                 };
             PortalRepository.Setup(m => m.UserInfoGet(expected.Email)).Returns(expected);
             PortalRepository.Setup(m => m.SessionUpdate(session.Guid, expected.Guid)).Returns(new Session());
-            PortalRepository.Setup(m => m.UserInfoGet(null, session.Guid, null)).Returns(new[] {expected});
+            PortalRepository.Setup(m => m.UserInfoGet(null, session.Guid, null, null)).Returns(new[] {expected});
             PortalRequest.SetupGet(p => p.Session).Returns(session);
             AuthenticationRepository.Setup(m => m.EmailPasswordGet(expected.Guid, It.IsAny<string>())).Returns(new EmailPassword());
 

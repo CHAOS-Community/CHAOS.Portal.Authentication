@@ -53,7 +53,7 @@
 
             if(result == null) throw new LoginException("Session could not be updated");
 
-            return PortalRepository.UserInfoGet(null, Request.Session.Guid, null).First();
+            return PortalRepository.UserInfoGet(null, Request.Session.Guid, null, null).First();
         }
 
         #endregion
