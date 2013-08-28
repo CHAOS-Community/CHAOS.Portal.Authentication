@@ -94,6 +94,17 @@
             return results.FirstOrDefault();
         }
 
-        #endregion
+		public uint EmailPasswordUpdate(Guid userGuid, string password)
+	    {
+			var result = Gateway.ExecuteNonQuery("EmailPassword_Update", new[]
+                {
+                    new MySqlParameter("UserGUID", userGuid.ToByteArray()), 
+                    new MySqlParameter("NewPassword", password) 
+                });
+
+			return (uint)result;
+	    }
+
+	    #endregion
     }
 }

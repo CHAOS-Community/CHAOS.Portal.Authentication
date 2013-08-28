@@ -1,18 +1,26 @@
 CREATE PROCEDURE EmailPassword_Update
 (
     UserGUID	BINARY(16),
-    Password	varchar(1024)
+    NewPassword	varchar(1024)
 )
 BEGIN
-
-	UPDATE	
-		EmailPassword AS EP
-	SET	
-		EP.Password     = Password,
-        EP.DateModified = NOW()
-	WHERE
-		EP.UserGUID = UserGUID;
+	INSERT INTO EmailPassword
+    (
+        UserGUID,
+        Password,
+        DateCreated,
+        DateModified
+    )
+    VALUES
+    (
+        UserGUID,
+        NewPassword,
+        NOW(),
+        NULL
+    )
+	ON DUPLICATE KEY UPDATE 
+		Password = NewPassword, 
+		DateModified = NOW();
 
 	SELECT ROW_COUNT();
-
 END

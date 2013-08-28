@@ -1,4 +1,6 @@
-﻿namespace Chaos.Portal.Authentication.Tests.Extension
+﻿using Chaos.Portal.Core.Exceptions;
+
+namespace Chaos.Portal.Authentication.Tests.Extension
 {
     using System;
 
@@ -61,5 +63,44 @@
 
             extension.Login(user.Email, password);
         }
+
+	    [Test]
+	    public void SetPassword_UserHasPermission_UpdatePassword()
+	    {
+			var extension = Make_EmailPassword();
+			var user = new UserInfo
+            {
+                Guid = new Guid("10000000-0000-0000-0000-000000000001"),
+                Email = "test@test.test",
+				SystemPermissonsEnum = SystemPermissons.All
+            };
+			var newPassword = "passw0rd";
+
+		    PortalRequest.Setup(r => r.User).Returns(user);
+		    AuthenticationRepository.Setup(a => a.EmailPasswordUpdate(user.Guid, It.IsAny<string>())).Returns(1);
+
+			var result = extension.SetPassword(user.Guid, newPassword);
+
+			AuthenticationRepository.Verify(a => a.EmailPasswordUpdate(user.Guid, It.IsAny<string>()));
+
+			Assert.That(result.Value, Is.EqualTo(1));
+	    }
+
+		[Test, ExpectedException(typeof(InsufficientPermissionsException))]
+		public void SetPassword_UserDoesNotHavePermission_ThrowInsufficientPermissionsException()
+		{
+			var extension = Make_EmailPassword();
+			var user = new UserInfo
+			{
+				Guid = new Guid("10000000-0000-0000-0000-000000000001"),
+				Email = "test@test.test",
+				SystemPermissonsEnum = SystemPermissons.None
+			};
+			var newPassword = "passw0rd";
+
+			PortalRequest.Setup(r => r.User).Returns(user);
+
+			var result = extension.SetPassword(user.Guid, newPassword);
+		}
     }
 }

@@ -13,5 +13,6 @@
         uint SecureCookieUse(Guid? guid, Guid? userGuid, Guid? passwordGuid);
 
         EmailPassword EmailPasswordGet(Guid guid, string password);
+		uint EmailPasswordUpdate(Guid userGuid, string password);
     }
 }

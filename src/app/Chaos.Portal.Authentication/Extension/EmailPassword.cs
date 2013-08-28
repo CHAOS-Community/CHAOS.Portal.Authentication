@@ -1,4 +1,6 @@
-﻿namespace Chaos.Portal.Authentication.Extension
+﻿using Chaos.Portal.Core.Exceptions;
+
+namespace Chaos.Portal.Authentication.Extension
 {
     using System;
     using System.Linq;
@@ -58,6 +60,19 @@
 
         #endregion
         #region Change Password
+
+	    public ScalarResult SetPassword(Guid userGuid, string newPassword)
+	    {
+		   if (!Request.User.HasPermission(SystemPermissons.UserManager))
+			   throw new InsufficientPermissionsException("Current user must be user manager to set password");
+		    
+			var result = AuthenticationRepository.EmailPasswordUpdate(userGuid, GeneratePasswordHash(newPassword));
+
+			if (result != 1 && result != 2)
+				throw new Exception("Failed to set password for user. Error code: " + result);
+
+			return new ScalarResult(1);
+	    }
 
 //        public ScalarResult ChangePasswordRequest(ICallContext callContext, string email, string password, string url)
 //        {
