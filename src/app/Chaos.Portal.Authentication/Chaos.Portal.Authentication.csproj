@@ -59,6 +59,7 @@
     <Compile Include="Exception\SecureCookieAlreadyConsumedException.cs" />
     <Compile Include="Extension\EmailPassword.cs" />
     <Compile Include="Extension\SecureCookie.cs" />
+    <Compile Include="Extension\Wayf.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
