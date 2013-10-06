@@ -11,7 +11,7 @@ namespace Chaos.Portal.Authentication.Extension
 		{
 		}
 
-		public ScalarResult Login(string wayfId)
+		public ScalarResult Login(string wayfId, string surName, string givenName, string commonName)
 		{
 			throw new NotImplementedException();
 
