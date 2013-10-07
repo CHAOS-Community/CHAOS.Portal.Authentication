@@ -46,6 +46,7 @@
     <Compile Include="AuthenticationModuleTest.cs" />
     <Compile Include="Extension\EmailPasswordTests.cs" />
     <Compile Include="Extension\SecureCookieTests.cs" />
+    <Compile Include="Extension\WayfTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestBase.cs" />
   </ItemGroup>

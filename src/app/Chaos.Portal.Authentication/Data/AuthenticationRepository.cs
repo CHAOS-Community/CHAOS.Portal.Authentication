@@ -105,6 +105,30 @@
 			return (uint)result;
 	    }
 
+	    public WayfProfile WayfProfileGet(string wayfId)
+	    {
+			var results = Gateway.ExecuteQuery<WayfProfile>("WayfProfile_Get", new[]
+                {
+                    new MySqlParameter("WayfId", wayfId) 
+                });
+
+			return results.FirstOrDefault();
+	    }
+
+	    public uint WayfProfileUpdate(Guid userGuid, string wayfId, string givenName, string surName, string commonName)
+	    {
+			var result = Gateway.ExecuteNonQuery("WayfProfile_Update", new[]
+                {
+                    new MySqlParameter("UserGUID", userGuid.ToByteArray()), 
+                    new MySqlParameter("WayfId", wayfId),
+                    new MySqlParameter("GivenName", givenName),
+                    new MySqlParameter("SurName", surName),
+                    new MySqlParameter("CommonName", commonName)
+                });
+
+			return (uint)result;
+	    }
+
 	    #endregion
     }
 }

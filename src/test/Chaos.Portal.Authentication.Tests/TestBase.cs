@@ -1,3 +1,5 @@
+using Chaos.Portal.Authentication.Data.Dto;
+
 namespace Chaos.Portal.Authentication.Tests
 {
     using Chaos.Portal.Authentication.Data;
@@ -37,5 +39,10 @@ namespace Chaos.Portal.Authentication.Tests
         {
             return (SecureCookie)new SecureCookie(PortalApplication.Object, AuthenticationRepository.Object).WithPortalRequest(PortalRequest.Object);
         }
+
+		protected Wayf Make_Wayf()
+		{
+			return (Wayf)new Wayf(PortalApplication.Object, AuthenticationRepository.Object).WithPortalRequest(PortalRequest.Object);
+		}
     }
 }

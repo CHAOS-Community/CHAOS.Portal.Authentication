@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
 
-    using Chaos.Portal.Authentication.Data.Dto;
+    using Dto;
 
     public interface IAuthenticationRepository
     {
@@ -14,5 +14,8 @@
 
         EmailPassword EmailPasswordGet(Guid guid, string password);
 		uint EmailPasswordUpdate(Guid userGuid, string password);
+
+		WayfProfile WayfProfileGet(string wayfId);
+		uint WayfProfileUpdate(Guid userGuid, string wayfId, string givenName, string surName, string commonName);
     }
 }
