@@ -32,6 +32,7 @@
 
             Assert.That(results[0], Is.EqualTo("EmailPassword"));
             Assert.That(results[1], Is.EqualTo("SecureCookie"));
+            Assert.That(results[2], Is.EqualTo("SiteAccess"));
         }
 
         [Test]

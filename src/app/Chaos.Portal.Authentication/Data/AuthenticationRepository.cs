@@ -9,6 +9,7 @@
 
     using Chaos.Portal.Authentication.Data.Dto;
     using Chaos.Portal.Authentication.Data.Mapping;
+    using Chaos.Portal.Authentication.Data.Model;
 
     using MySql.Data.MySqlClient;
 
@@ -20,6 +21,7 @@
         {
             ReaderExtensions.Mappings.Add(typeof(EmailPassword), new EmailPasswordMapping());
             ReaderExtensions.Mappings.Add(typeof(SecureCookie), new SecureCookieMapping());
+            ReaderExtensions.Mappings.Add(typeof(SiteKey), new SiteKeyMapping());
         }
 
         public AuthenticationRepository(string connectionString)
@@ -92,6 +94,28 @@
                 });
 
             return results.FirstOrDefault();
+        }
+
+        public SiteKey SiteKeyGet(string key)
+        {
+            var results = Gateway.ExecuteQuery<SiteKey>("SiteKey_Get", new[]
+                {
+                    new MySqlParameter("Key", key) 
+                });
+
+            return results.FirstOrDefault();
+        }
+
+        public uint SiteKeyCreate(string key, Guid userGuid, string name)
+        {
+            var results = Gateway.ExecuteNonQuery("SiteKey_Create", new[]
+                {
+                    new MySqlParameter("Key", key),
+                    new MySqlParameter("UserGuid", userGuid),
+                    new MySqlParameter("Name", name)
+                });
+
+            return (uint)results;
         }
 
         #endregion
