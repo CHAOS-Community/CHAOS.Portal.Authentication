@@ -2,10 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
-
     using Chaos.Portal.Authentication.Data.Dto;
     using Chaos.Portal.Authentication.Data.Model;
-
+    
     public interface IAuthenticationRepository
     {
         IEnumerable<SecureCookie> SecureCookieGet(Guid? guid, Guid? userGuid, Guid? passwordGuid);
@@ -14,8 +13,11 @@
         uint SecureCookieUse(Guid? guid, Guid? userGuid, Guid? passwordGuid);
 
         EmailPassword EmailPasswordGet(Guid guid, string password);
-
         uint SiteKeyCreate(string key, Guid userGuid, string name);
         SiteKey SiteKeyGet(string key);
+		uint EmailPasswordUpdate(Guid userGuid, string password);
+
+		WayfProfile WayfProfileGet(string wayfId);
+		uint WayfProfileUpdate(Guid userGuid, string wayfId, string givenName, string surName, string commonName);
     }
 }
