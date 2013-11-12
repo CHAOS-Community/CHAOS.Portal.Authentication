@@ -1,26 +1,32 @@
-/// <reference path="TypeScriptDefinitions/PortalClient.d.ts" />
 var CHAOS;
 (function (CHAOS) {
-    var WayfLoginClient = (function () {
-        function WayfLoginClient() {
-        }
-        WayfLoginClient.Login = function (client, wayfServicePath, frame, callback) {
-            if (!client.SessionAcquired())
-                throw "IPortalClient does not have a session";
+    /// <reference path="TypeScriptDefinitions/PortalClient.d.ts" />
+    (function (Portal) {
+        var WayfLoginClient = (function () {
+            function WayfLoginClient() {
+            }
+            WayfLoginClient.Login = function (client, wayfServicePath, frame, callback) {
+                if (!client.SessionAcquired())
+                    throw "IPortalClient does not have a session";
 
-            frame.onload = function (e) {
-                var statusIndex = frame.contentWindow.location.hash.indexOf("status");
+                if (wayfServicePath.substr(wayfServicePath.length - 1, 1) != "/")
+                    wayfServicePath += "/";
 
-                if (statusIndex == -1)
-                    return;
+                if (callback != null) {
+                    var messageRecieved = function (event) {
+                        window.removeEventListener("message", messageRecieved, false);
+                        callback(event.data == "success");
+                    };
 
-                callback(frame.contentWindow.location.hash.substr(statusIndex + 7, 7) == "success");
+                    window.addEventListener("message", messageRecieved, false);
+                }
+
+                frame.src = wayfServicePath + "CHAOSWayfLogin.php?sessionGuid=" + client.GetCurrentSession().Guid + "&apiPath=" + client.GetServicePath();
             };
-
-            frame.src = wayfServicePath + "CHAOSWayfLogin.php?sessionGuid=" + client.GetCurrentSession().Guid + "&apiPath=" + client.GetServicePath();
-        };
-        return WayfLoginClient;
-    })();
-    CHAOS.WayfLoginClient = WayfLoginClient;
+            return WayfLoginClient;
+        })();
+        Portal.WayfLoginClient = WayfLoginClient;
+    })(CHAOS.Portal || (CHAOS.Portal = {}));
+    var Portal = CHAOS.Portal;
 })(CHAOS || (CHAOS = {}));
 //# sourceMappingURL=CHAOS.Portal.WayfLoginClient.js.map

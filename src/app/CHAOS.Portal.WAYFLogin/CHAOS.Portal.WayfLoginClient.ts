@@ -1,6 +1,6 @@
 /// <reference path="TypeScriptDefinitions/PortalClient.d.ts" />
 
-module CHAOS
+module CHAOS.Portal
 {
 	export class WayfLoginClient
 	{
@@ -9,14 +9,19 @@ module CHAOS
 			if (!client.SessionAcquired())
 				throw "IPortalClient does not have a session";
 
-			frame.onload = (e: Event) =>
+			if (wayfServicePath.substr(wayfServicePath.length - 1, 1) != "/")
+				wayfServicePath += "/";
+
+			if (callback != null)
 			{
-				var statusIndex = frame.contentWindow.location.hash.indexOf("status");
+				var messageRecieved = (event:MessageEvent) =>
+				{
+					window.removeEventListener("message", messageRecieved, false);
+					callback(event.data == "success");
+				};
 
-				if (statusIndex == -1) return;
-
-				callback(frame.contentWindow.location.hash.substr(statusIndex + 7, 7) == "success");
-			};
+				window.addEventListener("message", messageRecieved, false);
+			}
 
 			frame.src = wayfServicePath + "CHAOSWayfLogin.php?sessionGuid=" + client.GetCurrentSession().Guid + "&apiPath=" + client.GetServicePath();
 		}

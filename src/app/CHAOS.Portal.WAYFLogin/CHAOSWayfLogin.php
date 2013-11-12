@@ -47,11 +47,11 @@
 		$rawResponse = curl_exec ($ch);
 
 		curl_close ($ch);
-				
+		
 		$response = json_decode($rawResponse);
 				
 		if($response == null)
-			$error = "Failed to parse Portal response";
+			$error = "Failed to parse Portal response. Raw data was: $rawResponse";
 		else if ($response["Error"] != null && $response["Error"]["Message"] != null)
 			$error = "Portal authentication failed: " + $response["Error"]["Message"];
 	}
@@ -60,7 +60,7 @@
     <head>
         <title>Wayf Login</title>
 		<script type="text/javascript">
-			location.hash = "status=<?php print($error == null ? 'success' : 'failure'); ?>";
+			parent.window.postMessage("<?php print($error == null ? 'success' : 'failure'); ?>", "*");
 		</script>
     </head>
     <body>
