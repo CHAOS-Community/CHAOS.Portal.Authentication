@@ -28,7 +28,7 @@ namespace Chaos.Portal.Authentication.Extension
 			{
 				wayfProfile = new WayfProfile();
 
-				var existingUser = PortalRepository.UserInfoGet(email);
+				var existingUser = PortalRepository.UserInfoGet(null, null,email, null).FirstOrDefault();
 
 				if (existingUser == null)
 				{

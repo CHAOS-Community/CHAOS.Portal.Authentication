@@ -34,6 +34,7 @@
             yield return "EmailPassword";
             yield return "SecureCookie";
             yield return "SiteAccess";
+            yield return "Wayf";
         }
 
         public IExtension GetExtension(Protocol version, string name)
@@ -59,6 +60,8 @@
                         return new SecureCookie(PortalApplication, AuthenticationRepository);
                     case "SiteAccess":
                         return new SiteAccess(PortalApplication, AuthenticationRepository);
+					case "Wayf":
+						return new Wayf(PortalApplication, AuthenticationRepository);
                 }
             }
 

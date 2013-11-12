@@ -15,9 +15,9 @@
 			var extension = Make_Wayf();
 
 			var wayfId = "somerandomletters";
+			var email = "test@test.test";
 			var givenName = "Albert";
 			var surName = "Einstein";
-			var commonName = "Einer";
 
 			var expected = new UserInfo
 			{
@@ -39,7 +39,7 @@
 			PortalRequest.SetupGet(p => p.Session).Returns(session);
 			AuthenticationRepository.Setup(m => m.WayfProfileGet(wayfId)).Returns(profile);
 
-			var result = extension.Login(wayfId, givenName, surName, commonName);
+			var result = extension.Login(wayfId, email, givenName, surName);
 
 			PortalRepository.VerifyAll();
 

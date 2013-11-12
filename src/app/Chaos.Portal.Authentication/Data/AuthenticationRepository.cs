@@ -20,6 +20,7 @@
         static AuthenticationRepository()
         {
             ReaderExtensions.Mappings.Add(typeof(EmailPassword), new EmailPasswordMapping());
+            ReaderExtensions.Mappings.Add(typeof(WayfProfile), new WayfProfileMapping());
             ReaderExtensions.Mappings.Add(typeof(SecureCookie), new SecureCookieMapping());
             ReaderExtensions.Mappings.Add(typeof(SiteKey), new SiteKeyMapping());
         }

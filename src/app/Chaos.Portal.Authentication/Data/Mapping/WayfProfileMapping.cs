@@ -18,9 +18,8 @@
 						WayfId = reader.GetString("WayfId"),
 						GivenName = reader.GetString("GivenName"),
 						SurName = reader.GetString("SurName"),
-						CommonName = reader.GetString("CommonName"),
 						DateCreated = reader.GetDateTime("DateCreated"),
-						DateModified = reader.GetDateTime("DateModified")
+						DateModified = reader.GetDateTimeNullable("DateModified")
 					};
 			}
 		}

@@ -30,7 +30,7 @@
 				
 		$parameters = array(
 						'format' => 'json2',
-						'sessionGuid' => $sessionGuid,
+						'sessionGUID' => $sessionGuid,
 						'wayfId' => $attributes['eduPersonTargetedID'][0],
 						'email' => $attributes['mail'][0],
 						'givenName' => $attributes['gn'][0],
@@ -52,8 +52,8 @@
 				
 		if($response == null)
 			$error = "Failed to parse Portal response. Raw data was: $rawResponse";
-		else if ($response["Error"] != null && $response["Error"]["Message"] != null)
-			$error = "Portal authentication failed: " + $response["Error"]["Message"];
+		else if ($response->Error != null && $response->Error->Message != null)
+			$error = "Portal authentication failed: " . $response->Error->Message;
 	}
 ?>
 <html>
