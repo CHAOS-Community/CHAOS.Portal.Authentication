@@ -60,7 +60,8 @@
     <head>
         <title>Wayf Login</title>
 		<script type="text/javascript">
-			parent.window.postMessage("<?php print($error == null ? 'success' : 'failure'); ?>", "*");
+			if(parent.window.postMessage)
+				parent.window.postMessage("<?php print($error == null ? 'success' : 'failure'); ?>", "*");
 		</script>
     </head>
     <body>

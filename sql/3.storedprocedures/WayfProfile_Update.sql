@@ -1,9 +1,11 @@
+DELIMITER ;;
+
 CREATE PROCEDURE WayfProfile_Update
 (
     UserGuid			BINARY(16),
-    WayfId				varchar(1024),
-	GivenName		varchar(1024) NOT NULL,
-	SurName			varchar(1024) NOT NULL,
+    WayfId				varchar(256),
+	GivenName		varchar(1024),
+	SurName			varchar(1024)
 )
 BEGIN
 	INSERT INTO WayfProfile
@@ -30,4 +32,4 @@ BEGIN
 		DateModified = NOW();
 
 	SELECT ROW_COUNT();
-END
+END;;

@@ -55,9 +55,7 @@
     <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="CHAOS.Portal.js">
-      <DependentUpon>CHAOS.Portal.WayfLoginClient.ts</DependentUpon>
-    </Content>
+    <Content Include="Test.html" />
     <Content Include="TypeScriptDefinitions\PortalClient.d.ts" />
     <TypeScriptCompile Include="CHAOS.Portal.WayfLoginClient.ts" />
     <Content Include="CHAOSWayfLogin.php" />
