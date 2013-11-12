@@ -16,6 +16,6 @@
 		uint EmailPasswordUpdate(Guid userGuid, string password);
 
 		WayfProfile WayfProfileGet(string wayfId);
-		uint WayfProfileUpdate(Guid userGuid, string wayfId, string givenName, string surName, string commonName);
+		uint WayfProfileUpdate(Guid userGuid, string wayfId, string givenName, string surName);
     }
 }

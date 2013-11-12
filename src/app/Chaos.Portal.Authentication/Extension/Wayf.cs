@@ -18,7 +18,7 @@ namespace Chaos.Portal.Authentication.Extension
 			AuthenticationRepository = authenticationRepository;
 		}
 
-		public UserInfo Login(string wayfId, string givenName, string surName, string commonName)
+		public UserInfo Login(string wayfId, string email, string givenName, string surName)
 		{
 			var wayfProfile = AuthenticationRepository.WayfProfileGet(wayfId);
 
@@ -31,7 +31,7 @@ namespace Chaos.Portal.Authentication.Extension
 				if(PortalRepository.UserCreate(wayfProfile.UserGuid, null) != 1) throw new LoginException("Failed to create new user");
 			}
 
-			AuthenticationRepository.WayfProfileUpdate(wayfProfile.UserGuid, wayfId, givenName, surName, commonName);
+			AuthenticationRepository.WayfProfileUpdate(wayfProfile.UserGuid, wayfId, givenName, surName);
 
 			var result = PortalRepository.SessionUpdate(Request.Session.Guid, wayfProfile.UserGuid);
 

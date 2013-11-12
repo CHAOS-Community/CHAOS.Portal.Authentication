@@ -18,6 +18,6 @@
     <IncludeDebugInformation>false</IncludeDebugInformation>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="index.php" />
+    <Compile Include="Login.php" />
   </ItemGroup>
 </Project>

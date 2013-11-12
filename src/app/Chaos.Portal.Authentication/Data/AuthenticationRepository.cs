@@ -115,15 +115,14 @@
 			return results.FirstOrDefault();
 	    }
 
-	    public uint WayfProfileUpdate(Guid userGuid, string wayfId, string givenName, string surName, string commonName)
+	    public uint WayfProfileUpdate(Guid userGuid, string wayfId, string givenName, string surName)
 	    {
 			var result = Gateway.ExecuteNonQuery("WayfProfile_Update", new[]
                 {
                     new MySqlParameter("UserGUID", userGuid.ToByteArray()), 
                     new MySqlParameter("WayfId", wayfId),
                     new MySqlParameter("GivenName", givenName),
-                    new MySqlParameter("SurName", surName),
-                    new MySqlParameter("CommonName", commonName)
+                    new MySqlParameter("SurName", surName)
                 });
 
 			return (uint)result;

@@ -4,7 +4,6 @@ CREATE PROCEDURE WayfProfile_Update
     WayfId				varchar(1024),
 	GivenName		varchar(1024) NOT NULL,
 	SurName			varchar(1024) NOT NULL,
-	CommonName	varchar(1024) NOT NULL,
 )
 BEGIN
 	INSERT INTO WayfProfile
@@ -13,7 +12,6 @@ BEGIN
         WayfId,
 		GivenName,
 		SurName,
-		CommonName,
         DateCreated,
         DateModified
     )
@@ -23,14 +21,12 @@ BEGIN
         WayfId,
 		GivenName,
 		SurName,
-		CommonName,
         NOW(),
         NULL
     )
 	ON DUPLICATE KEY UPDATE 
 		GivenName = GivenName, 
 		SurName = SurName, 
-		CommonName = CommonName, 
 		DateModified = NOW();
 
 	SELECT ROW_COUNT();
