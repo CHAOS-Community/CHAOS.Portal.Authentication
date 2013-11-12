@@ -1,12 +1,16 @@
 <?php
-	require_once('../../../tools/simplesamlphp-1.11.0/lib/_autoload.php');
+	ini_set('display_errors',1);
+	ini_set('display_startup_errors',1);
+	error_reporting(-1);
+
+	require_once('../lib/_autoload.php');
 	
 	$error = null;
 	
 	if(!isset($_REQUEST["apiPath"]))
-		print("Parameter apiPath not set");
+		$error = "Parameter apiPath not set";
 	if(!isset($_REQUEST["sessionGuid"]))
-		print("Parameter sessionGuid not set");
+		$error = "Parameter sessionGuid not set";
 	else
 	{
 		//$simpleSaml = new SimpleSAML_Auth_Simple("Wayf");
@@ -17,21 +21,21 @@
 		$apiPath = $_REQUEST["apiPath"];
 		//$attributes = $simpleSaml->getAttributes();
 				
-		$attributes = {
+		$attributes = array(
 						'eduPersonTargetedID' => 'testid',
 						'mail' => 'test@test.test',
 						'gn' => 'Jens',
 						'sn' => 'Jensen'
-		};
+					);
 				
 		$parameters = array(
-			'format' => 'json2',
-			'sessionGuid' => $sessionGuid,
-			'wayfId' => $attributes['eduPersonTargetedID'][0],
-			'email' => $attributes['mail'][0],
-			'givenName' => $attributes['gn'][0],
-			'surName' => $attributes['sn'][0]
-			);
+						'format' => 'json2',
+						'sessionGuid' => $sessionGuid,
+						'wayfId' => $attributes['eduPersonTargetedID'][0],
+						'email' => $attributes['mail'][0],
+						'givenName' => $attributes['gn'][0],
+						'surName' => $attributes['sn'][0]
+					);
 				
 		$ch = curl_init();
 
@@ -50,6 +54,7 @@
 			$error = "Failed to parse Portal response";
 		else if ($response["Error"] != null && $response["Error"]["Message"] != null)
 			$error = "Portal authentication failed: " + $response["Error"]["Message"];
+	}
 ?>
 <html>
     <head>
@@ -65,7 +70,7 @@
 			if($error == null)
 				print("Session authenticated");
 			else
-				print("Error: $error")
+				print("Error: $error");
 		?>
         </p>
     </body>

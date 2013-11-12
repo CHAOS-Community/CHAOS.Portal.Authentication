@@ -22,13 +22,22 @@ namespace Chaos.Portal.Authentication.Extension
 		{
 			var wayfProfile = AuthenticationRepository.WayfProfileGet(wayfId);
 
-			//TODO: Verify valid wayf
+			//TODO: Verify valid wayf request
 
 			if (wayfProfile == null)
 			{
-				wayfProfile = new WayfProfile {UserGuid = Guid.NewGuid()};
+				wayfProfile = new WayfProfile();
 
-				if(PortalRepository.UserCreate(wayfProfile.UserGuid, null) != 1) throw new LoginException("Failed to create new user");
+				var existingUser = PortalRepository.UserInfoGet(email);
+
+				if (existingUser == null)
+				{
+					wayfProfile.UserGuid = Guid.NewGuid();
+
+					if (PortalRepository.UserCreate(wayfProfile.UserGuid, email) != 1) throw new LoginException("Failed to create new user");
+				}
+				else
+					wayfProfile.UserGuid = existingUser.Guid;
 			}
 
 			AuthenticationRepository.WayfProfileUpdate(wayfProfile.UserGuid, wayfId, givenName, surName);
