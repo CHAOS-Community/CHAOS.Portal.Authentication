@@ -5,19 +5,17 @@
 	using CHAOS.Data;
 	using Dto;
 
-	public class WayfProfileMapping : IReaderMapping<WayfProfile>
+	public class WayfUserMapping : IReaderMapping<WayfUser>
 	{
-		public IEnumerable<WayfProfile> Map(IDataReader reader)
+		public IEnumerable<WayfUser> Map(IDataReader reader)
 		{
 			while (reader.Read())
 			{
 				yield return
-					new WayfProfile
+					new WayfUser
 					{
 						UserGuid = reader.GetGuid("UserGuid"),
 						WayfId = reader.GetString("WayfId"),
-						GivenName = reader.GetString("GivenName"),
-						SurName = reader.GetString("SurName"),
 						DateCreated = reader.GetDateTime("DateCreated"),
 						DateModified = reader.GetDateTimeNullable("DateModified")
 					};

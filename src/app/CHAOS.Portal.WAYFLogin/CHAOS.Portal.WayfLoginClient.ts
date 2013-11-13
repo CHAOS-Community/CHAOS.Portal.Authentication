@@ -23,7 +23,7 @@ module CHAOS.Portal
 				window.addEventListener("message", messageRecieved, false);
 			}
 
-			frame.src = wayfServicePath + "CHAOSWayfLogin.php?sessionGuid=" + client.GetCurrentSession().Guid + "&apiPath=" + client.GetServicePath();
+			frame.src = wayfServicePath + "?sessionGuid=" + client.GetCurrentSession().Guid + "&apiPath=" + client.GetServicePath();
 		}
 	}
 }

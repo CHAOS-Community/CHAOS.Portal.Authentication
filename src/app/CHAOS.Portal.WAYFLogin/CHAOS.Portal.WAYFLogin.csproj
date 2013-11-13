@@ -58,7 +58,7 @@
     <Content Include="Test.html" />
     <Content Include="TypeScriptDefinitions\PortalClient.d.ts" />
     <TypeScriptCompile Include="CHAOS.Portal.WayfLoginClient.ts" />
-    <Content Include="CHAOSWayfLogin.php" />
+    <Content Include="index.php" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TypeScript\Microsoft.TypeScript.targets" />
 </Project>

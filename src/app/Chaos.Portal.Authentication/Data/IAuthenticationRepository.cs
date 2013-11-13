@@ -17,7 +17,7 @@
         SiteKey SiteKeyGet(string key);
 		uint EmailPasswordUpdate(Guid userGuid, string password);
 
-		WayfProfile WayfProfileGet(string wayfId);
-		uint WayfProfileUpdate(Guid userGuid, string wayfId, string givenName, string surName);
+		WayfUser WayfProfileGet(string wayfId);
+		uint WayfProfileUpdate(Guid userGuid, string wayfId);
     }
 }

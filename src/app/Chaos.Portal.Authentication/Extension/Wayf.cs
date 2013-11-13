@@ -18,7 +18,7 @@ namespace Chaos.Portal.Authentication.Extension
 			AuthenticationRepository = authenticationRepository;
 		}
 
-		public UserInfo Login(string wayfId, string email, string givenName, string surName)
+		public UserInfo Login(string wayfId, string email)
 		{
 			var wayfProfile = AuthenticationRepository.WayfProfileGet(wayfId);
 
@@ -26,7 +26,7 @@ namespace Chaos.Portal.Authentication.Extension
 
 			if (wayfProfile == null)
 			{
-				wayfProfile = new WayfProfile();
+				wayfProfile = new WayfUser();
 
 				var existingUser = PortalRepository.UserInfoGet(null, null,email, null).FirstOrDefault();
 
@@ -38,9 +38,9 @@ namespace Chaos.Portal.Authentication.Extension
 				}
 				else
 					wayfProfile.UserGuid = existingUser.Guid;
-			}
 
-			AuthenticationRepository.WayfProfileUpdate(wayfProfile.UserGuid, wayfId, givenName, surName);
+				AuthenticationRepository.WayfProfileUpdate(wayfProfile.UserGuid, wayfId);
+			}
 
 			var result = PortalRepository.SessionUpdate(Request.Session.Guid, wayfProfile.UserGuid);
 

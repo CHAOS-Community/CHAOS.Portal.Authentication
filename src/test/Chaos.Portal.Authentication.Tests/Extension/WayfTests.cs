@@ -4,7 +4,6 @@
 	using System;
 	using Data.Dto;
 	using Core.Data.Model;
-	using Moq;
 
 	[TestFixture]
 	public class WayfTests : TestBase
@@ -16,15 +15,13 @@
 
 			var wayfId = "somerandomletters";
 			var email = "test@test.test";
-			var givenName = "Albert";
-			var surName = "Einstein";
 
 			var expected = new UserInfo
 			{
 				Guid = new Guid("10000000-0000-0000-0000-000000000001"),
 				Email = "test@test.test"
 			};
-			var profile = new WayfProfile()
+			var profile = new WayfUser()
 			{
 				UserGuid = expected.Guid,
 				WayfId = wayfId
@@ -39,7 +36,7 @@
 			PortalRequest.SetupGet(p => p.Session).Returns(session);
 			AuthenticationRepository.Setup(m => m.WayfProfileGet(wayfId)).Returns(profile);
 
-			var result = extension.Login(wayfId, email, givenName, surName);
+			var result = extension.Login(wayfId, email);
 
 			PortalRepository.VerifyAll();
 
