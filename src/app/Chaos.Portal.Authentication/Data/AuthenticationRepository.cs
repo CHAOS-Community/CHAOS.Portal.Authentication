@@ -22,7 +22,7 @@
             ReaderExtensions.Mappings.Add(typeof(EmailPassword), new EmailPasswordMapping());
             ReaderExtensions.Mappings.Add(typeof(WayfUser), new WayfUserMapping());
             ReaderExtensions.Mappings.Add(typeof(SecureCookie), new SecureCookieMapping());
-            ReaderExtensions.Mappings.Add(typeof(AuthKey), new SiteKeyMapping());
+            ReaderExtensions.Mappings.Add(typeof(AuthKey), new AuthKeyMapping());
         }
 
         public AuthenticationRepository(string connectionString)
