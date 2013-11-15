@@ -1,13 +1,13 @@
-CREATE PROCEDURE SiteKey_Create 
+CREATE PROCEDURE AuthKey_Create 
 (
-	`Key`		VARCHAR(255),
+	Token		VARCHAR(255),
 	UserGuid	BINARY(16),
 	Name		VARCHAR(255)
 )
 BEGIN
 
-	INSERT INTO SiteKey	(`Key`,	`UserGuid`,	`Name`)	
-	VALUES	(`Key`,	UserGuid, Name);
+	INSERT INTO AuthKey	(`Token`,	`UserGuid`,	`Name`)	
+	VALUES	(Token,	UserGuid, Name);
 
 	SELECT ROW_COUNT();
 

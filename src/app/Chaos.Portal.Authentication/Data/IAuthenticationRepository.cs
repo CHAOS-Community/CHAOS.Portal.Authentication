@@ -17,7 +17,7 @@
 
 		uint AuthKeyCreate(string token, Guid userGuid, string name);
 		IList<AuthKey> AuthKeyGet(Guid? userGuid, string token);
-		uint AuthKeyDelete(string token);
+		uint AuthKeyDelete(Guid userGuid, string name);
 
 		WayfUser WayfProfileGet(string wayfId);
 		uint WayfProfileUpdate(Guid userGuid, string wayfId);

@@ -95,7 +95,7 @@ namespace Chaos.Portal.Authentication.Tests.Extension
 		{
 			var extension = Make_SiteAccessExtension();
 			var user = Make_UserInfo();
-			var expected = new List<AuthKey> {new AuthKey("Token 1", user.Guid), new AuthKey("Token 2", user.Guid)};
+			var expected = new List<AuthKey> {new AuthKey("Token 1", "My App 1", user.Guid), new AuthKey("Token 2", "My App 2", user.Guid)};
 
 			PortalRequest.SetupGet(p => p.User).Returns(user);
 			AuthenticationRepository.Setup(m => m.AuthKeyGet(user.Guid, null)).Returns(expected);
@@ -104,6 +104,36 @@ namespace Chaos.Portal.Authentication.Tests.Extension
 
 			Assert.That(result.Count, Is.EqualTo(2));
 			Assert.That(result.Count(a => a.Token != null), Is.EqualTo(0));
+		}
+
+	    [Test]
+	    public void Delete_GivenExistingAuthKey_DeleteKeyReturnOne()
+	    {
+			var extension = Make_SiteAccessExtension();
+			var user = Make_UserInfo();
+		    var key = new AuthKey("some token", "My App", user.Guid);
+
+			PortalRequest.SetupGet(p => p.User).Returns(user);
+			AuthenticationRepository.Setup(m => m.AuthKeyDelete(user.Guid, key.Name)).Returns(1).Verifiable();
+
+		    var result = extension.Delete(key.Name);
+
+			AuthenticationRepository.VerifyAll();
+
+			Assert.That(result.Value, Is.EqualTo(1));
+	    }
+
+		[Test, ExpectedException(typeof(ArgumentException))]
+		public void Delete_GivenNonExistingAuthKey_ThrowArgumentException()
+		{
+			var extension = Make_SiteAccessExtension();
+			var user = Make_UserInfo();
+			var noneExistingKey = new AuthKey("some token", "My App", user.Guid);
+
+			PortalRequest.SetupGet(p => p.User).Returns(user);
+			AuthenticationRepository.Setup(m => m.AuthKeyDelete(user.Guid, noneExistingKey.Name)).Returns(0).Verifiable();
+
+			extension.Delete(noneExistingKey.Name);
 		}
 
 	    private static UserInfo Make_UserInfo()

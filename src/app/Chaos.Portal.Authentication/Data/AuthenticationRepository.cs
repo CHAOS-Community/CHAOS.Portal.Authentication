@@ -131,11 +131,12 @@
 			return (uint)results;
 		}
 
-		public uint AuthKeyDelete(string token)
+		public uint AuthKeyDelete(Guid userGuid, string name)
 		{
 			var results = Gateway.ExecuteNonQuery("AuthKey_Delete", new[]
                 {
-                    new MySqlParameter("Token", token) 
+                    new MySqlParameter("userGuid", userGuid.ToByteArray()),
+                    new MySqlParameter("name", name) 
                 });
 
 			return (uint)results;

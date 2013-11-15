@@ -54,11 +54,7 @@ namespace Chaos.Portal.Authentication.Extension
 
             if(result == 0) throw new UnhandledException("AuthKey wasn't added to the database");
 
-            return new Data.Model.AuthKey
-                {
-                    Token      = hashed,
-                    UserGuid   = userGuid
-                };
+	        return new Data.Model.AuthKey(hashed, name, userGuid);
         }
 
 	    public IList<Data.Model.AuthKey> Get()
@@ -73,8 +69,10 @@ namespace Chaos.Portal.Authentication.Extension
 
 		public ScalarResult Delete(string name)
 		{
-			
+			var result = AuthenticationRepository.AuthKeyDelete(Request.User.Guid, name);
 
+			if(result != 1)
+				throw new ArgumentException(string.Format("AuthKey \"{0}\" not found", name));
 
 			return new ScalarResult(1);
 		}
