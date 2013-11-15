@@ -33,7 +33,7 @@
         {
             yield return "EmailPassword";
             yield return "SecureCookie";
-            yield return "SiteAccess";
+            yield return "AuthKey";
             yield return "Wayf";
         }
 
@@ -58,8 +58,8 @@
                         return new EmailPassword(PortalApplication, AuthenticationRepository);
                     case "SecureCookie":
                         return new SecureCookie(PortalApplication, AuthenticationRepository);
-                    case "SiteAccess":
-                        return new SiteAccess(PortalApplication, AuthenticationRepository);
+                    case "AuthKey":
+                        return new AuthKey(PortalApplication, AuthenticationRepository);
 					case "Wayf":
 						return new Wayf(PortalApplication, AuthenticationRepository);
                 }

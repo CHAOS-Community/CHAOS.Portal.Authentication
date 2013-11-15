@@ -8,18 +8,18 @@
     using Chaos.Portal.Authentication.Data.Dto;
     using Chaos.Portal.Authentication.Data.Model;
 
-    public class SiteKeyMapping : IReaderMapping<SiteKey>
+    public class SiteKeyMapping : IReaderMapping<AuthKey>
     {
-        #region Implementation of IReaderMapping<out SiteKey>
+        #region Implementation of IReaderMapping<out AuthKey>
 
-        public IEnumerable<SiteKey> Map(IDataReader reader)
+        public IEnumerable<AuthKey> Map(IDataReader reader)
         {
             while(reader.Read())
             {
                 yield return
-                    new SiteKey()
+                    new AuthKey()
                         {
-                            Key      = reader.GetString("Key"),
+                            Token      = reader.GetString("Token"),
                             UserGuid = reader.GetGuid("UserGuid")
                         };
             }

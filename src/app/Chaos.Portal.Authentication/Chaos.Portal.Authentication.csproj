@@ -56,10 +56,10 @@
     <Compile Include="Data\Mapping\EmailPasswordMapping.cs" />
     <Compile Include="Data\Mapping\SecureCookieMapping.cs" />
     <Compile Include="Data\Mapping\WayfUserMapping.cs" />
-    <Compile Include="Data\Model\SiteKey.cs" />
+    <Compile Include="Data\Model\AuthKey.cs" />
     <Compile Include="Exception\LoginException.cs" />
     <Compile Include="Exception\SecureCookieAlreadyConsumedException.cs" />
-    <Compile Include="Extension\SiteAccess.cs" />
+    <Compile Include="Extension\AuthKey.cs" />
     <Compile Include="Extension\EmailPassword.cs" />
     <Compile Include="Extension\SecureCookie.cs" />
     <Compile Include="Extension\Wayf.cs" />

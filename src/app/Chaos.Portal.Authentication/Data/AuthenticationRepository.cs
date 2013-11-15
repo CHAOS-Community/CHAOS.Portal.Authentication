@@ -22,7 +22,7 @@
             ReaderExtensions.Mappings.Add(typeof(EmailPassword), new EmailPasswordMapping());
             ReaderExtensions.Mappings.Add(typeof(WayfUser), new WayfUserMapping());
             ReaderExtensions.Mappings.Add(typeof(SecureCookie), new SecureCookieMapping());
-            ReaderExtensions.Mappings.Add(typeof(SiteKey), new SiteKeyMapping());
+            ReaderExtensions.Mappings.Add(typeof(AuthKey), new SiteKeyMapping());
         }
 
         public AuthenticationRepository(string connectionString)
@@ -97,28 +97,6 @@
             return results.FirstOrDefault();
         }
 
-        public SiteKey SiteKeyGet(string key)
-        {
-            var results = Gateway.ExecuteQuery<SiteKey>("SiteKey_Get", new[]
-                {
-                    new MySqlParameter("Key", key) 
-                });
-
-            return results.FirstOrDefault();
-        }
-
-        public uint SiteKeyCreate(string key, Guid userGuid, string name)
-        {
-            var results = Gateway.ExecuteNonQuery("SiteKey_Create", new[]
-                {
-                    new MySqlParameter("Key", key),
-                    new MySqlParameter("UserGuid", userGuid),
-                    new MySqlParameter("Name", name)
-                });
-
-            return (uint)results;
-        }
-
 		public uint EmailPasswordUpdate(Guid userGuid, string password)
 	    {
 			var result = Gateway.ExecuteNonQuery("EmailPassword_Update", new[]
@@ -129,6 +107,39 @@
 
 			return (uint)result;
 	    }
+
+		public IList<AuthKey> AuthKeyGet(Guid? userGuid, string token)
+		{
+			var results = Gateway.ExecuteQuery<AuthKey>("AuthKey_Get", new[]
+                {
+                    new MySqlParameter("UserGuid", userGuid.HasValue ? userGuid.Value.ToByteArray() : null),
+                    new MySqlParameter("Token", token) 
+                });
+
+			return results;
+		}
+
+	    public uint AuthKeyCreate(string token, Guid userGuid, string name)
+		{
+			var results = Gateway.ExecuteNonQuery("AuthKey_Create", new[]
+                {
+                    new MySqlParameter("Token", token),
+                    new MySqlParameter("UserGuid", userGuid.ToByteArray()),
+                    new MySqlParameter("Name", name)
+                });
+
+			return (uint)results;
+		}
+
+		public uint AuthKeyDelete(string token)
+		{
+			var results = Gateway.ExecuteNonQuery("AuthKey_Delete", new[]
+                {
+                    new MySqlParameter("Token", token) 
+                });
+
+			return (uint)results;
+		}
 
 	    public WayfUser WayfProfileGet(string wayfId)
 	    {

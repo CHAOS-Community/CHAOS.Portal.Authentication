@@ -44,7 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AuthenticationModuleTest.cs" />
-    <Compile Include="Extension\SiteAccessTest.cs" />
+    <Compile Include="Extension\AuthKeyTest.cs" />
     <Compile Include="Extension\EmailPasswordTests.cs" />
     <Compile Include="Extension\SecureCookieTests.cs" />
     <Compile Include="Extension\WayfTests.cs" />
