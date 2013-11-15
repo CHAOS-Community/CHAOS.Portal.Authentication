@@ -13,16 +13,9 @@
 		$error = "Parameter sessionGuid not set";
 	else
 	{
-		//$simpleSaml = new SimpleSAML_Auth_Simple("Wayf");
-		//$simpleSaml->requireAuth();
-		//$attributes = $simpleSaml->getAttributes();
-				
-		$attributes = array(
-						'eduPersonTargetedID' => 'testid',
-						'mail' => 'test@test.test',
-						'gn' => 'Jens',
-						'sn' => 'Jensen'
-					);
+		$simpleSaml = new SimpleSAML_Auth_Simple("Wayf");
+		$simpleSaml->requireAuth();
+		$attributes = $simpleSaml->getAttributes();
 		
 		$helper = new PortalHelper($_REQUEST["apiPath"], $_REQUEST["sessionGuid"]);
 
