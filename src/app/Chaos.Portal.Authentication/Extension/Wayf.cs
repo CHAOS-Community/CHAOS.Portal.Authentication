@@ -5,6 +5,7 @@ using Chaos.Portal.Authentication.Data.Dto;
 using Chaos.Portal.Authentication.Exception;
 using Chaos.Portal.Core;
 using Chaos.Portal.Core.Data.Model;
+using Chaos.Portal.Core.Exceptions;
 using Chaos.Portal.Core.Extension;
 
 namespace Chaos.Portal.Authentication.Extension
@@ -18,17 +19,17 @@ namespace Chaos.Portal.Authentication.Extension
 			AuthenticationRepository = authenticationRepository;
 		}
 
-		public UserInfo Login(string wayfId, string email)
+		public UserInfo Login(string wayfId, string email, Guid sessionGuidToAuthenticate)
 		{
-			var wayfProfile = AuthenticationRepository.WayfProfileGet(wayfId);
+			if(!Request.User.HasPermission(SystemPermissons.Manage)) throw new InsufficientPermissionsException("Only managers can authenticate sessions");
 
-			//TODO: Verify valid wayf request
+			var wayfProfile = AuthenticationRepository.WayfProfileGet(wayfId);
 
 			if (wayfProfile == null)
 			{
 				wayfProfile = new WayfUser();
 
-				var existingUser = PortalRepository.UserInfoGet(null, null,email, null).FirstOrDefault();
+				var existingUser = PortalRepository.UserInfoGet(null, null, email, null).FirstOrDefault();
 
 				if (existingUser == null)
 				{
@@ -42,11 +43,11 @@ namespace Chaos.Portal.Authentication.Extension
 				AuthenticationRepository.WayfProfileUpdate(wayfProfile.UserGuid, wayfId);
 			}
 
-			var result = PortalRepository.SessionUpdate(Request.Session.Guid, wayfProfile.UserGuid);
+			var result = PortalRepository.SessionUpdate(sessionGuidToAuthenticate, wayfProfile.UserGuid);
 
 			if (result == null) throw new LoginException("Session could not be updated");
 
-			return PortalRepository.UserInfoGet(null, Request.Session.Guid, null, null).First();
+			return PortalRepository.UserInfoGet(null, sessionGuidToAuthenticate, null, null).First();
 		}
 	}
 }
