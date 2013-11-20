@@ -13,9 +13,11 @@
         uint SecureCookieUse(Guid? guid, Guid? userGuid, Guid? passwordGuid);
 
         EmailPassword EmailPasswordGet(Guid guid, string password);
-        uint SiteKeyCreate(string key, Guid userGuid, string name);
-        SiteKey SiteKeyGet(string key);
 		uint EmailPasswordUpdate(Guid userGuid, string password);
+
+		uint AuthKeyCreate(string token, Guid userGuid, string name);
+		IList<AuthKey> AuthKeyGet(Guid? userGuid, string token);
+		uint AuthKeyDelete(Guid userGuid, string name);
 
 		WayfUser WayfProfileGet(string wayfId);
 		uint WayfProfileUpdate(Guid userGuid, string wayfId);

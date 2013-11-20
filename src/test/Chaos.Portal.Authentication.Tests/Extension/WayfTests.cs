@@ -21,22 +21,34 @@
 				Guid = new Guid("10000000-0000-0000-0000-000000000001"),
 				Email = "test@test.test"
 			};
+			var callingUser  = new UserInfo
+			{
+				Guid = new Guid("10000000-0000-0000-0000-000000000002"),
+				Email = "test2@test.test",
+				SystemPermissonsEnum = SystemPermissons.All
+			};
 			var profile = new WayfUser()
 			{
 				UserGuid = expected.Guid,
 				WayfId = wayfId
 			};
-			var session = new Session
+			var sessionToAuthenticate = new Session
 			{
 				Guid = new Guid("12000000-0000-0000-0000-000000000021")
 			};
+			var managingUsersSession = new Session
+			{
+				Guid = new Guid("12000000-0000-0000-0000-000000000031"),
+				UserGuid = callingUser.Guid
+			};
 
-			PortalRepository.Setup(m => m.SessionUpdate(session.Guid, expected.Guid)).Returns(new Session());
-			PortalRepository.Setup(m => m.UserInfoGet(null, session.Guid, null, null)).Returns(new[] { expected });
-			PortalRequest.SetupGet(p => p.Session).Returns(session);
+			PortalRepository.Setup(m => m.SessionUpdate(sessionToAuthenticate.Guid, expected.Guid)).Returns(new Session());
+			PortalRepository.Setup(m => m.UserInfoGet(null, sessionToAuthenticate.Guid, null, null)).Returns(new[] { expected });
+			PortalRequest.SetupGet(p => p.Session).Returns(sessionToAuthenticate);
+			PortalRequest.SetupGet(p => p.User).Returns(callingUser);
 			AuthenticationRepository.Setup(m => m.WayfProfileGet(wayfId)).Returns(profile);
 
-			var result = extension.Login(wayfId, email);
+			var result = extension.Login(wayfId, email, sessionToAuthenticate.Guid);
 
 			PortalRepository.VerifyAll();
 

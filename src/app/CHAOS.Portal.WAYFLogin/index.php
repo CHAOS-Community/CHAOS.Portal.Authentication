@@ -4,6 +4,7 @@
 	error_reporting(-1);
 
 	require_once('../../simplesamlphp/lib/_autoload.php');
+	require_once('WayfConfiguration.php');
 	
 	$error = null;
 	
@@ -11,21 +12,29 @@
 		$error = "Parameter apiPath not set";
 	if(!isset($_REQUEST["sessionGuid"]))
 		$error = "Parameter sessionGuid not set";
+	if(!isset($WayfConfiguration['AuthKeyToken']))
+	$error = "AuthKeyToken not set in configuration";
 	else
 	{
 		$simpleSaml = new SimpleSAML_Auth_Simple("Wayf");
 		$simpleSaml->requireAuth();
 		$attributes = $simpleSaml->getAttributes();
 		
-		$helper = new PortalHelper($_REQUEST["apiPath"], $_REQUEST["sessionGuid"]);
-
-		$response = $helper->Call("Wayf/Login", array('wayfId' => $attributes['eduPersonTargetedID'][0], 'email' => $attributes['mail'][0]));
+		$helper = new PortalHelper($_REQUEST["apiPath"]);
+		
+		$response = $helper->Call("AuthKey/Login", array('token' => $WayfConfiguration['AuthKeyToken']));
 		
 		if(!($error = $helper->GetError()))
 		{
-			//$response = $helper->Call("UserManagement/GetUserObject", array('createIfMissing ' => true));
+			$helper->SetSessionGuid($response->Body->Results[0]->Guid);
+			$response = $helper->Call("Wayf/Login", array('wayfId' => $attributes['eduPersonTargetedID'][0], 'email' => $attributes['mail'][0], 'sessionGuidToAuthenticate' => $_REQUEST["sessionGuid"]));
+		
+			if(!($error = $helper->GetError()))
+			{
+				//$response = $helper->Call("UserManagement/GetUserObject", array('createIfMissing ' => true));
 
-			$error = $helper->GetError();
+				$error = $helper->GetError();
+			}
 		}
 	}
 ?>
@@ -60,9 +69,8 @@
 
 		private $_error;
 		
-		function __construct($path, $sessionGuid)
+		function __construct($path)
 		{
-			$this->_sessionGuid = $sessionGuid;
 			$this->_path = $path;
 			
 			$this->_ch = curl_init();
@@ -72,11 +80,18 @@
 		{
 			curl_close ($this->_ch);
 		}
+		
+		public function SetSessionGuid($sessionGuid)
+		{
+			$this->_sessionGuid = $sessionGuid;
+		}
 	
 		public function Call($path, $parameters)
 		{
 			$parameters['format'] = 'json2';
-			$parameters['sessionGUID'] = $this->_sessionGuid;
+			
+			if($this->_sessionGuid)
+				$parameters['sessionGUID'] = $this->_sessionGuid;
 			
 			$this->_error = null;
 		
