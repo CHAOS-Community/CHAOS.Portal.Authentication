@@ -4,8 +4,9 @@
 	using System.Data;
 	using CHAOS.Data;
 	using Dto;
+	using Model;
 
-	public class WayfUserMapping : IReaderMapping<WayfUser>
+    public class WayfUserMapping : IReaderMapping<WayfUser>
 	{
 		public IEnumerable<WayfUser> Map(IDataReader reader)
 		{

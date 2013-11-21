@@ -1,10 +1,8 @@
-﻿namespace Chaos.Portal.Authentication.Data.Dto
+﻿namespace Chaos.Portal.Authentication.Data.Dto.v6
 {
     using System;
-
     using CHAOS.Serialization;
-
-    using Chaos.Portal.Core.Data.Model;
+    using Core.Data.Model;
 
     public class SecureCookie : AResult
     {

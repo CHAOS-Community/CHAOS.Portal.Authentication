@@ -27,7 +27,7 @@
         #endregion
         #region Business Logic
 
-        public IEnumerable<Data.Dto.SecureCookie> Get()
+        public IEnumerable<Data.Dto.v6.SecureCookie> Get()
         {
             return AuthenticationRepository.SecureCookieGet(null, Request.User.Guid, null);
         }
@@ -39,7 +39,7 @@
             return new ScalarResult((int)result);
         }
 
-        public Data.Dto.SecureCookie Create()
+        public Data.Dto.v6.SecureCookie Create()
         {
             if (Request.IsAnonymousUser) throw new LoginException("Anonymous users cannot create a SecureCookie");
 
@@ -55,7 +55,7 @@
 
         #endregion
 
-        public Data.Dto.SecureCookie Login(Guid guid, Guid passwordGuid)
+        public Data.Dto.v6.SecureCookie Login(Guid guid, Guid passwordGuid)
         {
             var cookie = AuthenticationRepository.SecureCookieGet(guid, null, passwordGuid).FirstOrDefault();
 

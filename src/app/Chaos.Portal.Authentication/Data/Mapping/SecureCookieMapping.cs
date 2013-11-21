@@ -6,6 +6,7 @@
     using CHAOS.Data;
 
     using Chaos.Portal.Authentication.Data.Dto;
+    using Dto.v6;
 
     public class SecureCookieMapping : IReaderMapping<SecureCookie>
     {

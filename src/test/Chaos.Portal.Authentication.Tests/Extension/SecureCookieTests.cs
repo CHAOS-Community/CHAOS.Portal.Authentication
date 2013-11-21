@@ -6,7 +6,7 @@
     using Chaos.Portal.Authentication.Data.Dto;
     using Chaos.Portal.Authentication.Exception;
     using Chaos.Portal.Core.Data.Model;
-
+    using Data.Dto.v6;
     using Moq;
 
     using NUnit.Framework;
@@ -47,7 +47,7 @@
         public void Create_IsAuthenticated_CreateAndReturnSecureCookie()
         {
             var extension   = Make_SecureCookie();
-            var expected    = new Data.Dto.SecureCookie();
+            var expected    = new SecureCookie();
             var userGuid    = new Guid("10000000-0000-0000-0000-000000000001");
             var sessionGuid = new Guid("12000000-0000-0000-0000-000000000021");
             PortalRequest.SetupGet(p => p.User).Returns(new UserInfo { Guid = userGuid });

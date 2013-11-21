@@ -4,7 +4,7 @@
     using System.Data;
 
     using CHAOS.Data;
-    using Dto.v6;
+    using Model;
 
     public class FacebookUserMapping : IReaderMapping<FacebookUser>
     {

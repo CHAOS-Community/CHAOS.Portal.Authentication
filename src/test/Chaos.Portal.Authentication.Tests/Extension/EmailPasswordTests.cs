@@ -7,7 +7,7 @@ namespace Chaos.Portal.Authentication.Tests.Extension
     using Chaos.Portal.Authentication.Data.Dto;
     using Chaos.Portal.Authentication.Exception;
     using Chaos.Portal.Core.Data.Model;
-
+    using Data.Model;
     using Moq;
 
     using NUnit.Framework;

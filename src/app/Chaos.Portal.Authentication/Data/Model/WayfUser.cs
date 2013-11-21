@@ -1,8 +1,8 @@
-﻿using System;
-
-namespace Chaos.Portal.Authentication.Data.Dto
+﻿namespace Chaos.Portal.Authentication.Data.Model
 {
-	public class WayfUser
+    using System;
+
+    public class WayfUser
 	{
 		public Guid			UserGuid { get; set; }
 		public string		WayfId { get; set; }

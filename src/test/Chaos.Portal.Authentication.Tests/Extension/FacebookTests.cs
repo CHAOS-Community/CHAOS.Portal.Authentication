@@ -4,7 +4,7 @@
     using Authentication.Extension.v6;
     using Core.Data.Model;
     using Core.Exceptions;
-    using Data.Dto.v6;
+    using Data.Model;
     using Exception;
     using Moq;
     using NUnit.Framework;

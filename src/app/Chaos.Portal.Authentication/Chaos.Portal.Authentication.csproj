@@ -52,18 +52,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AuthenticationModule.cs" />
-    <Compile Include="Data\Dto\EmailPassword.cs" />
-    <Compile Include="Data\Dto\SecureCookie.cs" />
     <Compile Include="Data\AuthenticationRepository.cs" />
-    <Compile Include="Data\Dto\v6\FacebookUser.cs" />
-    <Compile Include="Data\Dto\WayfUser.cs" />
+    <Compile Include="Data\Dto\v6\SecureCookie.cs" />
     <Compile Include="Data\IAuthenticationRepository.cs" />
     <Compile Include="Data\Mapping\AuthKeyMapping.cs" />
-    <Compile Include="Data\Mapping\Copy of AuthKeyMapping.cs" />
+    <Compile Include="Data\Mapping\FacebookUserMapping.cs" />
     <Compile Include="Data\Mapping\EmailPasswordMapping.cs" />
     <Compile Include="Data\Mapping\SecureCookieMapping.cs" />
     <Compile Include="Data\Mapping\WayfUserMapping.cs" />
     <Compile Include="Data\Model\AuthKey.cs" />
+    <Compile Include="Data\Model\EmailPassword.cs" />
+    <Compile Include="Data\Model\FacebookUser.cs" />
+    <Compile Include="Data\Model\WayfUser.cs" />
     <Compile Include="Exception\LoginException.cs" />
     <Compile Include="Exception\SecureCookieAlreadyConsumedException.cs" />
     <Compile Include="Extension\AuthKey.cs" />
@@ -71,6 +71,7 @@
     <Compile Include="Extension\SecureCookie.cs" />
     <Compile Include="Extension\v6\Facebook.cs" />
     <Compile Include="Extension\Wayf.cs" />
+    <Compile Include="Facebook\FacebookClient.cs" />
     <Compile Include="IFacebookClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

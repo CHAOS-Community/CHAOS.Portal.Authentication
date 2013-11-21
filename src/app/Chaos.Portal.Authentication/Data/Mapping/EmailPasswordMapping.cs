@@ -6,6 +6,7 @@
     using CHAOS.Data;
 
     using Chaos.Portal.Authentication.Data.Dto;
+    using Model;
 
     public class EmailPasswordMapping : IReaderMapping<EmailPassword>
     {

@@ -1,4 +1,4 @@
-﻿namespace Chaos.Portal.Authentication.Data.Dto
+﻿namespace Chaos.Portal.Authentication.Data.Model
 {
     using System;
 

@@ -4,19 +4,17 @@
     using System.Linq;
     using System.Xml.Linq;
 
-    using Chaos.Portal.Authentication.Data;
-    using Chaos.Portal.Authentication.Extension;
-    using Chaos.Portal.Core;
-    using Chaos.Portal.Core.Exceptions;
-    using Chaos.Portal.Core.Extension;
-    using Chaos.Portal.Core.Module;
+    using Data;
+    using Extension;
+    using Core;
+    using Core.Exceptions;
+    using Core.Extension;
+    using Core.Module;
+    using Extension.v6;
+    using Facebook;
 
     public class AuthenticationModule : IModule
     {
-        public AuthenticationRepository AuthenticationRepository { get; private set; }
-
-        public IPortalApplication PortalApplication { get; private set; }
-
         #region Fields
 
         private const string CONFIGURATION_NAME = "Authentication";
@@ -25,9 +23,25 @@
         #region Properties
 
         public IExtension[] Extensions { get; private set; }
+        public AuthenticationRepository AuthenticationRepository { get; private set; }
+
+        public IPortalApplication PortalApplication { get; private set; }
+
+        private IFacebookClient FacebookClient { get; set; }
 
         #endregion
+
         #region Implementation of IModule
+
+        public void Load(IPortalApplication portalApplication)
+        {
+            var configuration    = portalApplication.PortalRepository.ModuleGet(CONFIGURATION_NAME);
+            var connectionString = XDocument.Parse(configuration.Configuration).Descendants("ConnectionString").First().Value;
+            
+            AuthenticationRepository = new AuthenticationRepository(connectionString);
+            PortalApplication = portalApplication;
+            FacebookClient = new FacebookClient();
+        }
 
         public IEnumerable<string> GetExtensionNames(Protocol version)
         {
@@ -35,6 +49,7 @@
             yield return "SecureCookie";
             yield return "AuthKey";
             yield return "Wayf";
+            yield return "Facebook";
         }
 
         public IExtension GetExtension(Protocol version, string name)
@@ -62,6 +77,8 @@
                         return new AuthKey(PortalApplication, AuthenticationRepository);
 					case "Wayf":
 						return new Wayf(PortalApplication, AuthenticationRepository);
+                    case "Facebook":
+						return new Extension.v6.Facebook(PortalApplication, AuthenticationRepository, FacebookClient);
                 }
             }
 
@@ -71,15 +88,6 @@
         public IExtension GetExtension<TExtension>(Protocol version) where TExtension : IExtension
         {
             return GetExtension(version, typeof(TExtension).Name);
-        }
-
-        public void Load(IPortalApplication portalApplication)
-        {
-            var configuration    = portalApplication.PortalRepository.ModuleGet(CONFIGURATION_NAME);
-            var connectionString = XDocument.Parse(configuration.Configuration).Descendants("ConnectionString").First().Value;
-
-            AuthenticationRepository = new AuthenticationRepository(connectionString);
-            PortalApplication        = portalApplication;
         }
 
         #endregion

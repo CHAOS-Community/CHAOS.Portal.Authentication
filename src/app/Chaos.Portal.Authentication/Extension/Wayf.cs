@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using Chaos.Portal.Authentication.Data;
-using Chaos.Portal.Authentication.Data.Dto;
 using Chaos.Portal.Authentication.Exception;
 using Chaos.Portal.Core;
 using Chaos.Portal.Core.Data.Model;
@@ -10,7 +9,9 @@ using Chaos.Portal.Core.Extension;
 
 namespace Chaos.Portal.Authentication.Extension
 {
-	public class Wayf : AExtension
+    using Data.Model;
+
+    public class Wayf : AExtension
 	{
 		private IAuthenticationRepository AuthenticationRepository { get; set; }
 

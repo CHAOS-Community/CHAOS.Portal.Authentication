@@ -3,6 +3,7 @@
     using System.Linq;
 
     using Authentication.Extension;
+    using Authentication.Extension.v6;
     using Core;
     using NUnit.Framework;
 
@@ -30,6 +31,8 @@
             Assert.That(results[0], Is.EqualTo("EmailPassword"));
             Assert.That(results[1], Is.EqualTo("SecureCookie"));
             Assert.That(results[2], Is.EqualTo("AuthKey"));
+            Assert.That(results[3], Is.EqualTo("Wayf"));
+            Assert.That(results[4], Is.EqualTo("Facebook"));
         }
 
         [Test]
@@ -40,6 +43,16 @@
             var result = module.GetExtension(Protocol.V5, "EmailPassword");
 
             Assert.That(result, Is.InstanceOf<EmailPassword>());
+        }
+
+        [Test]
+        public void GetExtension_Facebookv6_ReturnFacebookExtension()
+        {
+            var module = new AuthenticationModule();
+
+            var result = module.GetExtension(Protocol.V6, "Facebook");
+
+            Assert.That(result, Is.InstanceOf<Facebook>());
         }
 
         private static Core.Data.Model.Module Make_ModuleConfig()

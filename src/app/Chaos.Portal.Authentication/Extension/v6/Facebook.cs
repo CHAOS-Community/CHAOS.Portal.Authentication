@@ -6,7 +6,7 @@
     using Core.Exceptions;
     using Core.Extension;
     using Data;
-    using Data.Dto.v6;
+    using Data.Model;
 
     public class Facebook : AExtension
     {

@@ -2,7 +2,8 @@
 {
     using System;
     using System.Linq;
-
+    using Authentication.Data.Dto.v6;
+    using Authentication.Data.Model;
     using Chaos.Portal.Authentication.Data.Dto;
 
     using NUnit.Framework;

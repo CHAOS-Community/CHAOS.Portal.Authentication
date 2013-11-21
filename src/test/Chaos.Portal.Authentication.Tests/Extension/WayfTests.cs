@@ -1,6 +1,7 @@
 ﻿namespace Chaos.Portal.Authentication.Tests.Extension
 {
-	using NUnit.Framework;
+    using Data.Model;
+    using NUnit.Framework;
 	using System;
 	using Data.Dto;
 	using Core.Data.Model;
