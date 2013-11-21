@@ -37,6 +37,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\Chaos.Portal.dll</HintPath>
     </Reference>
+    <Reference Include="Facebook">
+      <HintPath>..\..\..\packages\Facebook.6.4.2\lib\net45\Facebook.dll</HintPath>
+    </Reference>
     <Reference Include="MySql.Data, Version=6.6.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <HintPath>..\..\..\lib\MySql.Data.dll</HintPath>
     </Reference>
@@ -52,6 +55,7 @@
     <Compile Include="Data\Dto\EmailPassword.cs" />
     <Compile Include="Data\Dto\SecureCookie.cs" />
     <Compile Include="Data\AuthenticationRepository.cs" />
+    <Compile Include="Data\Dto\v6\FacebookUser.cs" />
     <Compile Include="Data\Dto\WayfUser.cs" />
     <Compile Include="Data\IAuthenticationRepository.cs" />
     <Compile Include="Data\Mapping\AuthKeyMapping.cs" />
@@ -64,8 +68,13 @@
     <Compile Include="Extension\AuthKey.cs" />
     <Compile Include="Extension\EmailPassword.cs" />
     <Compile Include="Extension\SecureCookie.cs" />
+    <Compile Include="Extension\v6\Facebook.cs" />
     <Compile Include="Extension\Wayf.cs" />
+    <Compile Include="IFacebookClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,12 +1,12 @@
-using Chaos.Portal.Authentication.Data.Dto;
-
 namespace Chaos.Portal.Authentication.Tests
 {
-    using Chaos.Portal.Authentication.Data;
-    using Chaos.Portal.Authentication.Extension;
-    using Chaos.Portal.Core;
-    using Chaos.Portal.Core.Data;
-    using Chaos.Portal.Core.Request;
+    using System;
+    using Core.Data.Model;
+    using Data;
+    using Authentication.Extension;
+    using Core;
+    using Core.Data;
+    using Core.Request;
 
     using Moq;
 
@@ -18,6 +18,7 @@ namespace Chaos.Portal.Authentication.Tests
         protected Mock<IPortalApplication>        PortalApplication { get; set; }
         protected Mock<IPortalRepository>         PortalRepository { get; set; }
         protected Mock<IPortalRequest>            PortalRequest { get; set; }
+        protected Mock<IFacebookClient> FacebookClient { get; set; }
 
         [SetUp]
         public void SetUp()
@@ -26,6 +27,7 @@ namespace Chaos.Portal.Authentication.Tests
             PortalApplication        = new Mock<IPortalApplication>();
             PortalRepository         = new Mock<IPortalRepository>();
             PortalRequest            = new Mock<IPortalRequest>();
+            FacebookClient = new Mock<IFacebookClient>();
 
             PortalApplication.SetupGet(p => p.PortalRepository).Returns(PortalRepository.Object);
         }
@@ -44,5 +46,13 @@ namespace Chaos.Portal.Authentication.Tests
 		{
 			return (Wayf)new Wayf(PortalApplication.Object, AuthenticationRepository.Object).WithPortalRequest(PortalRequest.Object);
 		}
+
+        protected static UserInfo Make_UserInfo()
+        {
+            return new UserInfo
+            {
+                Guid = new Guid("11000000-0000-0000-0000-000000000011")
+            };
+        }
     }
 }

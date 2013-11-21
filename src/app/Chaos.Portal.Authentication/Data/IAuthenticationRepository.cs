@@ -2,8 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
-    using Chaos.Portal.Authentication.Data.Dto;
-    using Chaos.Portal.Authentication.Data.Model;
+    using Dto;
+    using Dto.v6;
+    using Model;
     
     public interface IAuthenticationRepository
     {
@@ -21,5 +22,8 @@
 
 		WayfUser WayfProfileGet(string wayfId);
 		uint WayfProfileUpdate(Guid userGuid, string wayfId);
+        
+        FacebookUser FacebookUserGet(ulong facebookId);
+        uint FacebookUserCreate(ulong facebookUserId, Guid userGuid);
     }
 }

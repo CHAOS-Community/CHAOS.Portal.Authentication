@@ -8,6 +8,7 @@
     using CHAOS.Data.MySql;
 
     using Dto;
+    using Dto.v6;
     using Mapping;
     using Model;
 
@@ -163,6 +164,16 @@
 			return (uint)result;
 	    }
 
-	    #endregion
+        public FacebookUser FacebookUserGet(ulong facebookId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public uint FacebookUserCreate(ulong facebookUserId, Guid userGuid)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

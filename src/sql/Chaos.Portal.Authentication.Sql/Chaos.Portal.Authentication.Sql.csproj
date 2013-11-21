@@ -4,15 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E525590D-D411-450B-8674-64E15A65983D}</ProjectGuid>
+    <ProjectGuid>{9F4CF5A7-09E4-4327-AB47-9500D692B5FE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Chaos.Portal.Authentication.Tests</RootNamespace>
-    <AssemblyName>Chaos.Portal.Authentication.Tests</AssemblyName>
+    <RootNamespace>Chaos.Portal.Authentication.Sql</RootNamespace>
+    <AssemblyName>Chaos.Portal.Authentication.Sql</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +23,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -29,34 +31,35 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Chaos.Portal">
-      <HintPath>..\..\..\lib\Chaos.Portal.dll</HintPath>
-    </Reference>
-    <Reference Include="Moq">
-      <HintPath>..\..\..\tools\Moq.4.0.10827\NET40\Moq.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath>..\..\..\tools\NUnit-2.6.0.12051\bin\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
+    <Content Include="1.Tables\1.AuthKey.sql" />
+    <Content Include="1.Tables\1.EmailPassword.sql" />
+    <Content Include="1.Tables\1.SecureCookie.sql" />
+    <Content Include="1.Tables\1.WayfProfile.sql" />
+    <Content Include="1.Tables\1.Facebook_User_Join.sql" />
+    <Content Include="3.StoredProcedures\AuthKey_Create.sql" />
+    <Content Include="3.StoredProcedures\AuthKey_Delete.sql" />
+    <Content Include="3.StoredProcedures\AuthKey_Get.sql" />
+    <Content Include="3.StoredProcedures\Facebook_User_Join_Get.sql" />
+    <Content Include="3.StoredProcedures\Facebook_User_Join_Create.sql" />
+    <Content Include="3.StoredProcedures\EmailPassword_Create.sql" />
+    <Content Include="3.StoredProcedures\EmailPassword_Get.sql" />
+    <Content Include="3.StoredProcedures\EmailPassword_Update.sql" />
+    <Content Include="3.StoredProcedures\SecureCookie_Create.sql" />
+    <Content Include="3.StoredProcedures\SecureCookie_Delete.sql" />
+    <Content Include="3.StoredProcedures\SecureCookie_Get.sql" />
+    <Content Include="3.StoredProcedures\SecureCookie_Use.sql" />
+    <Content Include="3.StoredProcedures\WayfProfile_Get.sql" />
+    <Content Include="3.StoredProcedures\WayfProfile_Update.sql" />
+    <Content Include="6.Data\6.data\initial.sql" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AuthenticationModuleTest.cs" />
-    <Compile Include="Extension\AuthKeyTest.cs" />
-    <Compile Include="Extension\EmailPasswordTests.cs" />
-    <Compile Include="Extension\FacebookTests.cs" />
-    <Compile Include="Extension\SecureCookieTests.cs" />
-    <Compile Include="Extension\WayfTests.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestBase.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\app\Chaos.Portal.Authentication\Chaos.Portal.Authentication.csproj">
-      <Project>{AB8EF052-65A5-429E-AFCC-D5BC7A0F06DB}</Project>
-      <Name>Chaos.Portal.Authentication</Name>
-    </ProjectReference>
+    <Folder Include="2.Changes\" />
+    <Folder Include="4.Views\" />
+    <Folder Include="5.Triggers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,18 +1,16 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace Chaos.Portal.Authentication.Extension
+﻿namespace Chaos.Portal.Authentication.Extension
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Security.Cryptography;
     using System.Text;
 
-    using Chaos.Portal.Authentication.Data;
-    using Chaos.Portal.Authentication.Data.Model;
-    using Chaos.Portal.Core;
-    using Chaos.Portal.Core.Data.Model;
-    using Chaos.Portal.Core.Exceptions;
-    using Chaos.Portal.Core.Extension;
+    using Data;
+    using Core;
+    using Core.Data.Model;
+    using Core.Exceptions;
+    using Core.Extension;
 
     public class AuthKey : AExtension
     {
@@ -34,13 +32,19 @@ namespace Chaos.Portal.Authentication.Extension
         public Session Login(string token)
         {
             var hashed  = ToHash(token);
-            var authKey = AuthenticationRepository.AuthKeyGet(null, hashed).SingleOrDefault();
-
-            if (authKey == null) throw new InsufficientPermissionsException("Token not valid");
+            var authKey = GetAuthenticationKey(hashed);
 
             var session = PortalRepository.SessionCreate(authKey.UserGuid);
 
             return session;
+        }
+
+        private Data.Model.AuthKey GetAuthenticationKey(string hashed)
+        {
+            var authKey = AuthenticationRepository.AuthKeyGet(null, hashed).SingleOrDefault();
+
+            if (authKey == null) throw new InsufficientPermissionsException("Token not valid");
+            return authKey;
         }
 
         public Data.Model.AuthKey Create(string name)
