@@ -7,9 +7,9 @@
     using CHAOS.Data;
     using CHAOS.Data.MySql;
 
-    using Chaos.Portal.Authentication.Data.Dto;
-    using Chaos.Portal.Authentication.Data.Mapping;
-    using Chaos.Portal.Authentication.Data.Model;
+    using Dto;
+    using Mapping;
+    using Model;
 
     using MySql.Data.MySqlClient;
 

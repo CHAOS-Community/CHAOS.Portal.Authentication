@@ -44,6 +44,7 @@ namespace Chaos.Portal.Authentication.Tests.Extension
         public void Login_GivenInvalidEmail_ThrowsLoginException()
         {
             var extension = Make_EmailPassword();
+            PortalRepository.Setup(m => m.UserInfoGet(It.IsAny<string>())).Throws(new ArgumentException());
 
             extension.Login("notvalid", "password");
         }

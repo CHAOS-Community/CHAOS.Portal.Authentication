@@ -2,11 +2,8 @@
 {
     using System.Linq;
 
-    using Chaos.Portal.Authentication.Extension;
-    using Chaos.Portal.Core;
-
-    using Moq;
-
+    using Authentication.Extension;
+    using Core;
     using NUnit.Framework;
 
     [TestFixture]
@@ -32,7 +29,7 @@
 
             Assert.That(results[0], Is.EqualTo("EmailPassword"));
             Assert.That(results[1], Is.EqualTo("SecureCookie"));
-            Assert.That(results[2], Is.EqualTo("SiteAccess"));
+            Assert.That(results[2], Is.EqualTo("AuthKey"));
         }
 
         [Test]

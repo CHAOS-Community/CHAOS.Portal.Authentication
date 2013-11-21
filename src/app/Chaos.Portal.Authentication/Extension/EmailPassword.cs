@@ -7,16 +7,13 @@ namespace Chaos.Portal.Authentication.Extension
     using System.Net.Mail;
     using System.Security.Cryptography;
     using System.Text;
-    using System.Web;
-    using System.Xml;
-    using System.Xml.Linq;
     using System.Xml.Xsl;
 
-    using Chaos.Portal.Authentication.Data;
-    using Chaos.Portal.Core;
-    using Chaos.Portal.Core.Data.Model;
-    using Chaos.Portal.Core.Extension;
-    using Chaos.Portal.Authentication.Exception;
+    using Data;
+    using Core;
+    using Core.Data.Model;
+    using Core.Extension;
+    using Exception;
 
     public class EmailPassword : AExtension
     {
@@ -43,19 +40,39 @@ namespace Chaos.Portal.Authentication.Extension
 
         public UserInfo Login(string email, string password )
         {
-            var user = PortalRepository.UserInfoGet(email);
+            var user = GetUserByEmail(email);
 
-            if(user == null) throw new LoginException("Login failed, either email or password is incorrect");
-
-            var res = AuthenticationRepository.EmailPasswordGet(user.Guid, GeneratePasswordHash(password));
-
-            if(res == null) throw new LoginException( "Login failed, either email or password is incorrect" );
-
-            var result = PortalRepository.SessionUpdate(Request.Session.Guid, user.Guid);
-
-            if(result == null) throw new LoginException("Session could not be updated");
+            VerifyPasswordMatches(password, user);
+            AuthenticateSessionWithUser(user);
 
             return PortalRepository.UserInfoGet(null, Request.Session.Guid, null, null).First();
+        }
+
+        private void AuthenticateSessionWithUser(UserInfo user)
+        {
+            var result = PortalRepository.SessionUpdate(Request.Session.Guid, user.Guid);
+
+            if (result == null) throw new LoginException("Session could not be updated");
+        }
+
+        private UserInfo GetUserByEmail(string email)
+        {
+            try
+            {
+                return PortalRepository.UserInfoGet(email);
+            }
+            catch (Exception e)
+            {
+                throw new LoginException("Login failed, either email or password is incorrect", e);
+            }
+        }
+
+        private void VerifyPasswordMatches(string password, UserInfo user)
+        {
+            var hashed = GeneratePasswordHash(password);
+            var res = AuthenticationRepository.EmailPasswordGet(user.Guid, hashed);
+
+            if (res == null) throw new LoginException("Login failed, either email or password is incorrect");
         }
 
         #endregion
@@ -73,72 +90,6 @@ namespace Chaos.Portal.Authentication.Extension
 
 			return new ScalarResult(1);
 	    }
-
-//        public ScalarResult ChangePasswordRequest(ICallContext callContext, string email, string password, string url)
-//        {
-//            var user = PortalRepository.GetUserInfo(email);
-//
-//            var guid = new guid();
-//            var xml  = string.Format("<ChangePassword UserGUID=\"{0}\" PasswordHash=\"{1}\" />", user.guid, GeneratePasswordHash(password));
-//            PortalRepository.CreateTicket(guid, (uint) Chaos.Portal.Data.TicketType.ChangePassword, xml, null);
-//
-//            // TODO: Make Send mail part of the portal SDK
-//            var message = new MailMessage();
-//
-//            message.To.Add(new MailAddress(user.Email));
-//            message.From       = FromEmailAddress;
-//            message.Subject    = ChangePasswordRequestSubject;
-//            message.Body       = GenerateChangePasswordRequestEmail(guid, url).ToString(SaveOptions.DisableFormatting);
-//            message.IsBodyHtml = true;
-//                
-//            var smtp  = new SmtpClient("smtp.gmail.com", 587);
-//            smtp.EnableSsl   = true;
-//            smtp.Credentials = new NetworkCredential(FromEmailAddress.Address, SmtpPassword);
-//
-//            smtp.Send(message);
-//
-//            return new ScalarResult(1);
-//        }
-
-        //[Datatype("EmailPassword","ChangePassword")]
-        //public Session ChangePassword( ICallContext callContext, string ticketGUID )
-        //{
-        //    using( var db = new PortalEntities() )
-        //    {
-        //        var ticket   = db.Ticket_Get( new UUID( ticketGUID ).ToByteArray() ).First();
-        //        var xml      = XDocument.Parse( ticket.XML ).Root;
-        //        var userGUID = new UUID( xml.Attribute("UserGUID").Value );
-        //        var password = xml.Attribute("PasswordHash").Value;
-
-        //        db.Ticket_Use( new UUID( ticketGUID ).ToByteArray() );
-        //        db.Session_Update( userGUID.ToByteArray(), callContext.User.SessionGUID.ToByteArray(), null );
-
-        //        using( EmailPasswordEntities edb = NewEmailPasswordDataContext )
-        //        {
-        //            if( edb.EmailPassword_Get( userGUID.ToByteArray(), null ).FirstOrDefault() == null )
-        //                edb.EmailPassword_Create( userGUID.ToByteArray(), password );
-        //            else
-        //                edb.EmailPassword_Update( userGUID.ToByteArray(), password );
-        //        }
-
-        //        int? totalCount = 1;
-
-        //        return db.Session_Get( callContext.Session.GUID.ToByteArray(), null ).First();
-        //    }
-        //}
-
-        private XDocument GenerateChangePasswordRequestEmail(Guid ticketGUID, string url)
-        {
-            var source = XDocument.Parse(string.Format("<Xml><URL>{0}</URL></Xml>", HttpUtility.HtmlDecode(url).Replace("$Token$", ticketGUID.ToString()).Replace("&", "&amp;")));
-            var result = new XDocument();
-
-            using (XmlWriter writer = result.CreateWriter())
-            {
-                ChangePasswordRequestEmailXslt.Transform(source.CreateReader(), writer);
-            }
-
-            return result;
-        }
 
         #endregion
         #region Helper methods
