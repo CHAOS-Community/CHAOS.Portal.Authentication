@@ -5,6 +5,7 @@
     using Authentication.Extension;
     using Authentication.Extension.v6;
     using Core;
+    using Core.Data.Model;
     using NUnit.Framework;
 
     [TestFixture]
@@ -55,11 +56,21 @@
             Assert.That(result, Is.InstanceOf<Facebook>());
         }
 
-        private static Core.Data.Model.Module Make_ModuleConfig()
+        [Test]
+        public void Load_ValidConfiguration()
         {
-            return new Core.Data.Model.Module
+            var module = new AuthenticationModule();
+            var config = Make_ModuleConfig();
+            PortalRepository.Setup(m => m.ModuleGet("Authentication")).Returns(config);
+
+            module.Load(PortalApplication.Object);
+        }
+
+        private static Module Make_ModuleConfig()
+        {
+            return new Module
                 {
-                    Configuration = "<Settings><ConnectionString>connectionstring</ConnectionString></Settings>"
+                    Configuration = "<Settings><ConnectionString>connectionstring</ConnectionString><Facebook AppId=\"some app id\" AppSecret=\"some app secret\"></Facebook></Settings>"
                 };
         }
     }

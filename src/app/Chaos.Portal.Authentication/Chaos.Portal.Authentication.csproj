@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AuthenticationModule.cs" />
+    <Compile Include="Configuration\Settings.cs" />
     <Compile Include="Data\AuthenticationRepository.cs" />
     <Compile Include="Data\Dto\v6\SecureCookie.cs" />
     <Compile Include="Data\IAuthenticationRepository.cs" />

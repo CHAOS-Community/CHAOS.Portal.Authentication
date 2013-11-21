@@ -5,7 +5,7 @@
 
     using CHAOS.Data;
     using Model;
-
+    
     public class FacebookUserMapping : IReaderMapping<FacebookUser>
     {
         #region Implementation of IReaderMapping<out AuthKey>

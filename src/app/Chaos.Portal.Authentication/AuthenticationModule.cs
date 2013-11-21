@@ -1,16 +1,15 @@
 ﻿namespace Chaos.Portal.Authentication
 {
     using System.Collections.Generic;
-    using System.Linq;
     using System.Xml.Linq;
-
+    using CHAOS.Serialization.Standard;
+    using Configuration;
     using Data;
     using Extension;
     using Core;
     using Core.Exceptions;
     using Core.Extension;
     using Core.Module;
-    using Extension.v6;
     using Facebook;
 
     public class AuthenticationModule : IModule
@@ -35,12 +34,19 @@
 
         public void Load(IPortalApplication portalApplication)
         {
-            var configuration    = portalApplication.PortalRepository.ModuleGet(CONFIGURATION_NAME);
-            var connectionString = XDocument.Parse(configuration.Configuration).Descendants("ConnectionString").First().Value;
-            
-            AuthenticationRepository = new AuthenticationRepository(connectionString);
+            var settings = GetSettings(portalApplication);
+
+            AuthenticationRepository = new AuthenticationRepository(settings.ConnectionString);
             PortalApplication = portalApplication;
-            FacebookClient = new FacebookClient();
+            FacebookClient = new FacebookClient(settings.Facebook);
+        }
+
+        private static Settings GetSettings(IPortalApplication portalApplication)
+        {
+            var configuration = portalApplication.PortalRepository.ModuleGet(CONFIGURATION_NAME);
+            var xdoc = XDocument.Parse(configuration.Configuration);
+            var settings = SerializerFactory.XMLSerializer.Deserialize<Settings>(xdoc);
+            return settings;
         }
 
         public IEnumerable<string> GetExtensionNames(Protocol version)
