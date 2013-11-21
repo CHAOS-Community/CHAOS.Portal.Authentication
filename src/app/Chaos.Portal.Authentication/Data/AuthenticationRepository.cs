@@ -6,7 +6,7 @@
 
     using CHAOS.Data;
     using CHAOS.Data.MySql;
-
+    using Core.Exceptions;
     using Dto;
     using Dto.v6;
     using Mapping;
@@ -21,8 +21,9 @@
         static AuthenticationRepository()
         {
             ReaderExtensions.Mappings.Add(typeof(EmailPassword), new EmailPasswordMapping());
-            ReaderExtensions.Mappings.Add(typeof(WayfUser), new WayfUserMapping());
+            ReaderExtensions.Mappings.Add(typeof(FacebookUser), new FacebookUserMapping());
             ReaderExtensions.Mappings.Add(typeof(SecureCookie), new SecureCookieMapping());
+            ReaderExtensions.Mappings.Add(typeof(WayfUser), new WayfUserMapping());
             ReaderExtensions.Mappings.Add(typeof(AuthKey), new AuthKeyMapping());
         }
 
@@ -166,12 +167,31 @@
 
         public FacebookUser FacebookUserGet(ulong facebookId)
         {
-            throw new NotImplementedException();
+            var results = Gateway.ExecuteQuery<FacebookUser>("Facebook_User_Join_Get", new[]
+            {
+                new MySqlParameter("FacebookUserId", facebookId)
+            });
+
+            var first = results.FirstOrDefault();
+
+            if(first == null)
+                throw new UnhandledException("User not found in database");
+
+            return first;
         }
 
         public uint FacebookUserCreate(ulong facebookUserId, Guid userGuid)
         {
-            throw new NotImplementedException();
+            var result = Gateway.ExecuteNonQuery("Facebook_User_Join_Create", new[]
+            {
+                new MySqlParameter("FacebookUserId", facebookUserId),
+                new MySqlParameter("UserGuid", userGuid.ToByteArray())
+            });
+
+            if(result == 0)
+                throw new UnhandledException("Associating Facebook user with chaos failed in database");
+
+            return (uint) result;
         }
 
         #endregion

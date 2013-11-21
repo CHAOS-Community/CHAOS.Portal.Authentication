@@ -59,6 +59,7 @@
     <Compile Include="Data\Dto\WayfUser.cs" />
     <Compile Include="Data\IAuthenticationRepository.cs" />
     <Compile Include="Data\Mapping\AuthKeyMapping.cs" />
+    <Compile Include="Data\Mapping\Copy of AuthKeyMapping.cs" />
     <Compile Include="Data\Mapping\EmailPasswordMapping.cs" />
     <Compile Include="Data\Mapping\SecureCookieMapping.cs" />
     <Compile Include="Data\Mapping\WayfUserMapping.cs" />
