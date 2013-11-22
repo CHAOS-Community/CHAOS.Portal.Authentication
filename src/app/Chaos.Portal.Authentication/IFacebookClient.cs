@@ -2,6 +2,6 @@
 {
     public interface IFacebookClient
     {
-        ulong GetUser(string signedRequest);
+        ulong GetUserId(string signedRequest);
     }
 }

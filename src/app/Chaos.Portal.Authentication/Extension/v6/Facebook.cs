@@ -20,9 +20,8 @@
 
         public Session Login(string signedRequest)
         {
-            var facebookUserId = AuthenticationModule.FacebookClient.GetUser(signedRequest);
+            var facebookUserId = AuthenticationModule.FacebookClient.GetUserId(signedRequest);
             var user = GetUser(facebookUserId);
-            
             var session = AuthenticateSession(user); 
 
             AuthenticationModule.OnOnUserLoggedIn(new RequestDelegate.PortalRequestArgs(Request));

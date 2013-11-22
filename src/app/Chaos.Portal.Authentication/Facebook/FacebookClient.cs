@@ -13,7 +13,7 @@
 
         private FacebookSettings Settings { get; set; }
         
-        public ulong GetUser(string signedRequest)
+        public ulong GetUserId(string signedRequest)
         {
             var client = new global::Facebook.FacebookClient
             {

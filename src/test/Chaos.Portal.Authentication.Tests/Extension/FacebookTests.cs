@@ -19,7 +19,7 @@
             var signedRequest = "valid request";
             var fbUser = Make_FacebookUser();
             var session = Make_Session();
-            FacebookClient.Setup(m => m.GetUser(signedRequest)).Returns(fbUser.Id);
+            FacebookClient.Setup(m => m.GetUserId(signedRequest)).Returns(fbUser.Id);
             AuthenticationRepository.Setup(m => m.FacebookUserGet(fbUser.Id)).Returns(fbUser);
             PortalRepository.Setup(m => m.SessionCreate(fbUser.UserGuid)).Returns(session);
 
@@ -37,7 +37,7 @@
             var signedRequest = "valid request";
             var fbUser = Make_FacebookUser();
             var session = Make_Session();
-            FacebookClient.Setup(m => m.GetUser(signedRequest)).Returns(fbUser.Id);
+            FacebookClient.Setup(m => m.GetUserId(signedRequest)).Returns(fbUser.Id);
             AuthenticationRepository.Setup(m => m.FacebookUserGet(fbUser.Id)).Returns(fbUser);
             PortalRequest.SetupGet(p => p.Session).Returns(session);
             PortalRepository.Setup(m => m.SessionUpdate(session.Guid, fbUser.UserGuid)).Returns(session);
@@ -54,7 +54,7 @@
             var signedRequest = "valid request";
             var facebookId = 1ul;
             var session = Make_Session();
-            FacebookClient.Setup(m => m.GetUser(signedRequest)).Returns(facebookId);
+            FacebookClient.Setup(m => m.GetUserId(signedRequest)).Returns(facebookId);
             AuthenticationRepository.Setup(m => m.FacebookUserGet(facebookId)).Throws(new UnhandledException());
             PortalRepository.Setup(m => m.SessionCreate(It.IsAny<Guid>())).Returns(session);
 
@@ -71,7 +71,7 @@
         {
             var extension = Make_FacebookExtension();
             var signedRequest = "invalid request";
-            FacebookClient.Setup(m => m.GetUser(signedRequest)).Throws(new LoginException());
+            FacebookClient.Setup(m => m.GetUserId(signedRequest)).Throws(new LoginException());
 
             extension.Login(signedRequest);
         }
