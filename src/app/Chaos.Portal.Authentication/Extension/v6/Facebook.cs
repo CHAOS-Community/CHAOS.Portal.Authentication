@@ -23,11 +23,23 @@
             var facebookUserId = AuthenticationModule.FacebookClient.GetUser(signedRequest);
             var user = GetUser(facebookUserId);
             
-            var session = PortalRepository.SessionCreate(user.UserGuid);
+            var session = AuthenticateSession(user); 
 
             AuthenticationModule.OnOnUserLoggedIn(new RequestDelegate.PortalRequestArgs(Request));
 
             return session;
+        }
+
+        private Session AuthenticateSession(FacebookUser user)
+        {
+            return IsSessionProvided() 
+                   ? PortalRepository.SessionUpdate(Request.Session.Guid, user.UserGuid)
+                   : PortalRepository.SessionCreate(user.UserGuid) ;
+        }
+
+        private bool IsSessionProvided()
+        {
+            return Request.Session != null;
         }
 
         private FacebookUser GetUser(ulong facebookUserId)

@@ -31,6 +31,23 @@
         }
 
         [Test]
+        public void Login_ProvidesSessionGuid_AuthenticateSessionProvided()
+        {
+            var extension = Make_FacebookExtension();
+            var signedRequest = "valid request";
+            var fbUser = Make_FacebookUser();
+            var session = Make_Session();
+            FacebookClient.Setup(m => m.GetUser(signedRequest)).Returns(fbUser.Id);
+            AuthenticationRepository.Setup(m => m.FacebookUserGet(fbUser.Id)).Returns(fbUser);
+            PortalRequest.SetupGet(p => p.Session).Returns(session);
+            PortalRepository.Setup(m => m.SessionUpdate(session.Guid, fbUser.UserGuid)).Returns(session);
+
+            var result = extension.Login(signedRequest);
+
+            Assert.That(result.Guid, Is.EqualTo(session.Guid));
+        }
+
+        [Test]
         public void Login_ValidSignedRequestAndUserDoesntExist_CreateUserAndReturnAuthenticatedSession()
         {
             var extension = Make_FacebookExtension();
