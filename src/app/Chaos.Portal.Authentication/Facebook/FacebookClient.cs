@@ -1,5 +1,6 @@
 ﻿namespace Chaos.Portal.Authentication.Facebook
 {
+    using System;
     using System.Web.UI;
     using Configuration;
 
@@ -29,8 +30,8 @@
 //            client.AccessToken = result.access_token;
 
             var userId = (client.ParseSignedRequest(signedRequest) as dynamic).user_id;
-
-            return userId;
+            
+            return UInt64.Parse(userId);
         }
     }
 }

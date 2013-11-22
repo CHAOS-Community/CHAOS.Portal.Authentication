@@ -15,10 +15,11 @@ namespace Chaos.Portal.Authentication.Tests
     public class TestBase
     {
         protected Mock<IAuthenticationRepository> AuthenticationRepository { get; set; }
-        protected Mock<IPortalApplication>        PortalApplication { get; set; }
-        protected Mock<IPortalRepository>         PortalRepository { get; set; }
-        protected Mock<IPortalRequest>            PortalRequest { get; set; }
+        protected Mock<IPortalApplication> PortalApplication { get; set; }
+        protected Mock<IPortalRepository> PortalRepository { get; set; }
+        protected Mock<IPortalRequest> PortalRequest { get; set; }
         protected Mock<IFacebookClient> FacebookClient { get; set; }
+        protected Mock<IAuthenticationModule> AuthenticationModule { get; set; }
 
         [SetUp]
         public void SetUp()
@@ -28,7 +29,11 @@ namespace Chaos.Portal.Authentication.Tests
             PortalRepository         = new Mock<IPortalRepository>();
             PortalRequest            = new Mock<IPortalRequest>();
             FacebookClient = new Mock<IFacebookClient>();
+            AuthenticationModule = new Mock<IAuthenticationModule>();
 
+            AuthenticationModule.SetupGet(p => p.PortalApplication).Returns(PortalApplication.Object);
+            AuthenticationModule.SetupGet(p => p.FacebookClient).Returns(FacebookClient.Object);
+            AuthenticationModule.SetupGet(p => p.AuthenticationRepository).Returns(AuthenticationRepository.Object);
             PortalApplication.SetupGet(p => p.PortalRepository).Returns(PortalRepository.Object);
         }
 

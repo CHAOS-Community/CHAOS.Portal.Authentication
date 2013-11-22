@@ -4,29 +4,30 @@
     using System.Xml.Linq;
     using CHAOS.Serialization.Standard;
     using Configuration;
+    using Core.Request;
     using Data;
     using Extension;
     using Core;
     using Core.Exceptions;
     using Core.Extension;
-    using Core.Module;
     using Facebook;
 
-    public class AuthenticationModule : IModule
+    public class AuthenticationModule : IAuthenticationModule
     {
         #region Fields
 
         private const string CONFIGURATION_NAME = "Authentication";
 
+        public event RequestDelegate.PortalRequestHandler OnUserLoggedIn;
+        public event RequestDelegate.PortalRequestHandler OnUserCreated;
+
         #endregion
         #region Properties
 
         public IExtension[] Extensions { get; private set; }
-        public AuthenticationRepository AuthenticationRepository { get; private set; }
-
+        public IAuthenticationRepository AuthenticationRepository { get; private set; }
         public IPortalApplication PortalApplication { get; private set; }
-
-        private IFacebookClient FacebookClient { get; set; }
+        public IFacebookClient FacebookClient { get; set; }
 
         #endregion
 
@@ -35,7 +36,7 @@
         public void Load(IPortalApplication portalApplication)
         {
             var settings = GetSettings(portalApplication);
-
+            
             AuthenticationRepository = new AuthenticationRepository(settings.ConnectionString);
             PortalApplication = portalApplication;
             FacebookClient = new FacebookClient(settings.Facebook);
@@ -84,7 +85,7 @@
 					case "Wayf":
 						return new Wayf(PortalApplication, AuthenticationRepository);
                     case "Facebook":
-						return new Extension.v6.Facebook(PortalApplication, AuthenticationRepository, FacebookClient);
+						return new Extension.v6.Facebook(this);
                 }
             }
 
@@ -94,6 +95,18 @@
         public IExtension GetExtension<TExtension>(Protocol version) where TExtension : IExtension
         {
             return GetExtension(version, typeof(TExtension).Name);
+        }
+
+        public virtual void OnOnUserLoggedIn(RequestDelegate.PortalRequestArgs args)
+        {
+            var handler = OnUserLoggedIn;
+            if (handler != null) handler(this, args);
+        }
+
+        public virtual void OnOnUserCreated(RequestDelegate.PortalRequestArgs args)
+        {
+            var handler = OnUserCreated;
+            if (handler != null) handler(this, args);
         }
 
         #endregion

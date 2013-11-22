@@ -75,7 +75,7 @@
 
         private Facebook Make_FacebookExtension()
         {
-            return (Facebook) new Facebook(PortalApplication.Object, AuthenticationRepository.Object, FacebookClient.Object).WithPortalRequest(PortalRequest.Object);
+            return (Facebook) new Facebook(AuthenticationModule.Object).WithPortalRequest(PortalRequest.Object);
         }
     }
 }

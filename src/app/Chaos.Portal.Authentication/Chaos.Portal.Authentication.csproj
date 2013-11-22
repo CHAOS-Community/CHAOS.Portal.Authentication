@@ -74,6 +74,7 @@
     <Compile Include="Extension\v6\Facebook.cs" />
     <Compile Include="Extension\Wayf.cs" />
     <Compile Include="Facebook\FacebookClient.cs" />
+    <Compile Include="IAuthenticationModule.cs" />
     <Compile Include="IFacebookClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

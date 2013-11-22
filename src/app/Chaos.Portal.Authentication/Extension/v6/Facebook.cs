@@ -1,33 +1,32 @@
 ﻿namespace Chaos.Portal.Authentication.Extension.v6
 {
     using System;
-    using Core;
     using Core.Data.Model;
     using Core.Exceptions;
     using Core.Extension;
-    using Data;
+    using Core.Request;
     using Data.Model;
 
     public class Facebook : AExtension
     {
         private const string DefaultEmail = "N/A";
 
-        public IAuthenticationRepository AuthenticationRepository { get; set; }
-        public IFacebookClient FacebookClient { get; set; }
+        public IAuthenticationModule AuthenticationModule { get; set; }
 
-        public Facebook(IPortalApplication portalApplication, IAuthenticationRepository authenticationRepository, IFacebookClient facebookClient) : base(portalApplication)
+        public Facebook(IAuthenticationModule authenticationModule) : base(authenticationModule.PortalApplication)
         {
-            AuthenticationRepository = authenticationRepository;
-            FacebookClient = facebookClient;
+            AuthenticationModule = authenticationModule;
         }
 
         public Session Login(string signedRequest)
         {
-            var facebookUserId = FacebookClient.GetUser(signedRequest);
+            var facebookUserId = AuthenticationModule.FacebookClient.GetUser(signedRequest);
             var user = GetUser(facebookUserId);
             
             var session = PortalRepository.SessionCreate(user.UserGuid);
-            
+
+            AuthenticationModule.OnOnUserLoggedIn(new RequestDelegate.PortalRequestArgs(Request));
+
             return session;
         }
 
@@ -45,7 +44,7 @@
 
         private FacebookUser GetExistingUser(ulong facebookUserId)
         {
-            return AuthenticationRepository.FacebookUserGet(facebookUserId);
+            return AuthenticationModule.AuthenticationRepository.FacebookUserGet(facebookUserId);
         }
 
         private FacebookUser CreateNewUser(ulong facebookUserId)
@@ -53,7 +52,9 @@
             var userGuid = Guid.NewGuid();
 
             PortalRepository.UserCreate(userGuid, DefaultEmail);
-            AuthenticationRepository.FacebookUserCreate(facebookUserId, userGuid);
+            AuthenticationModule.AuthenticationRepository.FacebookUserCreate(facebookUserId, userGuid);
+
+            AuthenticationModule.OnOnUserCreated(new RequestDelegate.PortalRequestArgs(Request));
 
             return new FacebookUser
             {
