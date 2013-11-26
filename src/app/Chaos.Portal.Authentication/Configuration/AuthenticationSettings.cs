@@ -3,7 +3,7 @@
     using CHAOS.Serialization;
     using CHAOS.Serialization.XML;
 
-    public class Settings
+    public class AuthenticationSettings
     {
         [Serialize]
         public string ConnectionString { get; set; }

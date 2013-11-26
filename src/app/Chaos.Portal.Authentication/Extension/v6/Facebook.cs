@@ -24,7 +24,7 @@
             var user = GetUser(facebookUserId);
             var session = AuthenticateSession(user); 
 
-            AuthenticationModule.OnOnUserLoggedIn(new RequestDelegate.PortalRequestArgs(Request));
+           AuthenticationModule.OnOnUserLoggedIn(new RequestDelegate.PortalRequestArgs(Request));
 
             return session;
         }

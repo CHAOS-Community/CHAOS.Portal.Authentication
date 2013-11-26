@@ -28,6 +28,7 @@
         public IAuthenticationRepository AuthenticationRepository { get; private set; }
         public IPortalApplication PortalApplication { get; private set; }
         public IFacebookClient FacebookClient { get; set; }
+        public AuthenticationSettings AuthenticationSettings { get; private set; }
 
         #endregion
 
@@ -35,18 +36,18 @@
 
         public void Load(IPortalApplication portalApplication)
         {
-            var settings = GetSettings(portalApplication);
+            AuthenticationSettings = GetSettings(portalApplication);
             
-            AuthenticationRepository = new AuthenticationRepository(settings.ConnectionString);
+            AuthenticationRepository = new AuthenticationRepository(AuthenticationSettings.ConnectionString);
             PortalApplication = portalApplication;
-            FacebookClient = new FacebookClient(settings.Facebook);
+            FacebookClient = new FacebookClient(AuthenticationSettings.Facebook);
         }
 
-        private static Settings GetSettings(IPortalApplication portalApplication)
+        private static AuthenticationSettings GetSettings(IPortalApplication portalApplication)
         {
             var configuration = portalApplication.PortalRepository.ModuleGet(CONFIGURATION_NAME);
             var xdoc = XDocument.Parse(configuration.Configuration);
-            var settings = SerializerFactory.XMLSerializer.Deserialize<Settings>(xdoc);
+            var settings = SerializerFactory.XMLSerializer.Deserialize<AuthenticationSettings>(xdoc);
             return settings;
         }
 
