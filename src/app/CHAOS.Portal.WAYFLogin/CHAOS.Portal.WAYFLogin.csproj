@@ -55,8 +55,6 @@
     <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="TypeScriptDefinitions\PortalClient.d.ts" />
-    <TypeScriptCompile Include="CHAOS.Portal.WayfLoginClient.ts" />
     <Content Include="index.php" />
   </ItemGroup>
   <ItemGroup>
