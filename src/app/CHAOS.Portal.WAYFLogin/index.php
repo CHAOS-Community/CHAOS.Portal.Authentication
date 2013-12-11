@@ -43,8 +43,22 @@
     <head>
         <title>Wayf Login</title>
 		<script type="text/javascript">
-			if(parent.window.postMessage)
-				parent.window.postMessage("<?php print($error == null ? 'success' : 'failure'); ?>", "*");
+			var status = "WayfStatus: <?php print($error == null ? 'success' : 'failure'); ?>";
+			
+			if(window.opener && window.opener.postMessage)
+				window.opener.postMessage(status, "*");
+			else if(window.parent && window.parent !== window && window.parent.window && window.parent.window.postMessage)
+				window.parent.window.postMessage(status, "*");
+			else if(window.addEventListener)
+				window.addEventListener("message", ListenForStatusRequest, false);
+			else if(window.attachEvent)
+				window.addEventListener("onmessage", ListenForStatusRequest);
+			
+			function ListenForStatusRequest(event)
+			{
+				if(event.data == "WayfStatusRequest")
+					event.source.postMessage(status, event.origin);
+			}
 		</script>
     </head>
     <body>
