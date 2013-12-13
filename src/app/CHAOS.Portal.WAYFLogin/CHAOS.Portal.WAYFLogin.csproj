@@ -55,7 +55,7 @@
     <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="index.php" />
+    <Content Include="Login.php" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="WayfConfiguration.php" />

@@ -10,10 +10,10 @@
 	
 	if(!isset($_REQUEST["apiPath"]))
 		$error = "Parameter apiPath not set";
-	if(!isset($_REQUEST["sessionGuid"]))
+	else if(!isset($_REQUEST["sessionGuid"]))
 		$error = "Parameter sessionGuid not set";
-	if(!isset($WayfConfiguration['AuthKeyToken']))
-	$error = "AuthKeyToken not set in configuration";
+	else if(!isset($WayfConfiguration['AuthKeyToken']))
+		$error = "AuthKeyToken not set in configuration";
 	else
 	{
 		$simpleSaml = new SimpleSAML_Auth_Simple("Wayf");
@@ -35,6 +35,18 @@
 
 				$error = $helper->GetError();
 			}
+		}
+		
+		if(isset($_REQUEST["callbackUrl"]))
+		{
+			$status = ($error == null ? "success" : "failure");
+			
+			/*if(isset(http_build_url))
+				header('Location: ' . http_build_url($_REQUEST["callbackUrl"], array("query" => "status=" . $status), HTTP_URL_JOIN_QUERY), true, 303);
+			else*/
+				header('Location: ' . $_REQUEST["callbackUrl"] . "?status=" . $status, true, 303);
+
+			exit();
 		}
 	}
 ?>
