@@ -18,34 +18,23 @@
 	else
 	{
 		$simpleSaml = new SimpleSAML_Auth_Simple("Wayf");
-		$simpleSaml->requireAuth();
-		$attributes = $simpleSaml->getAttributes();
-		
+		$simpleSaml->logout(array(
+						 'ReturnCallback' => 'LoggedOut'
+					));
+	}
+	
+	function LoggedOut()
+	{
 		$helper = new PortalHelper($_REQUEST["apiPath"]);
-		
-		$response = $helper->Call("AuthKey/Login", array('token' => $WayfConfiguration['AuthKeyToken']));
-		
-		if(!($error = $helper->GetError()))
-		{
-			$helper->SetSessionGuid($response->Body->Results[0]->Guid);
-			$response = $helper->Call("Wayf/Login", array('wayfId' => $attributes['eduPersonTargetedID'][0], 'email' => $attributes['mail'][0], 'sessionGuidToAuthenticate' => $_REQUEST["sessionGuid"]));
-		
-			if(!($error = $helper->GetError()))
-			{
-				//$response = $helper->Call("UserManagement/GetUserObject", array('createIfMissing ' => true));
-
-				$error = $helper->GetError();
-			}
-		}
+		$helper->SetSessionGuid($_REQUEST["sessionGuid"]);
+		$response = $helper->Call("Session/Delete", array('sessionGUID' => $_REQUEST["sessionGuid"]));
+		$error = $helper->GetError();
 		
 		if(isset($_REQUEST["callbackUrl"]))
 		{
 			$status = ($error == null ? "success" : "failure");
 			
-			/*if(isset(http_build_url))
-				header('Location: ' . http_build_url($_REQUEST["callbackUrl"], array("query" => "status=" . $status), HTTP_URL_JOIN_QUERY), true, 303);
-			else*/
-				header('Location: ' . $_REQUEST["callbackUrl"] . "?status=" . $status, true, 303);
+			header('Location: ' . $_REQUEST["callbackUrl"] . "?status=" . $status, true, 303);
 
 			exit();
 		}
@@ -79,7 +68,7 @@
         <p>
 		<?php
 			if($error == null)
-				print("Session authenticated");
+				print("Session logged out");
 			else
 				print("Error: $error");
 		?>
