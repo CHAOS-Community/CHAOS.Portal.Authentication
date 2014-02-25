@@ -55,10 +55,16 @@
     <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="Login.php" />
+    <Content Include="LogIn.php" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="WayfConfiguration.php" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="LogOut.php" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="PortalHelper.php" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TypeScript\Microsoft.TypeScript.targets" />
 </Project>
