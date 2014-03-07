@@ -40,9 +40,12 @@
     <Content Include="1.Tables\1.SecureCookie.sql" />
     <Content Include="1.Tables\1.WayfProfile.sql" />
     <Content Include="1.Tables\1.Facebook_User_Join.sql" />
+    <Content Include="1.Tables\1.OAuthUsers.sql" />
     <Content Include="3.StoredProcedures\AuthKey_Create.sql" />
     <Content Include="3.StoredProcedures\AuthKey_Delete.sql" />
     <Content Include="3.StoredProcedures\AuthKey_Get.sql" />
+    <Content Include="3.StoredProcedures\OAuthUsers_Update.sql" />
+    <Content Include="3.StoredProcedures\OAuthUsers_Get.sql" />
     <Content Include="3.StoredProcedures\Facebook_User_Join_Get.sql" />
     <Content Include="3.StoredProcedures\Facebook_User_Join_Create.sql" />
     <Content Include="3.StoredProcedures\EmailPassword_Create.sql" />

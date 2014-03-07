@@ -30,17 +30,22 @@
         public AuthenticationRepository(string connectionString)
         {
             Gateway = new Gateway(connectionString);
+
+			OAuth = new OAuthRepository();
         }
 
         #endregion
         #region Properties
 
         public Gateway Gateway { get; set; }
+		public IOAuthRepository OAuth { get; private set; }
 
         #endregion
         #region Business Logic
 
-        public IEnumerable<SecureCookie> SecureCookieGet(Guid? guid, Guid? userGuid, Guid? passwordGuid)
+	    
+
+	    public IEnumerable<SecureCookie> SecureCookieGet(Guid? guid, Guid? userGuid, Guid? passwordGuid)
         {
             var results = Gateway.ExecuteQuery<SecureCookie>("SecureCookie_Get", new[]
                 {

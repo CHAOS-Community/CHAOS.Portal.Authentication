@@ -47,6 +47,7 @@
     <Compile Include="Extension\AuthKeyTest.cs" />
     <Compile Include="Extension\EmailPasswordTests.cs" />
     <Compile Include="Extension\FacebookTests.cs" />
+    <Compile Include="Extension\OAuthTest.cs" />
     <Compile Include="Extension\SecureCookieTests.cs" />
     <Compile Include="Extension\WayfTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -15,6 +15,7 @@ namespace Chaos.Portal.Authentication.Tests
     public class TestBase
     {
         protected Mock<IAuthenticationRepository> AuthenticationRepository { get; set; }
+        protected Mock<IOAuthRepository> OAuthRepository { get; set; }
         protected Mock<IPortalApplication> PortalApplication { get; set; }
         protected Mock<IPortalRepository> PortalRepository { get; set; }
         protected Mock<IPortalRequest> PortalRequest { get; set; }
@@ -25,16 +26,19 @@ namespace Chaos.Portal.Authentication.Tests
         public void SetUp()
         {
             AuthenticationRepository = new Mock<IAuthenticationRepository>();
+			OAuthRepository			 = new Mock<IOAuthRepository>();
             PortalApplication        = new Mock<IPortalApplication>();
             PortalRepository         = new Mock<IPortalRepository>();
             PortalRequest            = new Mock<IPortalRequest>();
-            FacebookClient = new Mock<IFacebookClient>();
-            AuthenticationModule = new Mock<IAuthenticationModule>();
+            FacebookClient			 = new Mock<IFacebookClient>();
+            AuthenticationModule	 = new Mock<IAuthenticationModule>();
 
             AuthenticationModule.SetupGet(p => p.PortalApplication).Returns(PortalApplication.Object);
             AuthenticationModule.SetupGet(p => p.FacebookClient).Returns(FacebookClient.Object);
             AuthenticationModule.SetupGet(p => p.AuthenticationRepository).Returns(AuthenticationRepository.Object);
+	        AuthenticationRepository.SetupGet(r => r.OAuth).Returns(OAuthRepository.Object);
             PortalApplication.SetupGet(p => p.PortalRepository).Returns(PortalRepository.Object);
+
         }
 
         protected EmailPassword Make_EmailPassword()
