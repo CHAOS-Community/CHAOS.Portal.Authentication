@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using System.Web.Mvc;
 using DotNetAuth.OAuth2;
 
@@ -6,6 +7,8 @@ namespace CHAOS.Portal.OAuth.Controllers
 {
     public class AuthenticationController : Controller
     {
+		public bool LoginSuccessful { get; private set; }
+
 		private ApplicationCredentials _credentials;
 		private OAuth2SessionStateManager _oauth2StateManager;
 	    private ProviderConfiguration _providerConfiguration;
@@ -31,8 +34,9 @@ namespace CHAOS.Portal.OAuth.Controllers
 
         public ActionResult Login()
         {
-			var userProcessUri = Url.Action("ProcessLoginResponse", "Authentication", routeValues: null, protocol: Request.Url.Scheme);
+			var userProcessUri = Uri.EscapeDataString(Url.Action("ProcessLoginResponse", "Authentication", routeValues: null, protocol: Request.Url.Scheme));
 			var redirectUri = OAuth2Process.GetAuthenticationUri(_provider, _credentials, userProcessUri, "", _oauth2StateManager);
+
 			return Redirect(redirectUri.ToString());
         }
 
@@ -41,7 +45,13 @@ namespace CHAOS.Portal.OAuth.Controllers
 			var userProcessUri = Url.Action("ProcessLoginResponse", "Authentication", routeValues: null, protocol: Request.Url.Scheme);
 			var response = OAuth2Process.ProcessUserResponse(_provider, _credentials, Request.Url, userProcessUri, _oauth2StateManager);
 			response.Wait();
-			Session["result"] = response.Result;
+
+			LoginSuccessful = response.Result.Succeed;
+
+			//var client = new PortalClient();
+
+
+
 			return View();
 		}
     }

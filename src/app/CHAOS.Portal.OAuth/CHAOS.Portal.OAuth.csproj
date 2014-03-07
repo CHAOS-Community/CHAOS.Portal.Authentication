@@ -39,6 +39,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CHAOS.Portal.Client">
+      <HintPath>..\..\..\lib\CHAOS.Portal.Client.dll</HintPath>
+    </Reference>
     <Reference Include="DotNetAuth">
       <HintPath>..\..\..\packages\DotNetAuth.1.0.5\lib\net40\DotNetAuth.dll</HintPath>
     </Reference>
@@ -157,6 +160,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\PublishProfiles\Default.pubxml" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
