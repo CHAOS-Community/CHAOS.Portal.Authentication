@@ -124,6 +124,7 @@
     <Compile Include="Controllers\GenericProvider.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
     <Compile Include="Controllers\OAuth2SessionStateManager.cs" />
+    <Compile Include="Controllers\PortalConfiguration.cs" />
     <Compile Include="Controllers\ProviderConfiguration.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
