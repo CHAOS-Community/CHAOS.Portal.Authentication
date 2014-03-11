@@ -1,15 +1,36 @@
-﻿@{
-	Layout = null;
-}
+﻿@model CHAOS.Portal.OAuth.Models.ProcessLoginResponseModel
 <!DOCTYPE html>
 <html>
 	<head>
 		<title>OAuth Login</title>
+		<script type="text/javascript">
+			var status = "OAuthLoginStatus: @(Model.LoginSuccessful ? "success" : "failure")";
+			
+			if(window.opener && window.opener.postMessage)
+				window.opener.postMessage(status, "*");
+			else if(window.parent && window.parent !== window && window.parent.window && window.parent.window.postMessage)
+				window.parent.window.postMessage(status, "*");
+			else if(window.addEventListener)
+				window.addEventListener("message", ListenForStatusRequest, false);
+			else if(window.attachEvent)
+				window.addEventListener("onmessage", ListenForStatusRequest);
+			
+			function ListenForStatusRequest(event)
+			{
+				if(event.data == "WayfStatusRequest")
+					event.source.postMessage(status, event.origin);
+			}
+		</script>
 	</head>
 	<body>
 		<h1>OAuth Login</h1>
-		<p>
-			Logged In!
-		</p>
+		@if (Model.LoginSuccessful)
+		{
+			<p>Logged in!</p>
+		}
+		else
+		{
+			<p>Failed to log in!</p>
+		}
 	</body>
 </html>

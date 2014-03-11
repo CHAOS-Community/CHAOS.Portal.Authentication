@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Web.Mvc;
 using CHAOS.Portal.Client.Extensions;
 using CHAOS.Portal.Client.Standard;
+using CHAOS.Portal.OAuth.Models;
 using DotNetAuth.OAuth2;
 
 namespace CHAOS.Portal.OAuth.Controllers
@@ -18,7 +19,7 @@ namespace CHAOS.Portal.OAuth.Controllers
 	    private GenericProvider _provider;
 	    private Guid _sessionGuid;
 
-		protected override System.IAsyncResult BeginExecute(System.Web.Routing.RequestContext requestContext, System.AsyncCallback callback, object state)
+		protected override IAsyncResult BeginExecute(System.Web.Routing.RequestContext requestContext, System.AsyncCallback callback, object state)
 		{
 			if (requestContext.HttpContext.Request.QueryString["sessionGuid"] == null) throw new Exception("Missing sessiongGuid parameter");
 
@@ -55,7 +56,7 @@ namespace CHAOS.Portal.OAuth.Controllers
 			var response = OAuth2Process.ProcessUserResponse(_provider, _credentials, Request.Url, userProcessUri, _oauth2StateManager);
 			response.Wait();
 
-			LoginSuccessful = response.Result.Succeed;
+			var result = new ProcessLoginResponseModel {LoginSuccessful = response.Result.Succeed};
 
 			if (LoginSuccessful)
 			{
@@ -68,7 +69,7 @@ namespace CHAOS.Portal.OAuth.Controllers
 				client.OAuth().Login(oAuthId, email, _sessionGuid).Synchronous().ThrowError();
 			}
 
-			return View();
+			return View(result);
 		}
     }
 }
