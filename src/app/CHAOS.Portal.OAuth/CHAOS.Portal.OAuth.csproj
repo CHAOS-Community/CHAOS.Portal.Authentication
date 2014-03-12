@@ -29,6 +29,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PublishDatabases>false</PublishDatabases>
+    <ExcludeGeneratedDebugSymbol>true</ExcludeGeneratedDebugSymbol>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -39,11 +41,26 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CHAOS">
+      <HintPath>..\..\..\lib\CHAOS.dll</HintPath>
+    </Reference>
     <Reference Include="CHAOS.Portal.Client">
       <HintPath>..\..\..\lib\CHAOS.Portal.Client.dll</HintPath>
     </Reference>
+    <Reference Include="CHAOS.Serialization">
+      <HintPath>..\..\..\lib\CHAOS.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="CHAOS.Serialization.Standard">
+      <HintPath>..\..\..\lib\CHAOS.Serialization.Standard.dll</HintPath>
+    </Reference>
+    <Reference Include="CHAOS.Web">
+      <HintPath>..\..\..\lib\CHAOS.Web.dll</HintPath>
+    </Reference>
     <Reference Include="DotNetAuth">
       <HintPath>..\..\..\packages\DotNetAuth.1.0.5\lib\net40\DotNetAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetAuth.Profiles">
+      <HintPath>..\..\..\packages\DotNetAuth.Profiles.1.0.5\lib\net40\DotNetAuth.Profiles.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="RestSharp">
@@ -52,10 +69,6 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Threading">
-      <Private>True</Private>
-      <HintPath>..\..\..\packages\TaskParallelLibrary.1.0.2856.0\lib\Net35\System.Threading.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -121,6 +134,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\GenericLoginProviderDefinition.cs" />
     <Compile Include="Controllers\GenericProvider.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
     <Compile Include="Controllers\OAuth2SessionStateManager.cs" />

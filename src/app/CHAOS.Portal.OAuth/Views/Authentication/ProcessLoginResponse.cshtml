@@ -17,7 +17,7 @@
 			
 			function ListenForStatusRequest(event)
 			{
-				if(event.data == "WayfStatusRequest")
+				if (event.data == "OAuthLoginStatusRequest")
 					event.source.postMessage(status, event.origin);
 			}
 		</script>

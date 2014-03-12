@@ -10,5 +10,12 @@ namespace CHAOS.Portal.OAuth.Controllers
 			get { return (string)this["AuthKeyToken"]; }
 			set { this["AuthKeyToken"] = value; }
 		}
+
+		[ConfigurationProperty("ServicePath", IsRequired = true)]
+		public string ServicePath
+		{
+			get { return (string)this["ServicePath"]; }
+			set { this["ServicePath"] = value; }
+		}
 	}
 }

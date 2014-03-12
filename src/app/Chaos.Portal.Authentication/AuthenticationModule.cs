@@ -1,4 +1,6 @@
-﻿namespace Chaos.Portal.Authentication
+﻿using Chaos.Portal.Authentication.Extension.v6;
+
+namespace Chaos.Portal.Authentication
 {
     using System.Collections.Generic;
     using System.Xml.Linq;
@@ -56,6 +58,7 @@
             yield return "EmailPassword";
             yield return "SecureCookie";
             yield return "AuthKey";
+            yield return "OAuth";
             yield return "Wayf";
             yield return "Facebook";
         }
@@ -82,7 +85,9 @@
                     case "SecureCookie":
                         return new SecureCookie(PortalApplication, AuthenticationRepository);
                     case "AuthKey":
-                        return new AuthKey(PortalApplication, AuthenticationRepository);
+		                return new AuthKey(PortalApplication, AuthenticationRepository);
+					case "OAuth":
+                        return new OAuth(this);
 					case "Wayf":
 						return new Wayf(PortalApplication, AuthenticationRepository);
                     case "Facebook":

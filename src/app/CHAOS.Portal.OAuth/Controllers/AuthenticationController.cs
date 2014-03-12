@@ -1,75 +1,94 @@
 ﻿using System;
 using System.Configuration;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using CHAOS.Portal.Client.Extensions;
 using CHAOS.Portal.Client.Standard;
 using CHAOS.Portal.OAuth.Models;
 using DotNetAuth.OAuth2;
+using DotNetAuth.Profiles;
 
 namespace CHAOS.Portal.OAuth.Controllers
 {
     public class AuthenticationController : Controller
     {
-		public bool LoginSuccessful { get; private set; }
-
-		private ApplicationCredentials _credentials;
-		private OAuth2SessionStateManager _oauth2StateManager;
-	    private ProviderConfiguration _providerConfiguration;
-	    private PortalConfiguration _portalConfiguration;
-	    private GenericProvider _provider;
-	    private Guid _sessionGuid;
+		private ProviderConfiguration _providerConfiguration;
+		private PortalConfiguration _portalConfiguration;
+		
+		private LoginProvider _provider;
+		private DefaultLoginStateManager _stateManager;
+	    private ProfileProperty[] _requiredProperties;
 
 		protected override IAsyncResult BeginExecute(System.Web.Routing.RequestContext requestContext, System.AsyncCallback callback, object state)
 		{
-			if (requestContext.HttpContext.Request.QueryString["sessionGuid"] == null) throw new Exception("Missing sessiongGuid parameter");
-
-			_oauth2StateManager = new OAuth2SessionStateManager(requestContext.HttpContext.Session);
 			_providerConfiguration = (ProviderConfiguration)ConfigurationManager.GetSection("OAuthConfiguration/ProviderConfiguration");
 			_portalConfiguration = (PortalConfiguration)ConfigurationManager.GetSection("OAuthConfiguration/PortalConfiguration");
-			_sessionGuid = Guid.Parse(requestContext.HttpContext.Request.QueryString["sessionGuid"]);
 
-			_credentials = new ApplicationCredentials
+			_provider = new LoginProvider
 			{
 				AppId = _providerConfiguration.ClientId,
-				AppSecretId = _providerConfiguration.ClientSecret
+				AppSecret = _providerConfiguration.ClientSecret,
+				Definition = new GenericLoginProviderDefinition(new GenericProvider
+				{
+					AuthorizationEndpointUri = _providerConfiguration.AuthorizationEndpoint,
+					TokenEndpointUri = _providerConfiguration.TokenEndpoint,
+					UserInfoEndpoint = _providerConfiguration.UserInfoEndpoint
+				})
 			};
-			_provider = new GenericProvider
-			{
-				AuthorizationEndpointUri = _providerConfiguration.AuthorizationEndpoint,
-				TokenEndpointUri = _providerConfiguration.TokenEndpoint
-			};
+
+			_stateManager = new DefaultLoginStateManager(requestContext.HttpContext.Session);
+			_requiredProperties = new[] { ProfileProperty.Email, ProfileProperty.DisplayName, ProfileProperty.UniqueID };
 
 			return base.BeginExecute(requestContext, callback, state);
 		}
 
         public ActionResult Login()
         {
-			var userProcessUri = Uri.EscapeDataString(Url.Action("ProcessLoginResponse", "Authentication", routeValues: null, protocol: Request.Url.Scheme));
-			var redirectUri = OAuth2Process.GetAuthenticationUri(_provider, _credentials, userProcessUri, "", _oauth2StateManager);
+			if (Request.QueryString["sessionGuid"] == null) throw new Exception("Missing sessiongGuid parameter");
 
-			return Redirect(redirectUri.ToString());
+	        Session["sessionGuid"] = Request.QueryString["sessionGuid"];
+
+			var userProcessUri = Url.Action("ProcessLoginResponse", "Authentication", null,  Request.Url.Scheme);
+			var authorizationUrl = GetAuthenticationUri(_provider, userProcessUri, _stateManager, _requiredProperties);
+	        authorizationUrl.Wait();
+
+			return Redirect(authorizationUrl.Result.AbsoluteUri);
         }
 
 		public ActionResult ProcessLoginResponse()
 		{
-			var userProcessUri = Url.Action("ProcessLoginResponse", "Authentication", routeValues: null, protocol: Request.Url.Scheme);
-			var response = OAuth2Process.ProcessUserResponse(_provider, _credentials, Request.Url, userProcessUri, _oauth2StateManager);
+			if (Session["sessionGuid"] == null) throw new Exception("Missing sessiongGuid session variable");
+			var sessionGuid = Guid.Parse(Session["sessionGuid"].ToString());
+			
+			var userProcessUri = Url.Action("ProcessLoginResponse", "Authentication", null, Request.Url.Scheme);
+
+			var response = DotNetAuth.Profiles.Login.GetProfile(_provider, Request.Url, userProcessUri, new DefaultLoginStateManager(Session), _requiredProperties);
 			response.Wait();
 
-			var result = new ProcessLoginResponseModel {LoginSuccessful = response.Result.Succeed};
+			var result = new ProcessLoginResponseModel {LoginSuccessful = !response.IsFaulted && response.Result.UniqueID != null};
 
-			if (LoginSuccessful)
+			if (result.LoginSuccessful)
 			{
-				var oAuthId = "";
-				var email = "";
-
-				var client = new PortalClient();
+				var client = new PortalClient {ServicePath = _portalConfiguration.ServicePath};
 				client.Session().Create().Synchronous().ThrowError(); ;
 				client.AuthKey().Login(_portalConfiguration.AuthKeyToken).Synchronous().ThrowError();
-				client.OAuth().Login(oAuthId, email, _sessionGuid).Synchronous().ThrowError();
+				client.OAuth().Login(response.Result.UniqueID, response.Result.Email, sessionGuid).Synchronous().ThrowError();
 			}
 
 			return View(result);
+		}
+
+		private static Task<Uri> GetAuthenticationUri(LoginProvider provider, string loginProcessUri, ILoginStateManager stateManager, ProfileProperty[] requiredProperties)
+		{
+			var generalLoginStataManager = new LoginStateManager(stateManager);
+			switch (provider.Definition.ProtocolType)
+			{
+				case ProtocolTypes.OAuth2:
+					var scope = provider.Definition.GetRequiredScope(requiredProperties);
+					return Task.Factory.StartNew(() => OAuth2Process.GetAuthenticationUri(provider.Definition.GetOAuth2Definition(), provider.GetOAuth2Credentials(), Uri.EscapeDataString(loginProcessUri), scope, generalLoginStataManager));
+				default:
+					throw new Exception("Invalid provider. Provider's protocol type is not set or supported.");
+			}
 		}
     }
 }
