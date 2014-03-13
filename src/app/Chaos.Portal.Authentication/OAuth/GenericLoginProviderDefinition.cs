@@ -1,9 +1,9 @@
 ﻿using DotNetAuth.OAuth2;
 using DotNetAuth.Profiles;
 
-namespace CHAOS.Portal.OAuth.Controllers
+namespace Chaos.Portal.Authentication.OAuth
 {
-	public class GenericLoginProviderDefinition : LoginProviderDefinition
+	internal class GenericLoginProviderDefinition : LoginProviderDefinition
 	{
 		private readonly GenericProvider _genericProvider;
 

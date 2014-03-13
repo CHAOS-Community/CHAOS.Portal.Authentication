@@ -1,4 +1,6 @@
-﻿namespace Chaos.Portal.Authentication
+﻿using Chaos.Portal.Authentication.OAuth;
+
+namespace Chaos.Portal.Authentication
 {
     using Configuration;
     using Core;
@@ -14,6 +16,7 @@
         IAuthenticationRepository AuthenticationRepository { get; }
         IPortalApplication PortalApplication { get; }
         IFacebookClient FacebookClient { get; set; }
+        IOAuthClient OAuthClient { get; set; }
         AuthenticationSettings AuthenticationSettings { get; }
         void OnOnUserLoggedIn(RequestDelegate.PortalRequestArgs args);
         void OnOnUserCreated(RequestDelegate.PortalRequestArgs args);

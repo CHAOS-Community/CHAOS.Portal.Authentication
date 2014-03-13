@@ -1,4 +1,4 @@
-﻿using Chaos.Portal.Authentication.Extension.v6;
+﻿using Chaos.Portal.Authentication.OAuth;
 
 namespace Chaos.Portal.Authentication
 {
@@ -30,7 +30,8 @@ namespace Chaos.Portal.Authentication
         public IAuthenticationRepository AuthenticationRepository { get; private set; }
         public IPortalApplication PortalApplication { get; private set; }
         public IFacebookClient FacebookClient { get; set; }
-        public AuthenticationSettings AuthenticationSettings { get; private set; }
+	    public IOAuthClient OAuthClient { get; set; }
+	    public AuthenticationSettings AuthenticationSettings { get; private set; }
 
         #endregion
 
@@ -43,6 +44,7 @@ namespace Chaos.Portal.Authentication
             AuthenticationRepository = new AuthenticationRepository(AuthenticationSettings.ConnectionString);
             PortalApplication = portalApplication;
             FacebookClient = new FacebookClient(AuthenticationSettings.Facebook);
+			OAuthClient = new OAuthClient(AuthenticationSettings.OAuth);
         }
 
         private static AuthenticationSettings GetSettings(IPortalApplication portalApplication)
@@ -87,7 +89,7 @@ namespace Chaos.Portal.Authentication
                     case "AuthKey":
 		                return new AuthKey(PortalApplication, AuthenticationRepository);
 					case "OAuth":
-                        return new OAuth(this);
+                        return new Extension.v6.OAuth(this);
 					case "Wayf":
 						return new Wayf(PortalApplication, AuthenticationRepository);
                     case "Facebook":

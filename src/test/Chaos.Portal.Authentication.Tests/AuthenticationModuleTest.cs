@@ -32,8 +32,9 @@
             Assert.That(results[0], Is.EqualTo("EmailPassword"));
             Assert.That(results[1], Is.EqualTo("SecureCookie"));
             Assert.That(results[2], Is.EqualTo("AuthKey"));
-            Assert.That(results[3], Is.EqualTo("Wayf"));
-            Assert.That(results[4], Is.EqualTo("Facebook"));
+            Assert.That(results[3], Is.EqualTo("OAuth"));
+            Assert.That(results[4], Is.EqualTo("Wayf"));
+            Assert.That(results[5], Is.EqualTo("Facebook"));
         }
 
         [Test]
@@ -70,7 +71,7 @@
         {
             return new Module
                 {
-                    Configuration = "<Settings><ConnectionString>connectionstring</ConnectionString><Facebook AppId=\"some app id\" AppSecret=\"some app secret\"></Facebook></Settings>"
+					Configuration = "<Settings><ConnectionString>connectionstring</ConnectionString><Facebook AppId=\"some app id\" AppSecret=\"some app secret\"></Facebook><OAuth ClientId=\"Some id\" ClientSecret=\"Some secret\" AuthorizationEndpoint=\"http://awesome/Authorize\" TokenEndpoint=\"http://awesome/Token\" UserInfoEndpoint=\"http://awesome/UserInfo\" /></Settings>"
                 };
         }
     }
