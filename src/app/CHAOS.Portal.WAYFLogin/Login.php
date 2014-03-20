@@ -45,7 +45,7 @@
 			/*if(isset(http_build_url))
 				header('Location: ' . http_build_url($_REQUEST["callbackUrl"], array("query" => "status=" . $status), HTTP_URL_JOIN_QUERY), true, 303);
 			else*/
-				header('Location: ' . $_REQUEST["callbackUrl"] . "?status=" . $status, true, 303);
+				header('Location: ' . $_REQUEST["callbackUrl"] . "?status=" . $status . ($error == null ? "" : "&error=" . $error), true, 303);
 
 			exit();
 		}
