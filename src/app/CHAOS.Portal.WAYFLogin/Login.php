@@ -15,8 +15,6 @@
 		$error = "Parameter sessionGuid not set";
 	else if(!isset($WayfConfiguration['AuthKeyToken']))
 		$error = "AuthKeyToken not set in configuration";
-	else if(!isset($WayfConfiguration['ProfileSchemaGuid']))
-		$error = "ProfileSchemaGuid not set in configuration";
 	else
 	{
 		$simpleSaml = new SimpleSAML_Auth_Simple("Wayf");
@@ -32,19 +30,12 @@
 			$helper->SetSessionGuid($response->Body->Results[0]->Guid);
 			$response = $helper->Call("Wayf/Login", array('wayfId' => $attributes['eduPersonTargetedID'][0], 'email' => $attributes['mail'][0], 'sessionGuidToAuthenticate' => $_REQUEST["sessionGuid"]));
 		
-			/*if(!($error = $helper->GetError()))
+			if(!($error = $helper->GetError()))
 			{
-				$helper->Call("UserManagement/GetUserObject", array('createIfMissing ' => true)); //Make sure userobjects exists
-				
-				if(!($error = $helper->GetError()))
-				{
-					$metadata = '<WayfProfile Name="' . $attributes["Name"][0] . '" />';
-				
-					$helper->Call("UserProfile/Set", array('metadataSchemaGuid' => $WayfConfiguration['ProfileSchemaGuid'], 'metadata' => $metadata, 'userGuid' => $response->Body->Results[0]->Guid));
-					
-					*/$error = $helper->GetError();/*
-				}
-			}*/
+				$helper->Call("WayfProfile/Update", array('userGuid' => $response->Body->Results[0]->Guid,'attributes' => json_encode($attributes)));
+
+				$error = $helper->GetError();
+			}
 		}
 		
 		if(isset($_REQUEST["callbackUrl"]))

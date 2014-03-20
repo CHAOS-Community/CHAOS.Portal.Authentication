@@ -1,6 +1,5 @@
 ﻿<?php
 	$WayfConfiguration = array(
-		'AuthKeyToken' => '',
-		'ProfileSchemaGuid' => ''
+		'AuthKeyToken' => ''
 	);
 ?>
