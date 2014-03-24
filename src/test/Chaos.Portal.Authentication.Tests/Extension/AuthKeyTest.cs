@@ -118,7 +118,7 @@ namespace Chaos.Portal.Authentication.Tests.Extension
 
 		    var result = extension.Delete(key.Name);
 
-			AuthenticationRepository.VerifyAll();
+			AuthenticationRepository.Verify();
 
 			Assert.That(result.Value, Is.EqualTo(1));
 	    }

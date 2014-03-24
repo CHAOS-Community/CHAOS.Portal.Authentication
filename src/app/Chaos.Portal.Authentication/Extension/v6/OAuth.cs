@@ -4,9 +4,7 @@ using Chaos.Portal.Authentication.Data.Model;
 using Chaos.Portal.Authentication.Exception;
 using Chaos.Portal.Authentication.OAuth;
 using Chaos.Portal.Core.Data.Model;
-using Chaos.Portal.Core.Exceptions;
 using Chaos.Portal.Core.Extension;
-using Chaos.Portal.Core.Request;
 using DotNetAuth.Profiles;
 
 namespace Chaos.Portal.Authentication.Extension.v6
@@ -19,37 +17,6 @@ namespace Chaos.Portal.Authentication.Extension.v6
         {
             AuthenticationModule = authenticationModule;
         }
-
-		public UserInfo Login(string oAuthId, string email, Guid sessionGuidToAuthenticate)
-		{
-			if (!Request.User.HasPermission(SystemPermissons.Manage)) throw new InsufficientPermissionsException("Only managers can authenticate sessions");
-
-			var oAuthUser = AuthenticationModule.AuthenticationRepository.OAuth.OAuthUserGet(oAuthId);
-
-			if (oAuthUser == null)
-			{
-				oAuthUser = new OAuthUser();
-
-				var existingUser = PortalRepository.UserInfoGet(null, null, email, null).FirstOrDefault();
-
-				if (existingUser == null)
-				{
-					oAuthUser.UserGuid = Guid.NewGuid();
-
-					if (PortalRepository.UserCreate(oAuthUser.UserGuid, email) != 1) throw new LoginException("Failed to create new user");
-				}
-				else
-					oAuthUser.UserGuid = existingUser.Guid;
-
-				AuthenticationModule.AuthenticationRepository.OAuth.OAuthUserUpdate(oAuthUser.UserGuid, oAuthId);
-			}
-
-			var result = PortalRepository.SessionUpdate(sessionGuidToAuthenticate, oAuthUser.UserGuid);
-
-			if (result == null) throw new LoginException("Session could not be updated");
-
-			return PortalRepository.UserInfoGet(null, sessionGuidToAuthenticate, null, null).First();
-		}
 
 		public LoginEndPoint GetLoginEndPoint(string callbackUrl)
 		{
@@ -69,12 +36,8 @@ namespace Chaos.Portal.Authentication.Extension.v6
 
 		private OAuthUser GetUser(Profile profile)
 		{
-			var user = AuthenticationModule.AuthenticationRepository.OAuth.OAuthUserGet(profile.UniqueID);
-
-			if (user == null)
-				user = CreateUser(profile);
-
-			return user;
+			return AuthenticationModule.AuthenticationRepository.OAuth.OAuthUserGet(profile.UniqueID) 
+				?? CreateUser(profile);
 		}
 
 		private OAuthUser CreateUser(Profile profile)
