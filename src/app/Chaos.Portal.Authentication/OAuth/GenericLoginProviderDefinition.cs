@@ -25,11 +25,12 @@ namespace Chaos.Portal.Authentication.OAuth
 		public override Profile ParseProfile(string content)
 		{
 			var json = Newtonsoft.Json.Linq.JObject.Parse(content);
-			var profile = new Profile
+			var profile = new IntranetAccessProfile
 			{
 				UniqueID = json.First.First.Value<string>("id"),
 				DisplayName = json.First.First.Value<string>("name"),
-				Email = json.First.First.Value<string>("email")
+				Email = json.First.First.Value<string>("email"),
+				HasIntranetAccess = json.First.First.Value<bool>("intranet")
 			};
 			return profile;
 		}

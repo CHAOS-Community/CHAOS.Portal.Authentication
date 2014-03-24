@@ -83,6 +83,7 @@
     <Compile Include="Data\Model\OAuthUser.cs" />
     <Compile Include="Data\Model\WayfUser.cs" />
     <Compile Include="Data\OAuthRepository.cs" />
+    <Compile Include="Exception\UserDoesNotHaveIntranetAccessException.cs" />
     <Compile Include="Exception\LoginException.cs" />
     <Compile Include="Exception\SecureCookieAlreadyConsumedException.cs" />
     <Compile Include="Extension\AuthKey.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="IFacebookClient.cs" />
     <Compile Include="OAuth\GenericLoginProviderDefinition.cs" />
     <Compile Include="OAuth\GenericProvider.cs" />
+    <Compile Include="OAuth\IntranetAccessProfile.cs" />
     <Compile Include="OAuth\IOAuthClient.cs" />
     <Compile Include="OAuth\LoginEndPoint.cs" />
     <Compile Include="OAuth\LoginStateManager.cs" />

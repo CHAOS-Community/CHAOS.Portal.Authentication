@@ -1,5 +1,6 @@
 ﻿using System;
 using Chaos.Portal.Authentication.Data.Model;
+using Chaos.Portal.Authentication.Exception;
 using Chaos.Portal.Authentication.OAuth;
 using Chaos.Portal.Core.Data.Model;
 using DotNetAuth.Profiles;
@@ -34,7 +35,7 @@ namespace Chaos.Portal.Authentication.Tests.Extension
 			var stateCode = "MyCode";
 			var session = Make_Session();
 			var oAuthUser = Make_OAuthUser();
-			var oAuthProfile = Make_OAuthProfile();
+			var oAuthProfile = Make_OAuthProfile(true);
 			oAuthProfile.UniqueID = oAuthUser.OAuthId;
 
 			OAuthClient.Setup(c => c.ProcessLogin(callbackUrl, responseUrl, stateCode)).Returns(oAuthProfile);
@@ -52,11 +53,28 @@ namespace Chaos.Portal.Authentication.Tests.Extension
 			Assert.That(result.Guid, Is.EqualTo(session.Guid));
 		}
 
-		private Profile Make_OAuthProfile()
+		[Test, ExpectedException(typeof(UserDoesNotHaveIntranetAccessException))]
+		public void ProcessLogin_GivenNewValidOAuthLoginWithoutIntranetAccess_ReturnAndAuthorizeSession()
 		{
-			return new Profile
+			var extension = MakeOAuthExtension();
+			var callbackUrl = "http://MyCallback.test";
+			var responseUrl = "http://MyResponse.test";
+			var stateCode = "MyCode";
+			var oAuthUser = Make_OAuthUser();
+			var oAuthProfile = Make_OAuthProfile(false);
+			oAuthProfile.UniqueID = oAuthUser.OAuthId;
+
+			OAuthClient.Setup(c => c.ProcessLogin(callbackUrl, responseUrl, stateCode)).Returns(oAuthProfile);
+
+			var result = extension.ProcessLogin(callbackUrl, responseUrl, stateCode);
+		}
+
+		private IntranetAccessProfile Make_OAuthProfile(bool hasIntranetAccess)
+		{
+			return new IntranetAccessProfile
 			{
-				Email = "test@test.test"
+				Email = "test@test.test",
+				HasIntranetAccess = hasIntranetAccess
 			};
 		}
 

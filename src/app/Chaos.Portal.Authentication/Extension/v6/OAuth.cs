@@ -25,7 +25,11 @@ namespace Chaos.Portal.Authentication.Extension.v6
 
 		public Session ProcessLogin(string callbackUrl, string responseUrl, string stateCode)
 		{
-			var profile = AuthenticationModule.OAuthClient.ProcessLogin(callbackUrl, responseUrl, stateCode);
+			var profile = (IntranetAccessProfile)AuthenticationModule.OAuthClient.ProcessLogin(callbackUrl, responseUrl, stateCode);
+
+			if (!profile.HasIntranetAccess)
+				throw new UserDoesNotHaveIntranetAccessException();
+
 			var user = GetUser(profile);
 			var session = AuthenticateSession(user);
 
