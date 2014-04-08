@@ -1,13 +1,13 @@
-﻿using System;
-using Chaos.Portal.Authentication.OAuth;
-
-namespace Chaos.Portal.Authentication
+﻿namespace Chaos.Portal.Authentication
 {
+	using System;
+
     using Configuration;
     using Core;
     using Core.Module;
     using Core.Request;
     using Data;
+	using OAuth;
 
     public interface IAuthenticationModule : IModule
     {
