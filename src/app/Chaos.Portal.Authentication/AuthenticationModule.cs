@@ -1,4 +1,6 @@
-﻿using Chaos.Portal.Authentication.OAuth;
+﻿using System;
+using CHAOS.Extensions;
+using Chaos.Portal.Authentication.OAuth;
 
 namespace Chaos.Portal.Authentication
 {
@@ -20,6 +22,8 @@ namespace Chaos.Portal.Authentication
 
         private const string CONFIGURATION_NAME = "Authentication";
 
+	    private IDictionary<Type, object> _userInfoUpdateListeners;
+
         public event RequestDelegate.PortalRequestHandler OnUserLoggedIn;
         public event RequestDelegate.PortalRequestHandler OnUserCreated;
 
@@ -40,6 +44,8 @@ namespace Chaos.Portal.Authentication
         public void Load(IPortalApplication portalApplication)
         {
             AuthenticationSettings = GetSettings(portalApplication);
+
+			_userInfoUpdateListeners = new Dictionary<Type, object>();
             
             AuthenticationRepository = new AuthenticationRepository(AuthenticationSettings.ConnectionString);
             PortalApplication = portalApplication;
@@ -117,6 +123,35 @@ namespace Chaos.Portal.Authentication
             if (handler != null) handler(this, args);
         }
 
-        #endregion
+	    public void AddUserInfoUpdateListener<T>(Action<UserInfoUpdate<T>> listener)
+	    {
+		    listener.ValidateIsNotNull("listner");
+		    var type = typeof (T);
+		    IList<Action<UserInfoUpdate<T>>> list;
+
+		    if (_userInfoUpdateListeners.ContainsKey(type))
+			    list = (IList<Action<UserInfoUpdate<T>>>) _userInfoUpdateListeners[type];
+		    else
+		    {
+			    list = new List<Action<UserInfoUpdate<T>>>();
+			    _userInfoUpdateListeners[type] = list;
+		    }
+
+			list.Add(listener);
+	    }
+
+	    public void OnUserInfoUpdate<T>(Guid userGuid, T userInfo)
+	    {
+			var type = typeof (T);
+		    if (!_userInfoUpdateListeners.ContainsKey(type)) return;
+
+			var list = (IList<Action<UserInfoUpdate<T>>>)_userInfoUpdateListeners[type];
+		    var update = new UserInfoUpdate<T>(userGuid, userInfo);
+
+		    foreach (var listener in list)
+			    listener(update);
+	    }
+
+	    #endregion
     }
 }

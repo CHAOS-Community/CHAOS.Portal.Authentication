@@ -5,6 +5,7 @@ using Chaos.Portal.Authentication.Exception;
 using Chaos.Portal.Authentication.OAuth;
 using Chaos.Portal.Core.Data.Model;
 using Chaos.Portal.Core.Extension;
+using Chaos.Portal.Core.Request;
 using DotNetAuth.Profiles;
 
 namespace Chaos.Portal.Authentication.Extension.v6
@@ -33,7 +34,8 @@ namespace Chaos.Portal.Authentication.Extension.v6
 			var user = GetUser(profile);
 			var session = AuthenticateSession(user);
 
-			//AuthenticationModule.OnOnUserLoggedIn(new RequestDelegate.PortalRequestArgs(Request));
+			AuthenticationModule.OnOnUserLoggedIn(new RequestDelegate.PortalRequestArgs(Request));
+			AuthenticationModule.OnUserInfoUpdate(user.UserGuid, profile);
 
 			return session;
 		}

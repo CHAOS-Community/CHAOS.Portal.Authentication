@@ -1,4 +1,5 @@
-﻿using Chaos.Portal.Authentication.OAuth;
+﻿using System;
+using Chaos.Portal.Authentication.OAuth;
 
 namespace Chaos.Portal.Authentication
 {
@@ -20,5 +21,8 @@ namespace Chaos.Portal.Authentication
         AuthenticationSettings AuthenticationSettings { get; }
         void OnOnUserLoggedIn(RequestDelegate.PortalRequestArgs args);
         void OnOnUserCreated(RequestDelegate.PortalRequestArgs args);
+
+	    void AddUserInfoUpdateListener<T>(Action<UserInfoUpdate<T>> listener);
+	    void OnUserInfoUpdate<T>(Guid userGuid, T userInfo);
     }
 }
