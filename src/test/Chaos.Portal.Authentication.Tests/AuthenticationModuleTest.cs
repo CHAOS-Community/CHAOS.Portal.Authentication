@@ -1,4 +1,8 @@
-﻿namespace Chaos.Portal.Authentication.Tests
+﻿using System;
+using Chaos.Portal.Authentication.Data;
+using Moq;
+
+namespace Chaos.Portal.Authentication.Tests
 {
     using System.Linq;
 
@@ -32,8 +36,9 @@
             Assert.That(results[0], Is.EqualTo("EmailPassword"));
             Assert.That(results[1], Is.EqualTo("SecureCookie"));
             Assert.That(results[2], Is.EqualTo("AuthKey"));
-            Assert.That(results[3], Is.EqualTo("Wayf"));
-            Assert.That(results[4], Is.EqualTo("Facebook"));
+            Assert.That(results[3], Is.EqualTo("OAuth"));
+            Assert.That(results[4], Is.EqualTo("Wayf"));
+            Assert.That(results[5], Is.EqualTo("Facebook"));
         }
 
         [Test]
@@ -66,11 +71,51 @@
             module.Load(PortalApplication.Object);
         }
 
+		[Test]
+		public void OnUserInfoUpdate_GivenInfo_ShouldInvokeListener()
+		{
+			var module = new AuthenticationModule();
+			var config = Make_ModuleConfig();
+			var userGuid = new Guid("10000000-0000-0000-0000-000000000001");
+			var userInfo = 5;
+			UserInfoUpdate<int> result = null;
+			Action<UserInfoUpdate<int>> callback = i => result = i;
+
+			PortalRepository.Setup(m => m.ModuleGet("Authentication")).Returns(config);
+			module.Load(PortalApplication.Object);
+
+			module.AddUserInfoUpdateListener(callback);
+			module.OnUserInfoUpdate(userGuid, userInfo);
+
+			Assert.That(result, Is.Not.Null);
+			Assert.That(result.UserGuid, Is.EqualTo(userGuid));
+			Assert.That(result.UserInfo, Is.EqualTo(userInfo));
+		}
+
+		[Test]
+		public void OnUserInfoUpdate_GivenInfo_ShouldNotInvokeListenerWithDifferentType()
+		{
+			var module = new AuthenticationModule();
+			var config = Make_ModuleConfig();
+			var userGuid = new Guid("10000000-0000-0000-0000-000000000001");
+			var userInfo = 5;
+			UserInfoUpdate<uint> result = null;
+			Action<UserInfoUpdate<uint>> callback = i => result = i;
+
+			PortalRepository.Setup(m => m.ModuleGet("Authentication")).Returns(config);
+			module.Load(PortalApplication.Object);
+
+			module.AddUserInfoUpdateListener(callback);
+			module.OnUserInfoUpdate(userGuid, userInfo);
+
+			Assert.That(result, Is.Null);
+		}
+
         private static Module Make_ModuleConfig()
         {
             return new Module
                 {
-                    Configuration = "<Settings><ConnectionString>connectionstring</ConnectionString><Facebook AppId=\"some app id\" AppSecret=\"some app secret\"></Facebook></Settings>"
+					Configuration = "<Settings><ConnectionString>connectionstring</ConnectionString><Facebook AppId=\"some app id\" AppSecret=\"some app secret\"></Facebook><OAuth ClientId=\"Some id\" ClientSecret=\"Some secret\" AuthorizationEndpoint=\"http://awesome/Authorize\" TokenEndpoint=\"http://awesome/Token\" UserInfoEndpoint=\"http://awesome/UserInfo\" /></Settings>"
                 };
         }
     }

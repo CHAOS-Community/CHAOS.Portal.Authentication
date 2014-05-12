@@ -10,9 +10,26 @@
 
         [Serialize]
         public FacebookSettings Facebook { get; set; }
+
+		[Serialize]
+		public OAuthSettings OAuth { get; set; }
     }
 
-    public class FacebookSettings
+	public class OAuthSettings
+	{
+		[SerializeXML(true)]
+		public string ClientId { get; set; }
+		[SerializeXML(true)]
+		public string ClientSecret { get; set; }
+		[SerializeXML(true)]
+		public string AuthorizationEndpoint { get; set; }
+		[SerializeXML(true)]
+		public string TokenEndpoint { get; set; }
+		[SerializeXML(true)]
+		public string UserInfoEndpoint { get; set; }
+	}
+
+	public class FacebookSettings
     {
         [SerializeXML(true)]
         public string AppId { get; set; }

@@ -2,9 +2,11 @@
 using System.Linq;
 using Chaos.Portal.Authentication.Data.Model;
 using Chaos.Portal.Authentication.Exception;
+using Chaos.Portal.Authentication.OAuth;
 using Chaos.Portal.Core.Data.Model;
-using Chaos.Portal.Core.Exceptions;
 using Chaos.Portal.Core.Extension;
+using Chaos.Portal.Core.Request;
+using DotNetAuth.Profiles;
 
 namespace Chaos.Portal.Authentication.Extension.v6
 {
@@ -17,35 +19,59 @@ namespace Chaos.Portal.Authentication.Extension.v6
             AuthenticationModule = authenticationModule;
         }
 
-		public UserInfo Login(string oAuthId, string email, Guid sessionGuidToAuthenticate)
+		public LoginEndPoint GetLoginEndPoint(string callbackUrl)
 		{
-			if (!Request.User.HasPermission(SystemPermissons.Manage)) throw new InsufficientPermissionsException("Only managers can authenticate sessions");
+			return AuthenticationModule.OAuthClient.GetLoginEndPoint(callbackUrl);
+		}
 
-			var oAuthUser = AuthenticationModule.AuthenticationRepository.OAuth.OAuthUserGet(oAuthId);
+		public Session ProcessLogin(string callbackUrl, string responseUrl, string stateCode)
+		{
+			var profile = (IntranetAccessProfile)AuthenticationModule.OAuthClient.ProcessLogin(callbackUrl, responseUrl, stateCode);
 
-			if (oAuthUser == null)
+			if (!profile.HasIntranetAccess)
+				throw new UserDoesNotHaveIntranetAccessException();
+
+			var user = GetUser(profile);
+			var session = AuthenticateSession(user);
+
+			AuthenticationModule.OnOnUserLoggedIn(new RequestDelegate.PortalRequestArgs(Request));
+			AuthenticationModule.OnUserInfoUpdate(user.UserGuid, profile);
+
+			return session;
+		}
+
+		private OAuthUser GetUser(Profile profile)
+		{
+			return AuthenticationModule.AuthenticationRepository.OAuth.OAuthUserGet(profile.UniqueID) 
+				?? CreateUser(profile);
+		}
+
+		private OAuthUser CreateUser(Profile profile)
+		{
+			var user = new OAuthUser();
+
+			var existingUser = PortalRepository.UserInfoGet(null, null, profile.Email, null).FirstOrDefault();
+
+			if (existingUser == null)
 			{
-				oAuthUser = new OAuthUser();
+				user.UserGuid = Guid.NewGuid();
 
-				var existingUser = PortalRepository.UserInfoGet(null, null, email, null).FirstOrDefault();
-
-				if (existingUser == null)
-				{
-					oAuthUser.UserGuid = Guid.NewGuid();
-
-					if (PortalRepository.UserCreate(oAuthUser.UserGuid, email) != 1) throw new LoginException("Failed to create new user");
-				}
-				else
-					oAuthUser.UserGuid = existingUser.Guid;
-
-				AuthenticationModule.AuthenticationRepository.OAuth.OAuthUserUpdate(oAuthUser.UserGuid, oAuthId);
+				if (PortalRepository.UserCreate(user.UserGuid, profile.Email) != 1)
+					throw new LoginException("Failed to create new user");
 			}
+			else
+				user.UserGuid = existingUser.Guid;
 
-			var result = PortalRepository.SessionUpdate(sessionGuidToAuthenticate, oAuthUser.UserGuid);
+			AuthenticationModule.AuthenticationRepository.OAuth.OAuthUserUpdate(user.UserGuid, profile.UniqueID);
 
-			if (result == null) throw new LoginException("Session could not be updated");
+			return user;
+		}
 
-			return PortalRepository.UserInfoGet(null, sessionGuidToAuthenticate, null, null).First();
+		private Session AuthenticateSession(OAuthUser user)
+		{
+			return Request.Session != null
+				   ? PortalRepository.SessionUpdate(Request.Session.Guid, user.UserGuid)
+				   : PortalRepository.SessionCreate(user.UserGuid);
 		}
 	}
 }

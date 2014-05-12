@@ -31,7 +31,7 @@
         {
             Gateway = new Gateway(connectionString);
 
-			OAuth = new OAuthRepository();
+			OAuth = new OAuthRepository(Gateway);
         }
 
         #endregion

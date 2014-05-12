@@ -1,4 +1,8 @@
-﻿namespace Chaos.Portal.Authentication
+﻿using System;
+using CHAOS.Extensions;
+using Chaos.Portal.Authentication.OAuth;
+
+namespace Chaos.Portal.Authentication
 {
     using System.Collections.Generic;
     using System.Xml.Linq;
@@ -18,6 +22,8 @@
 
         private const string CONFIGURATION_NAME = "Authentication";
 
+	    private IDictionary<Type, object> _userInfoUpdateListeners;
+
         public event RequestDelegate.PortalRequestHandler OnUserLoggedIn;
         public event RequestDelegate.PortalRequestHandler OnUserCreated;
 
@@ -28,7 +34,8 @@
         public IAuthenticationRepository AuthenticationRepository { get; private set; }
         public IPortalApplication PortalApplication { get; private set; }
         public IFacebookClient FacebookClient { get; set; }
-        public AuthenticationSettings AuthenticationSettings { get; private set; }
+	    public IOAuthClient OAuthClient { get; set; }
+	    public AuthenticationSettings AuthenticationSettings { get; private set; }
 
         #endregion
 
@@ -37,10 +44,13 @@
         public void Load(IPortalApplication portalApplication)
         {
             AuthenticationSettings = GetSettings(portalApplication);
+
+			_userInfoUpdateListeners = new Dictionary<Type, object>();
             
             AuthenticationRepository = new AuthenticationRepository(AuthenticationSettings.ConnectionString);
             PortalApplication = portalApplication;
             FacebookClient = new FacebookClient(AuthenticationSettings.Facebook);
+			OAuthClient = new OAuthClient(AuthenticationSettings.OAuth);
         }
 
         private static AuthenticationSettings GetSettings(IPortalApplication portalApplication)
@@ -56,6 +66,7 @@
             yield return "EmailPassword";
             yield return "SecureCookie";
             yield return "AuthKey";
+            yield return "OAuth";
             yield return "Wayf";
             yield return "Facebook";
         }
@@ -82,7 +93,9 @@
                     case "SecureCookie":
                         return new SecureCookie(PortalApplication, AuthenticationRepository);
                     case "AuthKey":
-                        return new AuthKey(PortalApplication, AuthenticationRepository);
+		                return new AuthKey(PortalApplication, AuthenticationRepository);
+					case "OAuth":
+                        return new Extension.v6.OAuth(this);
 					case "Wayf":
 						return new Wayf(PortalApplication, AuthenticationRepository);
                     case "Facebook":
@@ -110,6 +123,35 @@
             if (handler != null) handler(this, args);
         }
 
-        #endregion
+	    public void AddUserInfoUpdateListener<T>(Action<UserInfoUpdate<T>> listener)
+	    {
+		    listener.ValidateIsNotNull("listner");
+		    var type = typeof (T);
+		    IList<Action<UserInfoUpdate<T>>> list;
+
+		    if (_userInfoUpdateListeners.ContainsKey(type))
+			    list = (IList<Action<UserInfoUpdate<T>>>) _userInfoUpdateListeners[type];
+		    else
+		    {
+			    list = new List<Action<UserInfoUpdate<T>>>();
+			    _userInfoUpdateListeners[type] = list;
+		    }
+
+			list.Add(listener);
+	    }
+
+	    public void OnUserInfoUpdate<T>(Guid userGuid, T userInfo)
+	    {
+			var type = typeof (T);
+		    if (!_userInfoUpdateListeners.ContainsKey(type)) return;
+
+			var list = (IList<Action<UserInfoUpdate<T>>>)_userInfoUpdateListeners[type];
+		    var update = new UserInfoUpdate<T>(userGuid, userInfo);
+
+		    foreach (var listener in list)
+			    listener(update);
+	    }
+
+	    #endregion
     }
 }
