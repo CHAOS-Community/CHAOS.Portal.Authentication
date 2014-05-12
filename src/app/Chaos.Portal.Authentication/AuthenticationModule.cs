@@ -49,8 +49,12 @@ namespace Chaos.Portal.Authentication
             
             AuthenticationRepository = new AuthenticationRepository(AuthenticationSettings.ConnectionString);
             PortalApplication = portalApplication;
-            FacebookClient = new FacebookClient(AuthenticationSettings.Facebook);
-			OAuthClient = new OAuthClient(AuthenticationSettings.OAuth);
+
+            if (AuthenticationSettings.Facebook != null)
+                FacebookClient = new FacebookClient(AuthenticationSettings.Facebook);
+
+            if (AuthenticationSettings.OAuth != null)
+			    OAuthClient = new OAuthClient(AuthenticationSettings.OAuth);
         }
 
         private static AuthenticationSettings GetSettings(IPortalApplication portalApplication)
