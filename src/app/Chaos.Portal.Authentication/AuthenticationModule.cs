@@ -107,7 +107,7 @@ namespace Chaos.Portal.Authentication
 
                 portalApplication.PortalRepository.Module.Set(module);
 
-                throw new ModuleConfigurationMissingException("Authentication configuration was missing, a template was created in the database");
+                throw new ModuleConfigurationMissingException("Authentication configuration was missing, a template was created in the database", e);
             }
         }
 
