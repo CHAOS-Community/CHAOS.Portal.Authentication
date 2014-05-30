@@ -4,61 +4,29 @@ using Moq;
 
 namespace Chaos.Portal.Authentication.Tests
 {
-    using System.Linq;
-
-    using Authentication.Extension;
-    using Authentication.Extension.v6;
-    using Core;
     using Core.Data.Model;
+    using Core.Extension;
     using NUnit.Framework;
 
     [TestFixture]
     public class AuthenticationModuleTest : TestBase
     {
         [Test]
-        public void GetExtensionNames_V5_ReturnListOfExtensionNames()
+        public void Load_Extensions_AllExtensionsWereMapped()
         {
             var module = new AuthenticationModule();
+            var config = Make_ModuleConfig();
+            PortalRepository.Setup(m => m.ModuleGet("Authentication")).Returns(config);
 
-            var results = module.GetExtensionNames(Protocol.V5).ToList();
+            module.Load(PortalApplication.Object);
 
-            Assert.That(results[0], Is.EqualTo("EmailPassword"));
-            Assert.That(results[1], Is.EqualTo("SecureCookie"));
-        }
-
-        [Test]
-        public void GetExtensionNames_V6_ReturnListOfExtensionNames()
-        {
-            var module = new AuthenticationModule();
-
-            var results = module.GetExtensionNames(Protocol.V6).ToList();
-
-            Assert.That(results[0], Is.EqualTo("EmailPassword"));
-            Assert.That(results[1], Is.EqualTo("SecureCookie"));
-            Assert.That(results[2], Is.EqualTo("AuthKey"));
-            Assert.That(results[3], Is.EqualTo("OAuth"));
-            Assert.That(results[4], Is.EqualTo("Wayf"));
-            Assert.That(results[5], Is.EqualTo("Facebook"));
-        }
-
-        [Test]
-        public void GetExtension_GivenEmailPasswordInV5_Return()
-        {
-            var module = new AuthenticationModule();
-
-            var result = module.GetExtension(Protocol.V5, "EmailPassword");
-
-            Assert.That(result, Is.InstanceOf<EmailPassword>());
-        }
-
-        [Test]
-        public void GetExtension_Facebookv6_ReturnFacebookExtension()
-        {
-            var module = new AuthenticationModule();
-
-            var result = module.GetExtension(Protocol.V6, "Facebook");
-
-            Assert.That(result, Is.InstanceOf<Facebook>());
+            PortalApplication.Verify(m => m.MapRoute("/v5/EmailPassword", It.IsAny<Func<IExtension>>()));
+            PortalApplication.Verify(m => m.MapRoute("/v5/SecureCookie", It.IsAny<Func<IExtension>>()));
+            PortalApplication.Verify(m => m.MapRoute("/v6/EmailPassword", It.IsAny<Func<IExtension>>()));
+            PortalApplication.Verify(m => m.MapRoute("/v6/AuthKey", It.IsAny<Func<IExtension>>()));
+            PortalApplication.Verify(m => m.MapRoute("/v6/OAuth", It.IsAny<Func<IExtension>>()));
+            PortalApplication.Verify(m => m.MapRoute("/v6/Wayf", It.IsAny<Func<IExtension>>()));
+            PortalApplication.Verify(m => m.MapRoute("/v6/Facebook", It.IsAny<Func<IExtension>>()));
         }
 
         [Test]

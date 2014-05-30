@@ -9,7 +9,7 @@
     using Data;
 	using OAuth;
 
-    public interface IAuthenticationModule : IModule
+    public interface IAuthenticationModule : IModuleConfig
     {
         event RequestDelegate.PortalRequestHandler OnUserLoggedIn;
         event RequestDelegate.PortalRequestHandler OnUserCreated;

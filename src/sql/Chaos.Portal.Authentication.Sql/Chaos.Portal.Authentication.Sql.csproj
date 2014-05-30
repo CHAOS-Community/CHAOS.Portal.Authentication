@@ -57,7 +57,7 @@
     <Content Include="3.StoredProcedures\SecureCookie_Use.sql" />
     <Content Include="3.StoredProcedures\WayfProfile_Get.sql" />
     <Content Include="3.StoredProcedures\WayfProfile_Update.sql" />
-    <Content Include="6.Data\6.data\initial.sql" />
+    <Content Include="6.Data\initial.sql" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="2.Changes\" />

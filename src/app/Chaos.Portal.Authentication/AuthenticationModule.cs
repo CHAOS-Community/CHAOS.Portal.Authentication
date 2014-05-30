@@ -8,11 +8,11 @@ namespace Chaos.Portal.Authentication
     using System.Xml.Linq;
     using CHAOS.Serialization.Standard;
     using Configuration;
+    using Core.Exceptions;
     using Core.Request;
     using Data;
     using Extension;
     using Core;
-    using Core.Exceptions;
     using Core.Extension;
     using Facebook;
 
@@ -55,64 +55,60 @@ namespace Chaos.Portal.Authentication
 
             if (AuthenticationSettings.OAuth != null)
 			    OAuthClient = new OAuthClient(AuthenticationSettings.OAuth);
+
+            portalApplication.MapRoute("/v5/EmailPassword", () => new EmailPassword(PortalApplication, AuthenticationRepository));
+            portalApplication.MapRoute("/v5/SecureCookie", () => new SecureCookie(PortalApplication, AuthenticationRepository));
+            
+            portalApplication.MapRoute("/v6/EmailPassword", () => new EmailPassword(PortalApplication, AuthenticationRepository));
+            portalApplication.MapRoute("/v6/SecureCookie", () => new SecureCookie(PortalApplication, AuthenticationRepository));
+            portalApplication.MapRoute("/v6/AuthKey", () => new AuthKey(PortalApplication, AuthenticationRepository));
+            portalApplication.MapRoute("/v6/OAuth", () => new Extension.v6.OAuth(this));
+            portalApplication.MapRoute("/v6/Wayf", () => new Wayf(PortalApplication, AuthenticationRepository));
+            portalApplication.MapRoute("/v6/Facebook", () => new Extension.v6.Facebook(this));
         }
 
         private static AuthenticationSettings GetSettings(IPortalApplication portalApplication)
         {
-            var configuration = portalApplication.PortalRepository.ModuleGet(CONFIGURATION_NAME);
-            var xdoc = XDocument.Parse(configuration.Configuration);
-            var settings = SerializerFactory.XMLSerializer.Deserialize<AuthenticationSettings>(xdoc);
-            return settings;
-        }
-
-        public IEnumerable<string> GetExtensionNames(Protocol version)
-        {
-            yield return "EmailPassword";
-            yield return "SecureCookie";
-            yield return "AuthKey";
-            yield return "OAuth";
-            yield return "Wayf";
-            yield return "Facebook";
-        }
-
-        public IExtension GetExtension(Protocol version, string name)
-        {
-            if(version == Protocol.V5)
+            try
             {
-                switch(name)
-                {
-                    case "EmailPassword":
-                        return new EmailPassword(PortalApplication, AuthenticationRepository);
-                    case "SecureCookie":
-                        return new SecureCookie(PortalApplication, AuthenticationRepository);
-                }
-            }
+                var configuration = portalApplication.PortalRepository.ModuleGet(CONFIGURATION_NAME);
+                var xdoc = XDocument.Parse(configuration.Configuration);
+                var settings = SerializerFactory.XMLSerializer.Deserialize<AuthenticationSettings>(xdoc);
 
-            if (version == Protocol.V6)
+                if (string.IsNullOrEmpty(settings.ConnectionString))
+                    throw new ModuleConfigurationMissingException("MCM configuration is invalid.");
+
+                return settings;
+            }
+            catch (ArgumentException e)
             {
-                switch (name)
-                {
-                    case "EmailPassword":
-                        return new EmailPassword(PortalApplication, AuthenticationRepository);
-                    case "SecureCookie":
-                        return new SecureCookie(PortalApplication, AuthenticationRepository);
-                    case "AuthKey":
-		                return new AuthKey(PortalApplication, AuthenticationRepository);
-					case "OAuth":
-                        return new Extension.v6.OAuth(this);
-					case "Wayf":
-						return new Wayf(PortalApplication, AuthenticationRepository);
-                    case "Facebook":
-						return new Extension.v6.Facebook(this);
-                }
+                var config = new AuthenticationSettings
+                    {
+                        ConnectionString = "",
+                        Facebook = new FacebookSettings
+                            {
+                                AppId = "",
+                                AppSecret = ""
+                            },
+                        OAuth = new OAuthSettings
+                            {
+                                AuthorizationEndpoint = "",
+                                ClientId = "",
+                                ClientSecret = "",
+                                TokenEndpoint = "",
+                                UserInfoEndpoint = ""
+                            }
+                    };
+                var module = new Core.Data.Model.Module
+                    {
+                        Name = CONFIGURATION_NAME,
+                        Configuration = SerializerFactory.XMLSerializer.Serialize(config).ToString()
+                    };
+
+                portalApplication.PortalRepository.Module.Set(module);
+
+                throw new ModuleConfigurationMissingException("Authentication configuration was missing, a template was created in the database");
             }
-
-            throw new ProtocolVersionException();
-        }
-
-        public IExtension GetExtension<TExtension>(Protocol version) where TExtension : IExtension
-        {
-            return GetExtension(version, typeof(TExtension).Name);
         }
 
         public virtual void OnOnUserLoggedIn(RequestDelegate.PortalRequestArgs args)
