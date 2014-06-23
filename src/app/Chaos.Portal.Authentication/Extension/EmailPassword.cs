@@ -5,14 +5,13 @@ namespace Chaos.Portal.Authentication.Extension
     using System;
     using System.Linq;
     using System.Net.Mail;
-    using System.Security.Cryptography;
-    using System.Text;
     using System.Xml.Xsl;
-
+    using Configuration;
     using Data;
     using Core;
     using Core.Data.Model;
     using Core.Extension;
+    using Domain;
     using Exception;
 
     public class EmailPassword : AExtension
@@ -25,16 +24,17 @@ namespace Chaos.Portal.Authentication.Extension
         public XslCompiledTransform ChangePasswordRequestEmailXslt { get; set; }
 
         private IAuthenticationRepository AuthenticationRepository { get; set; }
+        public PasswordSettings Settings { get; set; }
 
         #endregion
         #region Initialization
 
-        public EmailPassword(IPortalApplication portalApplication, IAuthenticationRepository authenticationRepository): base(portalApplication)
+        public EmailPassword(IPortalApplication portalApplication, IAuthenticationRepository authenticationRepository, PasswordSettings settings): base(portalApplication)
         {
             AuthenticationRepository = authenticationRepository;
+            Settings = settings;
         }
 
-        
         #endregion
         #region Login (Email/password)
 
@@ -46,13 +46,6 @@ namespace Chaos.Portal.Authentication.Extension
             AuthenticateSessionWithUser(user);
 
             return PortalRepository.UserInfoGet(null, Request.Session.Guid, null, null).First();
-        }
-
-        private void AuthenticateSessionWithUser(UserInfo user)
-        {
-            var result = PortalRepository.SessionUpdate(Request.Session.Guid, user.Guid);
-
-            if (result == null) throw new LoginException("Session could not be updated");
         }
 
         private UserInfo GetUserByEmail(string email)
@@ -69,10 +62,17 @@ namespace Chaos.Portal.Authentication.Extension
 
         private void VerifyPasswordMatches(string password, UserInfo user)
         {
-            var hashed = GeneratePasswordHash(password);
+            var hashed = GeneratePasswordHash(password, user.Guid.ToString());
             var res = AuthenticationRepository.EmailPasswordGet(user.Guid, hashed);
 
             if (res == null) throw new LoginException("Login failed, either email or password is incorrect");
+        }
+
+        private void AuthenticateSessionWithUser(UserInfo user)
+        {
+            var result = PortalRepository.SessionUpdate(Request.Session.Guid, user.Guid);
+
+            if (result == null) throw new LoginException("Session could not be updated");
         }
 
         #endregion
@@ -83,7 +83,7 @@ namespace Chaos.Portal.Authentication.Extension
 		   if (!Request.User.HasPermission(SystemPermissons.UserManager))
 			   throw new InsufficientPermissionsException("Current user must be user manager to set password");
 		    
-			var result = AuthenticationRepository.EmailPasswordUpdate(userGuid, GeneratePasswordHash(newPassword));
+			var result = AuthenticationRepository.EmailPasswordUpdate(userGuid, GeneratePasswordHash(newPassword, userGuid.ToString()));
 
 			if (result != 1 && result != 2)
 				throw new Exception("Failed to set password for user. Error code: " + result);
@@ -94,11 +94,9 @@ namespace Chaos.Portal.Authentication.Extension
         #endregion
         #region Helper methods
 
-        private string GeneratePasswordHash( string password )
+        private string GeneratePasswordHash( string password, string salt )
         {
-            var byteHash = SHA1.Create().ComputeHash(Encoding.Unicode.GetBytes(password));
-
-             return BitConverter.ToString( byteHash ).Replace("-", "").ToLower();
+            return new PasswordHelper(Settings).GenerateHash(password, salt);
         }
 
         #endregion

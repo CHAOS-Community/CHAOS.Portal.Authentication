@@ -1,12 +1,10 @@
-﻿using Chaos.Portal.Core.Exceptions;
-
-namespace Chaos.Portal.Authentication.Tests.Extension
+﻿namespace Chaos.Portal.Authentication.Tests.Extension
 {
     using System;
 
-    using Chaos.Portal.Authentication.Data.Dto;
-    using Chaos.Portal.Authentication.Exception;
-    using Chaos.Portal.Core.Data.Model;
+    using Exception;
+    using Core.Data.Model;
+    using Core.Exceptions;
     using Data.Model;
     using Moq;
 
@@ -76,14 +74,12 @@ namespace Chaos.Portal.Authentication.Tests.Extension
 				SystemPermissonsEnum = SystemPermissons.All
             };
 			var newPassword = "passw0rd";
-
 		    PortalRequest.Setup(r => r.User).Returns(user);
 		    AuthenticationRepository.Setup(a => a.EmailPasswordUpdate(user.Guid, It.IsAny<string>())).Returns(1);
 
 			var result = extension.SetPassword(user.Guid, newPassword);
 
 			AuthenticationRepository.Verify(a => a.EmailPasswordUpdate(user.Guid, It.IsAny<string>()));
-
 			Assert.That(result.Value, Is.EqualTo(1));
 	    }
 

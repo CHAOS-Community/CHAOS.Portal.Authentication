@@ -4,7 +4,7 @@ using Moq;
 
 namespace Chaos.Portal.Authentication.Tests
 {
-    using Core.Data.Model;
+    using Configuration;
     using Core.Extension;
     using NUnit.Framework;
 
@@ -15,8 +15,7 @@ namespace Chaos.Portal.Authentication.Tests
         public void Load_Extensions_AllExtensionsWereMapped()
         {
             var module = new AuthenticationModule();
-            var config = Make_ModuleConfig();
-            PortalRepository.Setup(m => m.ModuleGet("Authentication")).Returns(config);
+            PortalApplication.Setup(m => m.GetSettings<AuthenticationSettings>("Authentication")).Returns(Make_AuthenticationSettings());
 
             module.Load(PortalApplication.Object);
 
@@ -33,8 +32,8 @@ namespace Chaos.Portal.Authentication.Tests
         public void Load_ValidConfiguration()
         {
             var module = new AuthenticationModule();
-            var config = Make_ModuleConfig();
-            PortalRepository.Setup(m => m.ModuleGet("Authentication")).Returns(config);
+            var config = Make_AuthenticationSettings();
+            PortalApplication.Setup(m => m.GetSettings<AuthenticationSettings>("Authentication")).Returns(Make_AuthenticationSettings());
 
             module.Load(PortalApplication.Object);
         }
@@ -43,13 +42,12 @@ namespace Chaos.Portal.Authentication.Tests
 		public void OnUserInfoUpdate_GivenInfo_ShouldInvokeListener()
 		{
 			var module = new AuthenticationModule();
-			var config = Make_ModuleConfig();
 			var userGuid = new Guid("10000000-0000-0000-0000-000000000001");
 			var userInfo = 5;
 			UserInfoUpdate<int> result = null;
 			Action<UserInfoUpdate<int>> callback = i => result = i;
+            PortalApplication.Setup(m => m.GetSettings<AuthenticationSettings>("Authentication")).Returns(Make_AuthenticationSettings());
 
-			PortalRepository.Setup(m => m.ModuleGet("Authentication")).Returns(config);
 			module.Load(PortalApplication.Object);
 
 			module.AddUserInfoUpdateListener(callback);
@@ -64,13 +62,12 @@ namespace Chaos.Portal.Authentication.Tests
 		public void OnUserInfoUpdate_GivenInfo_ShouldNotInvokeListenerWithDifferentType()
 		{
 			var module = new AuthenticationModule();
-			var config = Make_ModuleConfig();
 			var userGuid = new Guid("10000000-0000-0000-0000-000000000001");
 			var userInfo = 5;
 			UserInfoUpdate<uint> result = null;
 			Action<UserInfoUpdate<uint>> callback = i => result = i;
+            PortalApplication.Setup(m => m.GetSettings<AuthenticationSettings>("Authentication")).Returns(Make_AuthenticationSettings());
 
-			PortalRepository.Setup(m => m.ModuleGet("Authentication")).Returns(config);
 			module.Load(PortalApplication.Object);
 
 			module.AddUserInfoUpdateListener(callback);
@@ -78,13 +75,5 @@ namespace Chaos.Portal.Authentication.Tests
 
 			Assert.That(result, Is.Null);
 		}
-
-        private static Module Make_ModuleConfig()
-        {
-            return new Module
-                {
-					Configuration = "<Settings><ConnectionString>connectionstring</ConnectionString><Facebook AppId=\"some app id\" AppSecret=\"some app secret\"></Facebook><OAuth ClientId=\"Some id\" ClientSecret=\"Some secret\" AuthorizationEndpoint=\"http://awesome/Authorize\" TokenEndpoint=\"http://awesome/Token\" UserInfoEndpoint=\"http://awesome/UserInfo\" /></Settings>"
-                };
-        }
     }
 }

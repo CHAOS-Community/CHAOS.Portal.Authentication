@@ -3,6 +3,7 @@ using Chaos.Portal.Authentication.OAuth;
 namespace Chaos.Portal.Authentication.Tests
 {
     using System;
+    using Configuration;
     using Core.Data.Model;
     using Data;
     using Authentication.Extension;
@@ -47,7 +48,7 @@ namespace Chaos.Portal.Authentication.Tests
 
         protected EmailPassword Make_EmailPassword()
         {
-            return (EmailPassword)new EmailPassword(PortalApplication.Object, AuthenticationRepository.Object).WithPortalRequest(PortalRequest.Object);
+            return (EmailPassword)new EmailPassword(PortalApplication.Object, AuthenticationRepository.Object, Make_AuthenticationSettings().Password).WithPortalRequest(PortalRequest.Object);
         }
 
         protected SecureCookie Make_SecureCookie()
@@ -66,6 +67,27 @@ namespace Chaos.Portal.Authentication.Tests
             {
                 Guid = new Guid("11000000-0000-0000-0000-000000000011")
             };
+        }
+
+        protected static AuthenticationSettings Make_AuthenticationSettings()
+        {
+            return new AuthenticationSettings
+                {
+                    ConnectionString = "connectionstring",
+                    Facebook = new FacebookSettings
+                        {
+                            AppId = "some app id",
+                            AppSecret = "some app secret"
+                        },
+                    OAuth = new OAuthSettings
+                        {
+                            ClientId = "Some id",
+                            AuthorizationEndpoint = "http://awesome/Authorize",
+                            ClientSecret = "Some secret",
+                            TokenEndpoint = "http://awesome/Token",
+                            UserInfoEndpoint = "http://awesome/UserInfo"
+                        }
+                };
         }
     }
 }

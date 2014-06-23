@@ -18,7 +18,7 @@
         IPortalApplication PortalApplication { get; }
         IFacebookClient FacebookClient { get; set; }
         IOAuthClient OAuthClient { get; set; }
-        AuthenticationSettings AuthenticationSettings { get; }
+        AuthenticationSettings Settings { get; }
         void OnOnUserLoggedIn(RequestDelegate.PortalRequestArgs args);
         void OnOnUserCreated(RequestDelegate.PortalRequestArgs args);
 

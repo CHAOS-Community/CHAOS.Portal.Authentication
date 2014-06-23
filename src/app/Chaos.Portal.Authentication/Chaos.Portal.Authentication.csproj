@@ -84,6 +84,7 @@
     <Compile Include="Data\Model\WayfUser.cs" />
     <Compile Include="Data\OAuthRepository.cs" />
     <Compile Include="Data\UserInfoUpdate.cs" />
+    <Compile Include="Domain\PasswordHelper.cs" />
     <Compile Include="Exception\UserDoesNotHaveIntranetAccessException.cs" />
     <Compile Include="Exception\LoginException.cs" />
     <Compile Include="Exception\SecureCookieAlreadyConsumedException.cs" />
