@@ -15,8 +15,8 @@ BEGIN
     (
         UserGUID,
         Password,
-        NOW(),
-        NULL
+        UTC_TIMESTAMP(),
+        UTC_TIMESTAMP()
     );
 
 	SELECT ROW_COUNT();

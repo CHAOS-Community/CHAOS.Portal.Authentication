@@ -15,8 +15,8 @@ BEGIN
     (
         UserGUID,
         NewPassword,
-        NOW(),
-        NULL
+        UTC_TIMESTAMP(),
+        UTC_TIMESTAMP()
     )
 	ON DUPLICATE KEY UPDATE 
 		Password = NewPassword, 
