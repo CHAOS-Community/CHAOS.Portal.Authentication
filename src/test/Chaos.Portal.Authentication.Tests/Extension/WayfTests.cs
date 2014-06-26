@@ -84,11 +84,6 @@
 			{
 				Guid = new Guid("12000000-0000-0000-0000-000000000021")
 			};
-			var managingUsersSession = new Session
-			{
-				Guid = new Guid("12000000-0000-0000-0000-000000000031"),
-				UserGuid = callingUser.Guid
-			};
 
 			PortalRepository.Setup(m => m.SessionUpdate(sessionToAuthenticate.Guid, expected.Guid)).Returns(new Session()).Verifiable();
 			PortalRepository.Setup(m => m.UserInfoGet(null, sessionToAuthenticate.Guid, null, null)).Returns(new[] { expected }).Verifiable();
