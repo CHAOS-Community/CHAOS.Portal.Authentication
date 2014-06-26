@@ -55,5 +55,54 @@
 
 			Assert.That(result, Is.EqualTo(expected));
 		}
+
+		[Test]
+		public void Login_GivenNoEmail_CreateUser()
+		{
+			var extension = Make_Wayf();
+
+			var wayfId = "somerandomletters";
+			string email = null;
+
+			var expected = new UserInfo
+			{
+				Guid = new Guid("10000000-0000-0000-0000-000000000001"),
+				Email = null
+			};
+			var callingUser = new UserInfo
+			{
+				Guid = new Guid("10000000-0000-0000-0000-000000000002"),
+				Email = "test2@test.test",
+				SystemPermissonsEnum = SystemPermissons.All
+			};
+			var profile = new WayfUser()
+			{
+				UserGuid = expected.Guid,
+				WayfId = wayfId
+			};
+			var sessionToAuthenticate = new Session
+			{
+				Guid = new Guid("12000000-0000-0000-0000-000000000021")
+			};
+			var managingUsersSession = new Session
+			{
+				Guid = new Guid("12000000-0000-0000-0000-000000000031"),
+				UserGuid = callingUser.Guid
+			};
+
+			PortalRepository.Setup(m => m.SessionUpdate(sessionToAuthenticate.Guid, expected.Guid)).Returns(new Session()).Verifiable();
+			PortalRepository.Setup(m => m.UserInfoGet(null, sessionToAuthenticate.Guid, null, null)).Returns(new[] { expected }).Verifiable();
+			PortalRepository.Setup(m => m.UserInfoGet(null, null, null, null)).Throws(new Exception("UserGet should not be called when email is null"));
+			PortalRequest.SetupGet(p => p.User).Returns(callingUser).Verifiable();
+			AuthenticationRepository.Setup(m => m.WayfProfileGet(wayfId)).Returns(profile).Verifiable();
+
+			var result = extension.Login(wayfId, email, sessionToAuthenticate.Guid);
+
+			PortalRepository.Verify();
+			PortalRequest.Verify();
+			AuthenticationRepository.Verify();
+
+			Assert.That(result, Is.EqualTo(expected));
+		}
 	}
 }
