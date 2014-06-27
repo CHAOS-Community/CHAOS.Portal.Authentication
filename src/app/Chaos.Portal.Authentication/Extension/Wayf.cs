@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Chaos.Portal.Authentication.Data;
 using Chaos.Portal.Authentication.Exception;
+using Chaos.Portal.Authentication.Wayf;
 using Chaos.Portal.Core;
 using Chaos.Portal.Core.Data.Model;
 using Chaos.Portal.Core.Exceptions;
 using Chaos.Portal.Core.Extension;
+using Newtonsoft.Json;
 
 namespace Chaos.Portal.Authentication.Extension
 {
@@ -13,38 +16,46 @@ namespace Chaos.Portal.Authentication.Extension
 
     public class Wayf : AExtension
 	{
-		private IAuthenticationRepository AuthenticationRepository { get; set; }
+	    private readonly IWayfFilter _wayfFilter;
+	    private IAuthenticationRepository AuthenticationRepository { get; set; }
 
-		public Wayf(IPortalApplication portalApplication, IAuthenticationRepository authenticationRepository) : base(portalApplication)
+		public Wayf(IPortalApplication portalApplication, IAuthenticationRepository authenticationRepository, IWayfFilter wayfFilter) : base(portalApplication)
 		{
+			_wayfFilter = wayfFilter;
 			AuthenticationRepository = authenticationRepository;
 		}
 
-		public UserInfo Login(string wayfId, string email, Guid sessionGuidToAuthenticate)
+	    public UserInfo Login(string attributes, Guid sessionGuidToAuthenticate)
 		{
 			if(!Request.User.HasPermission(SystemPermissons.Manage)) throw new InsufficientPermissionsException("Only managers can authenticate sessions");
 
-			var wayfProfile = AuthenticationRepository.WayfProfileGet(wayfId);
+			var attributesObject = JsonConvert.DeserializeObject<IDictionary<string, IList<string>>>(attributes);
 
-			if (wayfProfile == null)
+			if (!attributesObject.ContainsKey("eduPersonTargetedID") || attributesObject["eduPersonTargetedID"].Count == 0) throw new LoginException("Missing eduPersonTargetedID from Wayf attributes");
+			if(!_wayfFilter.Validate(attributesObject)) throw new WayfUserNotAllowedException();
+
+			var wayfId = attributesObject["eduPersonTargetedID"][0];
+			var wayfUser = AuthenticationRepository.WayfProfileGet(wayfId);
+
+			if (wayfUser == null)
 			{
-				wayfProfile = new WayfUser();
-
-				var existingUser = string.IsNullOrEmpty(email) ? null : PortalRepository.UserInfoGet(null, null, email, null).FirstOrDefault();
+				wayfUser = new WayfUser();
+				var email = attributesObject.ContainsKey("mail") && attributesObject["mail"].Count != 0 && !string.IsNullOrWhiteSpace(attributesObject["mail"][0]) ? attributesObject["mail"][0] : null;
+				var existingUser = email == null ? null : PortalRepository.UserInfoGet(null, null, email, null).FirstOrDefault();
 
 				if (existingUser == null)
 				{
-					wayfProfile.UserGuid = Guid.NewGuid();
+					wayfUser.UserGuid = Guid.NewGuid();
 
-					if (PortalRepository.UserCreate(wayfProfile.UserGuid, email) != 1) throw new LoginException("Failed to create new user");
+					if (PortalRepository.UserCreate(wayfUser.UserGuid, email) != 1) throw new LoginException("Failed to create new user");
 				}
 				else
-					wayfProfile.UserGuid = existingUser.Guid;
+					wayfUser.UserGuid = existingUser.Guid;
 
-				AuthenticationRepository.WayfProfileUpdate(wayfProfile.UserGuid, wayfId);
+				AuthenticationRepository.WayfProfileUpdate(wayfUser.UserGuid, wayfId);
 			}
 
-			var result = PortalRepository.SessionUpdate(sessionGuidToAuthenticate, wayfProfile.UserGuid);
+			var result = PortalRepository.SessionUpdate(sessionGuidToAuthenticate, wayfUser.UserGuid);
 
 			if (result == null) throw new LoginException("Session could not be updated");
 

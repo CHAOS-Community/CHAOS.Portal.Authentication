@@ -1,6 +1,7 @@
 ﻿using System;
 using CHAOS.Extensions;
 using Chaos.Portal.Authentication.OAuth;
+using Chaos.Portal.Authentication.Wayf;
 
 namespace Chaos.Portal.Authentication
 {
@@ -60,7 +61,7 @@ namespace Chaos.Portal.Authentication
             portalApplication.MapRoute("/v6/SecureCookie", () => new SecureCookie(PortalApplication, AuthenticationRepository));
             portalApplication.MapRoute("/v6/AuthKey", () => new AuthKey(PortalApplication, AuthenticationRepository));
             portalApplication.MapRoute("/v6/OAuth", () => new Extension.v6.OAuth(this));
-            portalApplication.MapRoute("/v6/Wayf", () => new Wayf(PortalApplication, AuthenticationRepository));
+            portalApplication.MapRoute("/v6/Wayf", () => new Extension.Wayf(PortalApplication, AuthenticationRepository, new WayfFilter("WayfFilter.json")));
             portalApplication.MapRoute("/v6/Facebook", () => new Extension.v6.Facebook(this));
         }
 

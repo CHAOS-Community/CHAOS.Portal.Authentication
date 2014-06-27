@@ -88,6 +88,7 @@
     <Compile Include="Exception\UserDoesNotHaveIntranetAccessException.cs" />
     <Compile Include="Exception\LoginException.cs" />
     <Compile Include="Exception\SecureCookieAlreadyConsumedException.cs" />
+    <Compile Include="Exception\WayfUserNotAllowedException.cs" />
     <Compile Include="Extension\AuthKey.cs" />
     <Compile Include="Extension\EmailPassword.cs" />
     <Compile Include="Extension\v6\OAuth.cs" />
@@ -105,6 +106,8 @@
     <Compile Include="OAuth\LoginStateManager.cs" />
     <Compile Include="OAuth\OAuthClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Wayf\WayfFilter.cs" />
+    <Compile Include="Wayf\IWayfFilter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

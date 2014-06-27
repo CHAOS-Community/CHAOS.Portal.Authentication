@@ -1,4 +1,6 @@
 using Chaos.Portal.Authentication.OAuth;
+using Chaos.Portal.Authentication.Wayf;
+using Moq.Protected;
 
 namespace Chaos.Portal.Authentication.Tests
 {
@@ -25,6 +27,8 @@ namespace Chaos.Portal.Authentication.Tests
         protected Mock<IFacebookClient> FacebookClient { get; set; }
 		protected Mock<IOAuthClient> OAuthClient { get; set; }
         protected Mock<IAuthenticationModule> AuthenticationModule { get; set; }
+        protected Mock<IWayfFilter> WayfFilter { get; set; }
+		
 
         [SetUp]
         public void SetUp()
@@ -37,6 +41,7 @@ namespace Chaos.Portal.Authentication.Tests
             FacebookClient			 = new Mock<IFacebookClient>();
 			OAuthClient				 = new Mock<IOAuthClient>();
             AuthenticationModule	 = new Mock<IAuthenticationModule>();
+            WayfFilter				= new Mock<IWayfFilter>();
 
             AuthenticationModule.SetupGet(p => p.PortalApplication).Returns(PortalApplication.Object);
             AuthenticationModule.SetupGet(p => p.FacebookClient).Returns(FacebookClient.Object);
@@ -56,9 +61,9 @@ namespace Chaos.Portal.Authentication.Tests
             return (SecureCookie)new SecureCookie(PortalApplication.Object, AuthenticationRepository.Object).WithPortalRequest(PortalRequest.Object);
         }
 
-		protected Wayf Make_Wayf()
+		protected Authentication.Extension.Wayf Make_Wayf()
 		{
-			return (Wayf)new Wayf(PortalApplication.Object, AuthenticationRepository.Object).WithPortalRequest(PortalRequest.Object);
+			return (Authentication.Extension.Wayf)new Authentication.Extension.Wayf(PortalApplication.Object, AuthenticationRepository.Object, WayfFilter.Object).WithPortalRequest(PortalRequest.Object);
 		}
 
         protected static UserInfo Make_UserInfo()
