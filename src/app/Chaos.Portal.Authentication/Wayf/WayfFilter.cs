@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using CHAOS.Extensions;
 using Newtonsoft.Json;
@@ -9,7 +10,7 @@ namespace Chaos.Portal.Authentication.Wayf
 {
 	public class WayfFilter : IWayfFilter
 	{
-		private readonly string _filePath;
+		private string _filePath;
 		private IDictionary<string, Regex> _filters;
 
 		public WayfFilter(string filePath)
@@ -31,6 +32,9 @@ namespace Chaos.Portal.Authentication.Wayf
 		private IDictionary<string, Regex> GetFilter()
 		{
 			if (_filters != null) return _filters;
+
+			if (!Path.IsPathRooted(_filePath))
+				_filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetCallingAssembly().Location), "../" + _filePath);
 
 			var fileContent = File.ReadAllText(_filePath);
 			var stringFilters = JsonConvert.DeserializeObject<IDictionary<string, string>>(fileContent);

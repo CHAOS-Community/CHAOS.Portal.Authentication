@@ -40,6 +40,7 @@ namespace Chaos.Portal.Authentication.Extension
 			if (wayfUser == null)
 			{
 				wayfUser = new WayfUser();
+
 				var email = attributesObject.ContainsKey("mail") && attributesObject["mail"].Count != 0 && !string.IsNullOrWhiteSpace(attributesObject["mail"][0]) ? attributesObject["mail"][0] : null;
 				var existingUser = email == null ? null : PortalRepository.UserInfoGet(null, null, email, null).FirstOrDefault();
 

@@ -98,6 +98,30 @@ namespace Chaos.Portal.Authentication.Tests.Extension
 			extension.Login(attributeData, sessionToAuthenticate.Guid);
 		}
 
+		[Test, ExpectedException(typeof(LoginException))]
+		public void Login_MissingWayfId_ThrowLoginException()
+		{
+			var extension = Make_Wayf();
+
+			var email = "test@test.test";
+			var attributeData = string.Format("{{'mail': ['{0}']}}", email);
+
+			var callingUser = new UserInfo
+			{
+				Guid = new Guid("10000000-0000-0000-0000-000000000002"),
+				Email = "test2@test.test",
+				SystemPermissonsEnum = SystemPermissons.All
+			};
+			var sessionToAuthenticate = new Session
+			{
+				Guid = new Guid("12000000-0000-0000-0000-000000000021")
+			};
+
+			PortalRequest.SetupGet(p => p.User).Returns(callingUser).Verifiable();
+
+			extension.Login(attributeData, sessionToAuthenticate.Guid);
+		}
+
 		[Test]
 		public void Login_GivenNoEmail_CreateUser()
 		{

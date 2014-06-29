@@ -32,7 +32,7 @@
 		
 		if(isset($_REQUEST["callbackUrl"]))
 		{
-			$status = ($error == null ? "success" : "failure");
+			$status = ($error == null ? "0" : "1");
 			
 			header('Location: ' . $_REQUEST["callbackUrl"] . "?status=" . $status, true, 303);
 
@@ -45,7 +45,7 @@
     <head>
         <title>Wayf Login</title>
 		<script type="text/javascript">
-			var status = "WayfStatus: <?php print($error == null ? 'success' : 'failure'); ?>";
+			var status = "WayfStatus: <?php print($error == null ? '0' : '1'); ?>";
 			
 			if(window.opener && window.opener.postMessage)
 				window.opener.postMessage(status, "*");

@@ -12,13 +12,15 @@
 
 	if(isset($_REQUEST["callbackUrl"]))
 	{
-		header('Location: ' . $_REQUEST["callbackUrl"] . "?status=" . $status . ($error == null ? "" : "&error=" . $error), true, 303);
+		header('Location: ' . $_REQUEST["callbackUrl"] . "?status=" . $status . "&message=" . ($error == null ? "Unknown Error" : $error), true, 303);
 
 		exit();
 	}
 
 	function Login()
 	{
+		global $WayfConfiguration;
+
 		if(!isset($_REQUEST["apiPath"]))
 		{
 			ReportError("Parameter apiPath not set");
@@ -45,39 +47,39 @@
 
 	function PortalLogin($attributes)
 	{
+		global $WayfConfiguration;
 		$encodedAttributes = json_encode($attributes);
 
 		if(!$encodedAttributes)
 		{
-			$error = "Failed to encode wayf attributes";
+			ReportError("Failed to encode wayf attributes");
 			return 1;
 		}
 
 		$helper = new PortalHelper($_REQUEST["apiPath"]);
 		
 		$response = $helper->Call("AuthKey/Login", array('token' => $WayfConfiguration['AuthKeyToken']));
-
-		$error = $helper->GetError();
-		if($error != null) return 1;
+		if(ReportError($helper->GetError())) return 1;
 
 		$helper->SetSessionGuid($response->Body->Results[0]->Guid);
 
 		$response = $helper->Call("Wayf/Login", array('attributes' => $encodedAttributes, 'sessionGuidToAuthenticate' => $_REQUEST["sessionGuid"]));
-
-		$error = $helper->GetError();
-		if($error != null) return 2;
+		if(ReportError($helper->GetError())) return 2;
 		
 		$helper->Call("WayfProfile/Update", array('userGuid' => $response->Body->Results[0]->Guid, 'attributes' => $encodedAttributes));
-		$error = $helper->GetError();
-		if($error != null) return 1;
+		if(ReportError($helper->GetError())) return 1;
 
 		return 0;
 	}
 
 	function ReportError($message)
 	{
+		global $error;
+
+		if($message == null) return false;
+
 		$error = $message;
-		return false;
+		return true;
 	}
 ?>
 
@@ -85,7 +87,7 @@
     <head>
         <title>Wayf Login</title>
 		<script type="text/javascript">
-			var status = "WayfStatus: <?php $status; ?>";
+			var status = "WayfStatus: <?php print($status); ?>";
 			
 			if(window.opener && window.opener.postMessage)
 				window.opener.postMessage(status, "*");
@@ -110,7 +112,7 @@
 			if($status == 0)
 				print("Session authenticated");
 			else
-				print("Error: $error");
+				print("Error: " . ($error == null ? "Unknown Error" : $error));
 		?>
         </p>
     </body>
