@@ -25,6 +25,21 @@ namespace Chaos.Portal.Authentication.Tests.Wayf
 		}
 
 		[Test]
+		public void Validate_GivenValidAttributesMathSecondFilterGroup_ShouldReturnTrue()
+		{
+			var filter = new WayfFilter(CreateFilter());
+			var attributes = new Dictionary<string, IList<string>>
+			{
+				{"eduPersonTargetedID", new[] {"ThisContainsSomeValueRightHere"}},
+				{"mail", new[] {"Dawkins@chaoqweeeees.com"}}
+			};
+
+			var result = filter.Validate(attributes);
+
+			Assert.That(result, Is.True);
+		}
+
+		[Test]
 		public void Validate_GivenInvalidAttributes_ShouldReturnFalse()
 		{
 			var filter = new WayfFilter(CreateFilter());
@@ -80,12 +95,19 @@ namespace Chaos.Portal.Authentication.Tests.Wayf
 			Assert.That(result3, Is.True);
 		}
 
-		private IDictionary<string, Regex> CreateFilter()
+		private IList<IDictionary<string, Regex>> CreateFilter()
 		{
-			return new Dictionary<string, Regex>
+			return new[]
 			{
-				{"eduPersonTargetedID", new Regex("[x]|[y]|WAYF-DK")},
-				{"mail", new Regex(".+@chaos\\.com")}
+				new Dictionary<string, Regex>
+				{
+					{"eduPersonTargetedID", new Regex("[x]|[y]|WAYF-DK")},
+					{"mail", new Regex(".+@chaos\\.com")}
+				},
+				new Dictionary<string, Regex>
+				{
+					{"eduPersonTargetedID", new Regex("SomeValue")}
+				},
 			};
 		}
 	}
