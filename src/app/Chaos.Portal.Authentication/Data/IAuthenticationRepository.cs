@@ -16,6 +16,7 @@
 
     EmailPassword EmailPasswordGet(Guid guid, string password);
     uint EmailPasswordUpdate(Guid userGuid, string password);
+    uint EmailPasswordDelete(Guid userId);
 
     uint AuthKeyCreate(string token, Guid userGuid, string name);
     IList<AuthKey> AuthKeyGet(Guid? userGuid, string token);

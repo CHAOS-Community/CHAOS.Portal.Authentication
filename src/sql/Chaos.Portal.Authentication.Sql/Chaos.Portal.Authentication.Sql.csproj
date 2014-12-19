@@ -44,6 +44,7 @@
     <Content Include="3.StoredProcedures\AuthKey_Create.sql" />
     <Content Include="3.StoredProcedures\AuthKey_Delete.sql" />
     <Content Include="3.StoredProcedures\AuthKey_Get.sql" />
+    <Content Include="3.StoredProcedures\EmailPassword_Delete.sql" />
     <Content Include="3.StoredProcedures\OAuthUsers_Update.sql" />
     <Content Include="3.StoredProcedures\OAuthUsers_Get.sql" />
     <Content Include="3.StoredProcedures\Facebook_User_Join_Get.sql" />

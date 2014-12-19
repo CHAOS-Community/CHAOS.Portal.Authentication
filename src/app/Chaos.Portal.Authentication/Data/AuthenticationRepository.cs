@@ -113,6 +113,16 @@
       return (uint) result;
     }
 
+    public uint EmailPasswordDelete(Guid userId)
+    {
+      var result = Gateway.ExecuteNonQuery("EmailPassword_Delete", new[]
+        {
+          new MySqlParameter("UserId", userId.ToByteArray())
+        });
+
+      return (uint) result;
+    }
+
     public IList<AuthKey> AuthKeyGet(Guid? userGuid, string token)
     {
       var results = Gateway.ExecuteQuery<AuthKey>("AuthKey_Get", new[]
