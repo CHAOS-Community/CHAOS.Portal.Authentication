@@ -32,6 +32,7 @@ namespace Chaos.Portal.Authentication.Extension
 			var attributesObject = JsonConvert.DeserializeObject<IDictionary<string, IList<string>>>(attributes);
 
 			if (!attributesObject.ContainsKey("eduPersonTargetedID") || attributesObject["eduPersonTargetedID"].Count == 0) throw new LoginException("Missing eduPersonTargetedID from Wayf attributes");
+			if (attributesObject["eduPersonTargetedID"][0] == null) throw new LoginException(string.Format("First value in eduPersonTargetedID is null (contained {0} value(s))", attributesObject["eduPersonTargetedID"].Count));
 			if(!_wayfFilter.Validate(attributesObject)) throw new WayfUserNotAllowedException();
 
 			var wayfId = attributesObject["eduPersonTargetedID"][0];
