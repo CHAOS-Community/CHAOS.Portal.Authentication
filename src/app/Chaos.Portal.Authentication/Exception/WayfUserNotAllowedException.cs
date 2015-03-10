@@ -2,7 +2,7 @@
 {
 	public class WayfUserNotAllowedException : LoginException
 	{
-		public WayfUserNotAllowedException() : base("The given Wayf user is not authorized to login")
+		public WayfUserNotAllowedException(string attributes) : base(string.Format("The given Wayf user is not authorized to login. Wayf attributes: {0}", attributes))
 		{
 			
 		}
