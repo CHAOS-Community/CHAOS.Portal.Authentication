@@ -1,7 +1,6 @@
 ﻿namespace Chaos.Portal.Authentication.Facebook
 {
     using System;
-    using System.Web.UI;
     using Configuration;
 
     public class FacebookClient : IFacebookClient
