@@ -106,6 +106,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="app.config.sample" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
