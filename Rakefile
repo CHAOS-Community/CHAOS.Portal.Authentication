@@ -27,6 +27,7 @@ asmver_files :assembly_info do |a|
 end
 
 task :prepare_compile => [:clean] do
+  FileUtils.cp 'src/app/Chaos.Portal.Authentication/App.config.sample', 'src/app/Chaos.Portal.Authentication/App.config'
   FileUtils.cp 'src/test/Chaos.Portal.Authentication.IntegrationTests/App.config.sample', 'src/test/Chaos.Portal.Authentication.IntegrationTests/App.config'
 end
 

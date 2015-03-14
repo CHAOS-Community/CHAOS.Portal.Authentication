@@ -29,3 +29,5 @@ Thumbs.db
 _NCrunch*
 App.Config
 *.lock
+build
+tests
