@@ -18,9 +18,11 @@
 	else
 	{
 		$simpleSaml = new SimpleSAML_Auth_Simple("Wayf");
-		$simpleSaml->logout(array(
-						 'ReturnCallback' => 'LoggedOut'
-					));
+		
+		if($simpleSaml->isAuthenticated())
+			$simpleSaml->logout();
+		else
+			LoggedOut();
 	}
 	
 	function LoggedOut()

@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "app", "app", "{A0718908-0CAC-427D-B04D-A728EF479A2E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{3E6B28CC-7169-4E9C-92EA-D43567308B8B}"
@@ -19,6 +21,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sql", "sql", "{B5414F71-5F7A-4D9F-B9AC-AAE308C98FA8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chaos.Portal.Authentication.Sql", "src\sql\Chaos.Portal.Authentication.Sql\Chaos.Portal.Authentication.Sql.csproj", "{9F4CF5A7-09E4-4327-AB47-9500D692B5FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CHAOS.Portal.WAYFLogin", "src\app\CHAOS.Portal.WAYFLogin\CHAOS.Portal.WAYFLogin.csproj", "{542258D2-1AB4-43C5-BB1F-465B36C52B02}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +43,10 @@ Global
 		{90908242-3815-4AF2-A202-25B94D56D234}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F4CF5A7-09E4-4327-AB47-9500D692B5FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9F4CF5A7-09E4-4327-AB47-9500D692B5FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{542258D2-1AB4-43C5-BB1F-465B36C52B02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{542258D2-1AB4-43C5-BB1F-465B36C52B02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{542258D2-1AB4-43C5-BB1F-465B36C52B02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{542258D2-1AB4-43C5-BB1F-465B36C52B02}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,5 +56,6 @@ Global
 		{E525590D-D411-450B-8674-64E15A65983D} = {3E6B28CC-7169-4E9C-92EA-D43567308B8B}
 		{90908242-3815-4AF2-A202-25B94D56D234} = {3E6B28CC-7169-4E9C-92EA-D43567308B8B}
 		{9F4CF5A7-09E4-4327-AB47-9500D692B5FE} = {B5414F71-5F7A-4D9F-B9AC-AAE308C98FA8}
+		{542258D2-1AB4-43C5-BB1F-465B36C52B02} = {A0718908-0CAC-427D-B04D-A728EF479A2E}
 	EndGlobalSection
 EndGlobal
