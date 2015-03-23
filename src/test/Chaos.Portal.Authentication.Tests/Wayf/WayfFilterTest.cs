@@ -16,7 +16,8 @@ namespace Chaos.Portal.Authentication.Tests.Wayf
 			var filter = new WayfFilter(CreateFilter());
 			var attributes = new Dictionary<string, IList<string>>
 			{
-				{"mail", new[] {"Dawkins@chaos.com"}}
+				{"mail", new[] {"Dawkins@chaos.com"}},
+				{"eduPersonTargetedID", new[] {"WAYF-DK-315880b0f9ef14662c6cbee76b9db72ac82d200a"}}
 			};
 
 			var result = filter.Validate(attributes);
@@ -77,7 +78,7 @@ namespace Chaos.Portal.Authentication.Tests.Wayf
 			};
 			var attributes2 = new Dictionary<string, IList<string>>
 			{
-				{"eduPersonTargetedID", new[] {"Kiko"}},
+				{"eduPersonTargetedID", new[] {"WAYF-DK-315880b0f9ef14662c6cbee76b9db72ac82d200a"}},
 				{"mail", new[] {"Dawkins@chaos.com"}}
 			};
 			var attributes3 = new Dictionary<string, IList<string>>
@@ -92,7 +93,7 @@ namespace Chaos.Portal.Authentication.Tests.Wayf
 
 			Assert.That(result1, Is.False);
 			Assert.That(result2, Is.True);
-			Assert.That(result3, Is.True);
+			Assert.That(result3, Is.False);
 		}
 
 		private IList<IDictionary<string, Regex>> CreateFilter()
@@ -107,6 +108,9 @@ namespace Chaos.Portal.Authentication.Tests.Wayf
 				new Dictionary<string, Regex>
 				{
 					{"eduPersonTargetedID", new Regex("SomeValue")}
+				},new Dictionary<string, Regex>
+				{
+					{"eduPersonPrincipalName", new Regex("jj@testidp.wayf.dk")}
 				},
 			};
 		}
