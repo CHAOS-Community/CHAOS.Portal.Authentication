@@ -65,9 +65,6 @@
 
 		$response = $helper->Call("Wayf/Login", array('attributes' => $encodedAttributes, 'sessionGuidToAuthenticate' => $_REQUEST["sessionGuid"]));
 		if(ReportError($helper->GetError())) return 2;
-		
-		$helper->Call("WayfProfile/Update", array('userGuid' => $response->Body->Results[0]->Guid, 'attributes' => $encodedAttributes));
-		if(ReportError($helper->GetError())) return 1;
 
 		return 0;
 	}
