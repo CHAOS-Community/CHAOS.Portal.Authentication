@@ -54,7 +54,7 @@ namespace Chaos.Portal.Authentication.Tests
       return
         (EmailPassword)
         new EmailPassword(PortalApplication.Object, AuthenticationRepository.Object,
-                          Make_AuthenticationSettings().Password).WithPortalRequest(PortalRequest.Object);
+                          Make_AuthenticationSettings().Password, AuthenticationModule.Object).WithPortalRequest(PortalRequest.Object);
     }
 
     protected SecureCookie Make_SecureCookie()
@@ -69,7 +69,7 @@ namespace Chaos.Portal.Authentication.Tests
     {
       return
         (Authentication.Extension.Wayf)
-        new Authentication.Extension.Wayf(PortalApplication.Object, AuthenticationRepository.Object, WayfFilter.Object)
+        new Authentication.Extension.Wayf(PortalApplication.Object, AuthenticationRepository.Object, WayfFilter.Object, AuthenticationModule.Object)
           .WithPortalRequest(PortalRequest.Object);
     }
 

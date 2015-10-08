@@ -24,5 +24,7 @@
 
 	    void AddUserInfoUpdateListener<T>(Action<UserInfoUpdate<T>> listener);
 	    void OnUserInfoUpdate<T>(Guid userGuid, T userInfo);
+	    void OnOnWayfUserLoggedIn(WayfProfileArgs args);
+	    event WayfHandler OnWayfUserLoggedIn;
     }
 }
