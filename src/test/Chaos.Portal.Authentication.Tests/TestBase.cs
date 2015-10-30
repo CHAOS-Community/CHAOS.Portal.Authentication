@@ -61,7 +61,7 @@ namespace Chaos.Portal.Authentication.Tests
     {
       return
         (SecureCookie)
-        new SecureCookie(PortalApplication.Object, AuthenticationRepository.Object).WithPortalRequest(
+        new SecureCookie(PortalApplication.Object, AuthenticationRepository.Object, AuthenticationModule.Object).WithPortalRequest(
           PortalRequest.Object);
     }
 

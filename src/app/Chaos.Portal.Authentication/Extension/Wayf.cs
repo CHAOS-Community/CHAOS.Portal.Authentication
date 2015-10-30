@@ -73,6 +73,7 @@ namespace Chaos.Portal.Authentication.Extension
 
 			if (result == null) throw new LoginException("Session could not be updated");
 
+			AuthenticationModule.OnOnUserLoggedIn(new RequestDelegate.PortalRequestArgs(Request));
 			AuthenticationModule.OnOnWayfUserLoggedIn(new WayfProfileArgs(wayfUser.UserGuid, attributesObject));
 
 			return PortalRepository.UserInfoGet(null, sessionGuidToAuthenticate, null, null).First();

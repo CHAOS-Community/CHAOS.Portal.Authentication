@@ -1,76 +1,85 @@
-﻿namespace Chaos.Portal.Authentication.Extension
+﻿using Chaos.Portal.Core.Request;
+
+namespace Chaos.Portal.Authentication.Extension
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+	using System;
+	using System.Collections.Generic;
+	using System.Linq;
+	using Chaos.Portal.Authentication.Data;
+	using Chaos.Portal.Authentication.Exception;
+	using Chaos.Portal.Core;
+	using Chaos.Portal.Core.Data.Model;
+	using Chaos.Portal.Core.Extension;
 
-    using Chaos.Portal.Authentication.Data;
-    using Chaos.Portal.Authentication.Exception;
-    using Chaos.Portal.Core;
-    using Chaos.Portal.Core.Data.Model;
-    using Chaos.Portal.Core.Extension;
+	public class SecureCookie : AExtension
+	{
+		#region Initialization
 
-    public class SecureCookie : AExtension
-    {
-        #region Initialization
+		public SecureCookie(IPortalApplication portalApplication, IAuthenticationRepository repository,
+		                    IAuthenticationModule authenticationModule) : base(portalApplication)
+		{
+			AuthenticationRepository = repository;
+			AuthenticationModule = authenticationModule;
+		}
 
-        public SecureCookie(IPortalApplication portalApplication, IAuthenticationRepository repository): base(portalApplication)
-        {
-            AuthenticationRepository = repository;
-        }
+		#endregion
 
-        #endregion
-        #region Properties
+		#region Properties
 
-        public IAuthenticationRepository AuthenticationRepository { get; set; }
+		public IAuthenticationRepository AuthenticationRepository { get; set; }
+		public IAuthenticationModule AuthenticationModule { get; set; }
 
-        #endregion
-        #region Business Logic
+		#endregion
 
-        public IEnumerable<Data.Dto.v6.SecureCookie> Get()
-        {
-            return AuthenticationRepository.SecureCookieGet(null, Request.User.Guid, null);
-        }
+		#region Business Logic
 
-        public ScalarResult Delete(Guid guid)
-        {
-            var result = AuthenticationRepository.SecureCookieDelete(guid, Request.User.Guid);
+		public IEnumerable<Data.Dto.v6.SecureCookie> Get()
+		{
+			return AuthenticationRepository.SecureCookieGet(null, Request.User.Guid, null);
+		}
 
-            return new ScalarResult((int)result);
-        }
+		public ScalarResult Delete(Guid guid)
+		{
+			var result = AuthenticationRepository.SecureCookieDelete(guid, Request.User.Guid);
 
-        public Data.Dto.v6.SecureCookie Create()
-        {
-            if (Request.IsAnonymousUser) throw new LoginException("Anonymous users cannot create a SecureCookie");
+			return new ScalarResult((int) result);
+		}
 
-            var userGuid         = Request.User.Guid;
-            var sessionGuid      = Request.Session.Guid;
-            var secureCookieGuid = Guid.NewGuid();
-            var passwordGuid     = Guid.NewGuid();
+		public Data.Dto.v6.SecureCookie Create()
+		{
+			if (Request.IsAnonymousUser) throw new LoginException("Anonymous users cannot create a SecureCookie");
 
-            AuthenticationRepository.SecureCookieCreate(secureCookieGuid, userGuid, passwordGuid, sessionGuid);
+			var userGuid = Request.User.Guid;
+			var sessionGuid = Request.Session.Guid;
+			var secureCookieGuid = Guid.NewGuid();
+			var passwordGuid = Guid.NewGuid();
 
-            return AuthenticationRepository.SecureCookieGet(secureCookieGuid, userGuid, passwordGuid).First();
-        }
+			AuthenticationRepository.SecureCookieCreate(secureCookieGuid, userGuid, passwordGuid, sessionGuid);
 
-        #endregion
+			return AuthenticationRepository.SecureCookieGet(secureCookieGuid, userGuid, passwordGuid).First();
+		}
 
-        public Data.Dto.v6.SecureCookie Login(Guid guid, Guid passwordGuid)
-        {
-            var cookie = AuthenticationRepository.SecureCookieGet(guid, null, passwordGuid).FirstOrDefault();
+		#endregion
 
-            if(cookie == null) throw new LoginException("Cookie not found");
+		public Data.Dto.v6.SecureCookie Login(Guid guid, Guid passwordGuid)
+		{
+			var cookie = AuthenticationRepository.SecureCookieGet(guid, null, passwordGuid).FirstOrDefault();
 
-            AuthenticationRepository.SecureCookieUse(cookie.Guid, cookie.UserGuid, null);
+			if (cookie == null) throw new LoginException("Cookie not found");
 
-            if(cookie.DateUsed != null) throw new SecureCookieAlreadyConsumedException("All the users cookies has been deleted");
+			AuthenticationRepository.SecureCookieUse(cookie.Guid, cookie.UserGuid, null);
 
-            cookie.PasswordGuid = Guid.NewGuid();
+			if (cookie.DateUsed != null)
+				throw new SecureCookieAlreadyConsumedException("All the users cookies has been deleted");
 
-            AuthenticationRepository.SecureCookieCreate(cookie.Guid, cookie.UserGuid, cookie.PasswordGuid, Request.Session.Guid);
-            PortalRepository.SessionUpdate(Request.Session.Guid, cookie.UserGuid);
+			cookie.PasswordGuid = Guid.NewGuid();
 
-            return cookie;
-        }
-    }
+			AuthenticationRepository.SecureCookieCreate(cookie.Guid, cookie.UserGuid, cookie.PasswordGuid, Request.Session.Guid);
+			PortalRepository.SessionUpdate(Request.Session.Guid, cookie.UserGuid);
+
+			AuthenticationModule.OnOnUserLoggedIn(new RequestDelegate.PortalRequestArgs(Request));
+
+			return cookie;
+		}
+	}
 }
