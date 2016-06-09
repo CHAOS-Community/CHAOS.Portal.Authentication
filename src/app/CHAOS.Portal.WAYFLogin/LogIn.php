@@ -64,7 +64,14 @@
 		$helper->SetSessionGuid($response->Body->Results[0]->Guid);
 
 		$response = $helper->Call("Wayf/Login", array('attributes' => $encodedAttributes, 'sessionGuidToAuthenticate' => $_REQUEST["sessionGuid"]));
-		if(ReportError($helper->GetError())) return 2;
+		$loginError = $helper->GetError();
+
+		if(ReportError($loginError))
+		{
+			if(strpos($loginError.Fullname, "WayfUserNotAllowedException") !== false)
+				return 2;
+			return 3;
+		}
 
 		return 0;
 	}
